@@ -22,11 +22,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        ODWayM.cpp
+        ODWayM.cpp \
+    ODMTime.cpp
 
 HEADERS += \
-        ODWayM.h
+        ODWayM.h \
+    ODMTime.h
 unix {
     target.path = /usr/lib
     INSTALLS += target
 }
+
+INCLUDEPATH += $$PWD/../3rd/ODBase
+DEPENDPATH += $$PWD/../3rd/ODBase
+INCLUDEPATH += $$PWD/../
+DEPENDPATH += $$PWD/../

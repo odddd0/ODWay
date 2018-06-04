@@ -30,3 +30,8 @@ unix {
     target.path = /usr/lib
     INSTALLS += target
 }
+
+INCLUDEPATH += $$PWD/../3rd/ODBase
+DEPENDPATH += $$PWD/../3rd/ODBase
+INCLUDEPATH += $$PWD/../
+DEPENDPATH += $$PWD/../

@@ -28,10 +28,28 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-win32: LIBS += -L$$PWD/../build-ODMBase-Desktop_Qt_5_11_0_MSVC2017_64bit-Debug/debug/ -lODMBase
+INCLUDEPATH += $$PWD/../3rd/ODBase
+DEPENDPATH += $$PWD/../3rd/ODBase
+INCLUDEPATH += $$PWD/../
+DEPENDPATH += $$PWD/../
 
-INCLUDEPATH += $$PWD/../build-ODMBase-Desktop_Qt_5_11_0_MSVC2017_64bit-Debug/debug
-DEPENDPATH += $$PWD/../build-ODMBase-Desktop_Qt_5_11_0_MSVC2017_64bit-Debug/debug
+LIBS += -lsqlite3
 
-win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../build-ODMBase-Desktop_Qt_5_11_0_MSVC2017_64bit-Debug/debug/ODMBase.lib
-else:win32-g++: PRE_TARGETDEPS += $$PWD/../build-ODMBase-Desktop_Qt_5_11_0_MSVC2017_64bit-Debug/debug/libODMBase.a
+CONFIG(debug, debug|release){
+    macx: LIBS += -L$$PWD/../3rd/ODBase/lib/clang64-Debug/ -lODMBase
+    macx: PRE_TARGETDEPS += $$PWD/../3rd/ODBase/lib/clang64-Debug/libODMBase.a
+
+    macx: LIBS += -L$$PWD/../build-ODWayM-Desktop_Qt_5_11_0_clang_64bit-Debug/ -lODWayM
+    macx: PRE_TARGETDEPS += $$PWD/../build-ODWayM-Desktop_Qt_5_11_0_clang_64bit-Debug/libODWayM.a
+
+    macx: LIBS += -L$$PWD/../build-ODWayP-Desktop_Qt_5_11_0_clang_64bit-Debug/ -lODWayP
+    macx: PRE_TARGETDEPS += $$PWD/../build-ODWayP-Desktop_Qt_5_11_0_clang_64bit-Debug/libODWayP.a
+
+    macx: LIBS += -L$$PWD/../build-ODWayV-Desktop_Qt_5_11_0_clang_64bit-Debug/ -lODWayV
+    macx: PRE_TARGETDEPS += $$PWD/../build-ODWayV-Desktop_Qt_5_11_0_clang_64bit-Debug/libODWayV.a
+} else {
+    macx: LIBS += -L$$PWD/../3rd/ODBase/lib/clang64-Release/ -lODMBase
+    macx: PRE_TARGETDEPS += $$PWD/../3rd/ODBase/lib/clang64-Release/libODMBase.a
+}
+
+
