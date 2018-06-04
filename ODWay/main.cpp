@@ -2,8 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QDir>
 
-#include <ODWayM/ODMTime.h>
-#include <ODBase/ODDBHandle.h>
+#include <ODWayM/ODWayM.h>
 
 int main(int argc, char *argv[])
 {
@@ -12,7 +11,7 @@ int main(int argc, char *argv[])
      */
     // get home path.
     std::string dir = QDir::homePath().toStdString() + "/test.db";
-    ODDBHandle::Instance()->Setup(dir);
+    ODWayM::Instance(dir)->ReadDB();
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 

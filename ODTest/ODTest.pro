@@ -16,7 +16,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     gtest_main.cc \
-    ODMTimeTest.cpp
+    ODMTimeTest.cpp \
+    ODWayMTest.cpp
 
 INCLUDEPATH += $$PWD/../3rd/gtest
 DEPENDPATH += $$PWD/../3rd/gtest

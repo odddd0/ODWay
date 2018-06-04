@@ -15,39 +15,39 @@ StringTable tempTable_update = {
     {"103", "203", "CC4", "KF3", "KS3", "C3"}
 };
 
-TEST(ODMTime, insert)
-{
-    ODDBHandle::Instance()->Setup("test.db");
-    ODMBaseList tmpList;
-    tmpList.push_back(std::make_shared<ODMTime>(tempTable_insert[0]));
-    tmpList.push_back(std::make_shared<ODMTime>(tempTable_insert[1]));
-    tmpList.push_back(std::make_shared<ODMTime>(tempTable_insert[2]));
-    ODDBHandle::Instance()->Insert(tmpList);
-}
+//TEST(ODMTime, insert)
+//{
+//    ODDBHandle::Instance()->Setup("test.db");
+//    ODMBaseList tmpList;
+//    tmpList.push_back(std::make_shared<ODMTime>(tempTable_insert[0]));
+//    tmpList.push_back(std::make_shared<ODMTime>(tempTable_insert[1]));
+//    tmpList.push_back(std::make_shared<ODMTime>(tempTable_insert[2]));
+//    ODDBHandle::Instance()->Insert(tmpList);
+//}
 
-TEST(ODMTime, Update)
-{
-    ODMBaseList tmpList;
-    tmpList.push_back(std::make_shared<ODMTime>(tempTable_update[0]));
-    tmpList.push_back(std::make_shared<ODMTime>(tempTable_update[1]));
-    tmpList.push_back(std::make_shared<ODMTime>(tempTable_update[2]));
-    ODMTimePtr tmpPtr = std::static_pointer_cast<ODMTime>(tmpList[0]);
-    tmpPtr->_id = 122;
-    ODDBHandle::Instance()->Update(tmpList);
-}
+//TEST(ODMTime, Update)
+//{
+//    ODMBaseList tmpList;
+//    tmpList.push_back(std::make_shared<ODMTime>(tempTable_update[0]));
+//    tmpList.push_back(std::make_shared<ODMTime>(tempTable_update[1]));
+//    tmpList.push_back(std::make_shared<ODMTime>(tempTable_update[2]));
+//    ODMTimePtr tmpPtr = std::static_pointer_cast<ODMTime>(tmpList[0]);
+//    tmpPtr->_id = 122;
+//    ODDBHandle::Instance()->Update(tmpList);
+//}
 
-TEST(ODMTime, Select)
-{
-    ODMBaseList tmpList;
-    ODDBHandle::Instance()->Select<ODMTime>(tmpList);
-    ODMTimePtr tmpPtr = std::static_pointer_cast<ODMTime>(tmpList[0]);
-    tmpPtr = std::static_pointer_cast<ODMTime>(tmpList[1]);
-    tmpPtr = std::static_pointer_cast<ODMTime>(tmpList[2]);
-}
+//TEST(ODMTime, Select)
+//{
+//    ODMBaseList tmpList;
+//    ODDBHandle::Instance()->Select<ODMTime>(tmpList);
+//    ODMTimePtr tmpPtr = std::static_pointer_cast<ODMTime>(tmpList[0]);
+//    tmpPtr = std::static_pointer_cast<ODMTime>(tmpList[1]);
+//    tmpPtr = std::static_pointer_cast<ODMTime>(tmpList[2]);
+//}
 
-TEST(ODDBHandle, Delete)
-{
-    IntList tmpList = {102, 103};
-    std::string tmpStr;
-    ODDBHandle::Instance()->Delete<ODMTime>(tmpList, tmpStr);
-}
+//TEST(ODDBHandle, Delete)
+//{
+//    IntList tmpList = {102, 103};
+//    std::string tmpStr;
+//    ODDBHandle::Instance()->Delete<ODMTime>(tmpList, tmpStr);
+//}
