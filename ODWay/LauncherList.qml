@@ -179,6 +179,9 @@ Rectangle {
                     script: page.destroy()
                 }
             }
+            onXChanged: {
+                x = 0
+            }
         }
     }
     Bar {
