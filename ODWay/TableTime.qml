@@ -9,7 +9,7 @@ Rectangle {
     width: 1000
     height: 700
 
-    property alias currentIndex: root.currentIndex
+    property alias currentIndex: rootTableTime.currentIndex
 
     ColumnLayout {
         anchors.fill: parent
@@ -19,7 +19,7 @@ Rectangle {
         }
 
         ListView {
-            id: root
+            id: rootTableTime
             Layout.fillHeight: true
             Layout.fillWidth: true
             snapMode: ListView.SnapOneItem
@@ -28,6 +28,11 @@ Rectangle {
             focus: false
             orientation: ListView.Horizontal
             boundsBehavior: Flickable.StopAtBounds
+
+            onCurrentIndexChanged: {
+                listView.updateCurList()
+                console.log("changed")
+            }
 
             model: ObjectModel {
                 TableTimeList {

@@ -32,7 +32,7 @@ public slots:
     void setKindSecondList(QStringList kindSecondList);
 
 public slots:
-    void addTime(
+    bool addTime(
             const int &year_,
             const int &month_,
             const int &day_,

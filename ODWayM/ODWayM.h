@@ -12,7 +12,7 @@ public:
     void ReadDB();
 
 public:
-    void AddModel(const ODMBasePtr &ptr_);
+    bool AddModel(const ODMBasePtr &ptr_);
 
 public:
     void GetList(const std::string &type_, ODMBaseList &list);

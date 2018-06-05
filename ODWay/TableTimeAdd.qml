@@ -9,8 +9,11 @@ Rectangle {
     Connections{
         target: bar
         onRightBtnClicked:{
-            odvTimeList.addTime(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second,
-                                dateTime.customTime, classify.classText, kindFirst.classText, kindSecond.classText, content.text)
+            if (odvTimeList.addTime(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second,
+                                    dateTime.customTime, classify.classText, kindFirst.classText, kindSecond.classText, content.text))
+            {
+                rootTableTime.currentIndex = 0
+            }
         }
     }
 

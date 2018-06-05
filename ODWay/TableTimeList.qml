@@ -8,6 +8,11 @@ Rectangle {
         odvTimeList.updateList()
     }
 
+    function updateCurList() {
+        console.log("update")
+        tableTimeListView.model = odvTimeList.curList
+    }
+
     ListView {
         anchors.fill: parent
         id: tableTimeListView

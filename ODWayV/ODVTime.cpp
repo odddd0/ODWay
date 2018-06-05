@@ -29,7 +29,7 @@ QStringList ODVTime::kindSecondList() const
     return m_kindSecondList;
 }
 
-void ODVTime::addTime(
+bool ODVTime::addTime(
         const int &year_,
         const int &month_,
         const int &day_,
@@ -42,6 +42,7 @@ void ODVTime::addTime(
         const QString &kindSecond_,
         const QString &content_)
 {
+    bool Result = false;
     ODMTimePtr tmpPtr = std::make_shared<ODMTime>();
     tmpPtr->_classify = classify_.toStdString();
     tmpPtr->_kindFirst = kindFirst_.toStdString();
@@ -60,7 +61,13 @@ void ODVTime::addTime(
         time_t lt = mktime(&tmpTm);
         tmpPtr->_id = lt;
     }
-    ODPTime::Instance()->AddTime(tmpPtr);
+    Result = ODPTime::Instance()->AddTime(tmpPtr);
+    if (Result)
+    {
+        updateList();
+        updateClass();
+    }
+    return Result;
 }
 
 void ODVTime::setCurList(QStringList curList)

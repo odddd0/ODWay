@@ -31,7 +31,7 @@ public:
     static ODPTime * Instance();
 
 public:
-    void AddTime(const ODMTimePtr &timePtr_);
+    bool AddTime(const ODMTimePtr &curPtr_);
 
 public:
     void GetCurList(StringList &list);
