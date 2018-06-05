@@ -32,4 +32,40 @@ Rectangle {
             }
         }
     }
+
+    Row {
+        width: parent.width
+        height: 50
+        anchors.bottom: parent.bottom
+        Rectangle {
+            width: parent.width / 2
+            height: parent.height
+            anchors.left: parent.left
+            color: "lightgreen"
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    console.log("clicked table time list left")
+                    odvTimeList.prevDay()
+                    odvTimeList.updateList()
+                    tableTimeListView.model = odvTimeList.curList
+                }
+            }
+        }
+        Rectangle {
+            width: parent.width / 2
+            height: parent.height
+            anchors.right: parent.right
+            color: "lightblue"
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    console.log("clicked table time list right")
+                    odvTimeList.nextDay()
+                    odvTimeList.updateList()
+                    tableTimeListView.model = odvTimeList.curList
+                }
+            }
+        }
+    }
 }

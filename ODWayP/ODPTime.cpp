@@ -76,13 +76,11 @@ struct ODPTime::Impl
 
             if (!ODTimeUtil::IsSameDay(lastTime, oneTipPtr->_time))
             {
-                if (oneDayPtr)
-                {
-                    _curDate = ODTimeUtil::Timestamp2String(oneTipPtr->_time, "%y-%m-%d");
-                    _expandData._dateList.push_back(_curDate);
-                    _expandData._dayList[_curDate] = oneDayPtr;
-                }
+                // new day
                 oneDayPtr = std::make_shared<OneDay>();
+                _curDate = ODTimeUtil::Timestamp2String(oneTipPtr->_time, "%y-%m-%d");
+                _expandData._dateList.push_back(_curDate);
+                _expandData._dayList[_curDate] = oneDayPtr;
             }
             oneDayPtr->_tipList.push_back(oneTipPtr);
 
@@ -126,10 +124,15 @@ void ODPTime::GetCurList(StringList &list)
         {
             _Impl->_curDate = _Impl->_expandData._dateList[_Impl->_expandData._dateList.size() - 1];
         }
+        std::string tmpStr;
         list.clear();
         list.push_back(_Impl->_curDate);
         std::for_each(_Impl->_expandData._dayList[_Impl->_curDate]->_tipList.begin(), _Impl->_expandData._dayList[_Impl->_curDate]->_tipList.end(), [&](OneTipPtr &x){
-            list.push_back(x->_classify);
+            tmpStr = ODTimeUtil::Timestamp2String(x->_time - x->_durationSecond, "%H:%M") + "-";
+            tmpStr += ODTimeUtil::Timestamp2String(x->_time, "%H:%M") + "(";
+            tmpStr += ODTimeUtil::Duration2String(x->_durationSecond, "%0Hh%Mm") + "): ";
+            tmpStr += x->_classify + "_" + x->_kindFirst + "_" + x->_kindSecond;
+            list.push_back(tmpStr);
         });
     }
 }

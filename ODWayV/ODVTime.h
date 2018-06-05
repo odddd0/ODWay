@@ -19,6 +19,8 @@ signals:
 public slots:
     void setCurList(QStringList curList);
     void updateList();
+    void prevDay();
+    void nextDay();
 
 private:
     QStringList m_curList;

@@ -31,3 +31,13 @@ void ODVTime::updateList()
         m_curList.push_back(x.c_str());
     });
 }
+
+void ODVTime::prevDay()
+{
+    ODPTime::Instance()->PrevCur();
+}
+
+void ODVTime::nextDay()
+{
+    ODPTime::Instance()->NextCur();
+}
