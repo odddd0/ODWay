@@ -2,6 +2,7 @@
 #define ODPTIME_H
 
 #include <ODMBase/ODBaseTypes.h>
+#include <ODWayM/ODMTime.h>
 
 class ODPTime
 {
@@ -30,6 +31,9 @@ public:
     static ODPTime * Instance();
 
 public:
+    void AddTime(const ODMTimePtr &timePtr_);
+
+public:
     void GetCurList(StringList &list);
 
 public:
@@ -38,8 +42,8 @@ public:
 
 public:
     void GetClassifyList(StringList &list);
-    void GetKindFirstList(StringList &list, const std::string &key_);
-    void GetKindSecondList(StringList &list, const std::string &key_);
+    void GetKindFirstList(StringList &list, const std::string &key_ = "");
+    void GetKindSecondList(StringList &list, const std::string &classify_, const std::string &key_);
 
 private:
     struct Impl;

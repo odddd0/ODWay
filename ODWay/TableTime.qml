@@ -2,6 +2,7 @@
 import QtQuick 2.0
 import QtQml.Models 2.1
 import QtQuick.Layouts 1.1
+import ODVTime 1.0
 
 Rectangle {
     id: mainRect
@@ -12,6 +13,10 @@ Rectangle {
 
     ColumnLayout {
         anchors.fill: parent
+
+        ODVTimeList {
+            id: odvTimeList
+        }
 
         ListView {
             id: root

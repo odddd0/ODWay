@@ -1,5 +1,4 @@
 
-#include <ODWayM/ODMTime.h>
 #include <ODWayM/ODWayM.h>
 
 #include <ODUtil/ODUtil.h>
@@ -36,7 +35,9 @@ struct ODPTime::Impl
 
                 tmpStrListPtr = std::make_shared<StringList>();
                 tmpStrListPtr->push_back(cur->_kindSecond);
-                _kindSecondList[cur->_kindFirst] = tmpStrListPtr;
+                StringListPtrMap tmpStrListPtrMap;
+                tmpStrListPtrMap[cur->_kindFirst] = tmpStrListPtr;
+                _kindSecondList[cur->_classify] = tmpStrListPtrMap;
             }
             else
             {
@@ -45,11 +46,11 @@ struct ODPTime::Impl
                 {
                     tmpStrListPtr = std::make_shared<StringList>();
                     tmpStrListPtr->push_back(cur->_kindSecond);
-                    _kindSecondList[cur->_kindFirst] = tmpStrListPtr;
+                    _kindSecondList[cur->_classify][cur->_kindFirst] = tmpStrListPtr;
                 }
                 else
                 {
-                    tmpStrListPtr = _kindSecondList[cur->_kindFirst];
+                    tmpStrListPtr = _kindSecondList[cur->_classify][cur->_kindFirst];
                     ODVectorUtil::RefreshInsert<std::string>(*tmpStrListPtr, cur->_kindSecond);
                 }
             }
@@ -91,7 +92,7 @@ struct ODPTime::Impl
 
     StringList _classifyList;
     StringListPtrMap _kindFirstList;
-    StringListPtrMap _kindSecondList;
+    std::map<std::string, StringListPtrMap> _kindSecondList;
     StringList _curList;
     ODPTime::ExpandData _expandData;
     std::string _curDate;
@@ -101,6 +102,11 @@ ODPTime *ODPTime::Instance()
 {
     static ODPTime * obj = new ODPTime;
     return obj;
+}
+
+void ODPTime::AddTime(const ODMTimePtr &timePtr_)
+{
+    ODWayM::Instance()->AddModel(timePtr_);
 }
 
 ODPTime::ODPTime()
@@ -168,10 +174,19 @@ void ODPTime::GetClassifyList(StringList &list)
 
 void ODPTime::GetKindFirstList(StringList &list, const std::string &key_)
 {
-    list = *(_Impl->_kindFirstList[key_]);
+    if (key_.empty() && !_Impl->_classifyList.empty())
+    {
+        list = *(_Impl->_kindFirstList[_Impl->_classifyList[0]]);
+    }
+    else
+    {
+        list = *(_Impl->_kindFirstList[key_]);
+    }
 }
 
-void ODPTime::GetKindSecondList(StringList &list, const std::string &key_)
+void ODPTime::GetKindSecondList(StringList &list, const std::string &classify_, const std::string &key_)
 {
-    list = *(_Impl->_kindSecondList[key_]);
+    list = *(_Impl->_kindSecondList[classify_][key_]);
+//    _Impl->_kindFirstList[classify_][""];
+//    list = *(_Impl->_kindSecondList[""]);
 }

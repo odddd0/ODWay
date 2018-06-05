@@ -1,5 +1,4 @@
 import QtQuick 2.9
-import ODVTime 1.0
 
 Rectangle {
     height: 640
@@ -7,10 +6,6 @@ Rectangle {
 
     Component.onCompleted: {
         odvTimeList.updateList()
-    }
-
-    ODVTimeList {
-        id: odvTimeList
     }
 
     ListView {

@@ -36,6 +36,16 @@ void ODWayM::ReadDB()
     ODDBHandle::Instance()->Select<ODMTime>(_Impl->_DBList);
 }
 
+void ODWayM::AddModel(const ODMBasePtr &ptr_)
+{
+    ODMBaseList tmpList;
+    tmpList.push_back(ptr_);
+    if (ODDBHandle::Instance()->Insert(tmpList))
+    {
+        _Impl->_DBList.push_back(ptr_);
+    }
+}
+
 void ODWayM::GetList(const std::string &type_, ODMBaseList &list)
 {
     std::for_each(_Impl->_DBList.begin(), _Impl->_DBList.end(), [&list, type_](ODMBasePtr &x){
