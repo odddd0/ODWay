@@ -3,9 +3,12 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 typedef std::vector<std::string> StringList;
 typedef std::vector<StringList> StringTable;
+
+typedef std::map<std::string, StringList> StringListMap;
 
 typedef std::vector<int> IntList;
 
