@@ -11,6 +11,10 @@ public:
     ODMBase(const std::string &type_, const int &id_);
 
 public:
+    // The following 5 function must implementation.
+    static void GetSqlCreateTable(std::string &sql_){};
+    static void GetSqlSelect(std::string &sql_){};
+    static void GetSqlDelete(std::string &sql_, const int &id_){};
     virtual void GetSqlInsert(std::string &sql_) = 0;
     virtual void GetSqlUpdate(std::string &sql_) = 0;
 
