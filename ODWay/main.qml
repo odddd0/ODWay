@@ -1,17 +1,14 @@
 import QtQuick 2.9
-import QtQuick.Window 2.2
 
-Window {
-    visible: true
-    width: 640
-    height: 480
+Rectangle {
+    height: 640
+    width: 480
 
-    title: qsTr("Hello World")
-
-    Rectangle {
-        width: 100
-        height: 100
-        color: "red"
+    LauncherList {
+        id: ll
+        anchors.fill: parent
+        Component.onCompleted: {
+            addExample("Time table", "Uses all ImageParticle features",  Qt.resolvedUrl("TableTime.qml"));
+        }
     }
 }
-

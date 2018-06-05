@@ -1,5 +1,11 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>LauncherList.qml</file>
+        <file>SimpleLauncherDelegate.qml</file>
+        <file>TableTime.qml</file>
+        <file>Bar.qml</file>
+        <file>TableTimeAdd.qml</file>
+        <file>TableTimeList.qml</file>
     </qresource>
 </RCC>
