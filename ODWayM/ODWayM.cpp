@@ -1,5 +1,5 @@
 
-#include <ODBase/ODDBHandle.h>
+#include <ODMBase/ODDBHandle.h>
 #include <ODWayM/ODMTime.h>
 
 #include "ODWayM.h"

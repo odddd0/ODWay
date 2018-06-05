@@ -39,6 +39,9 @@ CONFIG(debug, debug|release){
     macx: LIBS += -L$$PWD/../3rd/ODBase/lib/clang64-Debug/ -lODMBase
     macx: PRE_TARGETDEPS += $$PWD/../3rd/ODBase/lib/clang64-Debug/libODMBase.a
 
+    macx: LIBS += -L$$PWD/../3rd/ODBase/lib/clang64-Debug/ -lODUtil
+    macx: PRE_TARGETDEPS += $$PWD/../3rd/ODBase/lib/clang64-Debug/libODUtil.a
+
     macx: LIBS += -L$$PWD/../build-ODWayM-Desktop_Qt_5_11_0_clang_64bit-Debug/ -lODWayM
     macx: PRE_TARGETDEPS += $$PWD/../build-ODWayM-Desktop_Qt_5_11_0_clang_64bit-Debug/libODWayM.a
 

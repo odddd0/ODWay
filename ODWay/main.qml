@@ -8,7 +8,7 @@ Rectangle {
         id: ll
         anchors.fill: parent
         Component.onCompleted: {
-            addExample("Time table", "Uses all ImageParticle features",  Qt.resolvedUrl("TableTime.qml"));
+            addExample("Time table", "Time List Show",  Qt.resolvedUrl("TableTime.qml"));
         }
     }
 }

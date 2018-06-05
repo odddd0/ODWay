@@ -1,7 +1,7 @@
 #ifndef ODWAYM_H
 #define ODWAYM_H
 
-#include <ODBase/ODMBase.h>
+#include <ODMBase/ODMBase.h>
 
 class ODWayM
 {

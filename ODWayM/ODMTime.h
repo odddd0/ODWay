@@ -1,7 +1,7 @@
 #ifndef ODMTIME_H
 #define ODMTIME_H
 
-#include <ODBase/ODMBase.h>
+#include <ODMBase/ODMBase.h>
 
 struct ODMTime : public ODMBase
 {
