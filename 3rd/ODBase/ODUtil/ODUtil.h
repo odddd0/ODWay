@@ -1,10 +1,7 @@
 #ifndef _ODUTIL_H_8675677F07F21C219D0737A0628D123E
 #define _ODUTIL_H_8675677F07F21C219D0737A0628D123E
 
-class ODUtil
-{
-public:
-    ODUtil();
-};
+#include "ODTimeUtil.h"
+#include "ODVectorUtil.h"
 
 #endif // _ODUTIL_H_8675677F07F21C219D0737A0628D123E

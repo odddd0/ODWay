@@ -56,7 +56,7 @@ public:
      *
      * @param str_
      */
-    static void Timestamp2String(const int &timestamp_, const std::string &format_, std::string &str_);
+    static std::string Timestamp2String(const int &timestamp_, const std::string &format_);
 
     /**
      * @brief Duration2String
@@ -68,7 +68,9 @@ public:
      *      %S:  Second
      * @param str_
      */
-    static void Duration2String(const int &timestamp_, const std::string &format_, std::string &str_);
+    static std::string Duration2String(const int &timestamp_, const std::string &format_);
+
+    static bool IsSameDay(const int &timstamp1_, const int &timstamp2_);
 };
 
 #endif // _ODTIMEUTIL_H_2642BAEBF76A480C611A75505D021741

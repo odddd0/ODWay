@@ -8,7 +8,10 @@
 typedef std::vector<std::string> StringList;
 typedef std::vector<StringList> StringTable;
 
+typedef std::shared_ptr<StringList> StringListPtr;
+
 typedef std::map<std::string, StringList> StringListMap;
+typedef std::map<std::string, StringListPtr> StringListPtrMap;
 
 typedef std::vector<int> IntList;
 
