@@ -79,6 +79,17 @@ bool ODVTime::delTime(const int &index_)
     }
 }
 
+bool ODVTime::FastIdle()
+{
+    if (ODPTime::Instance()->FastIdle())
+    {
+        updateList();
+        updateClass();
+        return true;
+    }
+    return false;
+}
+
 void ODVTime::setCurList(QStringList curList)
 {
     if (m_curList == curList)

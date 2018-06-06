@@ -178,6 +178,16 @@ bool ODPTime::AddTime(const ODMTimePtr &curPtr_)
     return Result;
 }
 
+bool ODPTime::FastIdle()
+{
+    ODMTimePtr tmpPtr = std::make_shared<ODMTime>();
+    tmpPtr->_classify = "Idle";
+    tmpPtr->_kindFirst = "Idle";
+    tmpPtr->_kindSecond = "Idle";
+    tmpPtr->_content = "Fast Idle";
+    return AddTime(tmpPtr);
+}
+
 bool ODPTime::DelDurTime(const int &index_)
 {
     bool Result = false;

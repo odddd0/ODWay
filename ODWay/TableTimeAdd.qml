@@ -16,13 +16,20 @@ Rectangle {
     Connections{
         target: bar
         onRightBtnClicked:{
-            if (bar.barHandle == "handleTableTimeAdd" &&
-                    odvTimeList.addTime(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second,
-                                    dateTime.customTime, classify.classText, kindFirst.classText, kindSecond.classText, content.text))
+            if (bar.barHandle == "handleTableTimeAdd")
             {
-                content.text = ""
-                dateTime.dateEnable = false
-                rootTableTime.currentIndex = 0
+                if (bar.rightStr == "+" &&
+                        odvTimeList.addTime(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second,
+                                            dateTime.customTime, classify.classText, kindFirst.classText, kindSecond.classText, content.text))
+                {
+                    content.text = ""
+                    dateTime.dateEnable = false
+                    rootTableTime.currentIndex = 0
+                }
+                else if (bar.rightStr == "Idle" && odvTimeList.FastIdle())
+                {
+                    rootTableTime.currentIndex = 0
+                }
             }
         }
     }
@@ -105,6 +112,40 @@ Rectangle {
             }
             Component.onCompleted: {
                 console.log("7")
+            }
+        }
+
+        Rectangle {
+            width: parent.width
+            height: 80
+            color: "transparent"
+            Rectangle {
+                width: 100
+                height: parent.height
+                anchors.right: parent.right
+                MouseArea {
+                    hoverEnabled: true
+                    anchors.fill: parent
+                    width: 38
+                    height: 31
+                    anchors.verticalCenterOffset: -1
+                    enabled: rightStr != ""
+                    onPressAndHold: {
+                        bar.rightStr = "Idle"
+                    }
+                    Rectangle {
+                        anchors.fill: parent
+                        opacity: parent.pressed ? 1 : 0
+                        Behavior on opacity { NumberAnimation{ duration: 100 }}
+                        gradient: Gradient {
+                            GradientStop { position: 0 ; color: "#22000000" }
+                            GradientStop { position: 0.2 ; color: "#11000000" }
+                        }
+                        border.color: "darkgray"
+                        antialiasing: true
+                        radius: 4
+                    }
+                }
             }
         }
     }

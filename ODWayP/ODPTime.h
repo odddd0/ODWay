@@ -37,6 +37,7 @@ public:
 
 public:
     bool AddTime(const ODMTimePtr &curPtr_);
+    bool FastIdle();
 
 public:
     bool DelDurTime(const int &index_);
