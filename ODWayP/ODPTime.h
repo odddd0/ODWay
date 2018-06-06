@@ -44,6 +44,7 @@ public:
 
 public:
     void GetCurList(StringList &list);
+    void GetRunningTimeStr(std::string &str_);
 
 public:
     void PrevCur();

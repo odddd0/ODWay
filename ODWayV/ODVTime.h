@@ -46,6 +46,7 @@ public slots:
             const QString &content_);
     bool delTime(const int &index_);
     bool FastIdle();
+    QString GetRunningTime();
     void updateList();
     void updateClass();
     void prevDay();

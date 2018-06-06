@@ -10,7 +10,8 @@
 struct ODPTime::Impl
 {
     Impl()
-        : _curDate(""){}
+        : _curDate("")
+        , _lastTip(NULL){}
 
     void InClassify(const std::string classify_, const std::string kindFirst_, const std::string kindSecond_)
     {
@@ -55,7 +56,6 @@ struct ODPTime::Impl
 
         OneTipPtr oneTipPtr = NULL;
         OneDayPtr oneDayPtr = NULL;
-        int lastTime = 0;
         ODMBaseList tmpList;
         ODMTimePtr cur;
         ODWayM::Instance()->GetList("ODMTime", tmpList);
@@ -76,16 +76,16 @@ struct ODPTime::Impl
             {
                 oneTipPtr->_durationSecond = cur->_offsetMinute * 60;
             }
-            else if (lastTime != 0)
+            else if (_lastTip)
             {
-                oneTipPtr->_durationSecond = cur->_id - lastTime;
+                oneTipPtr->_durationSecond = cur->_id - _lastTip->_time;
             }
             else
             {
                 oneTipPtr->_durationSecond = 0;
             }
 
-            if (!ODTimeUtil::IsSameDay(lastTime, oneTipPtr->_time))
+            if (_lastTip == NULL || !ODTimeUtil::IsSameDay(_lastTip->_time, oneTipPtr->_time))
             {
                 // new day
                 oneDayPtr = std::make_shared<OneDay>();
@@ -95,14 +95,13 @@ struct ODPTime::Impl
             }
             oneDayPtr->_tipList.push_back(oneTipPtr);
 
-            lastTime = cur->_id;
-
+            _lastTip = oneTipPtr;
         });
     }
 
     void AppendData(const ODMTimePtr &curPtr)
     {
-        if (_expandData._dateList.empty())
+        if (_expandData._dateList.empty() || _lastTip == NULL)
         {
             ExpandData();
         }
@@ -110,8 +109,7 @@ struct ODPTime::Impl
         {
             // get last day's last tip
             OneDayPtr lastDayPtr = _expandData._dayList[_expandData._dateList[_expandData._dateList.size() - 1]];
-            OneTipPtr lastTipPtr = lastDayPtr->_tipList[(lastDayPtr->_tipList.size() - 1)];
-            if (curPtr->_id > lastTipPtr->_time)
+            if (curPtr->_id > _lastTip->_time)
             {
                 InClassify(curPtr->_classify, curPtr->_kindFirst, curPtr->_kindSecond);
                 OneTipPtr tmpPtr = std::make_shared<OneTip>();
@@ -126,11 +124,11 @@ struct ODPTime::Impl
                 }
                 else
                 {
-                    tmpPtr->_durationSecond = tmpPtr->_time - lastTipPtr->_time;
+                    tmpPtr->_durationSecond = tmpPtr->_time - _lastTip->_time;
                 }
 
                 _curDate = ODTimeUtil::Timestamp2String(tmpPtr->_time, "%y-%m-%d");
-                if (!ODTimeUtil::IsSameDay(tmpPtr->_time, lastTipPtr->_time))
+                if (!ODTimeUtil::IsSameDay(tmpPtr->_time, _lastTip->_time))
                 {
                     // new Day
                     lastDayPtr = std::make_shared<OneDay>();
@@ -138,6 +136,7 @@ struct ODPTime::Impl
                     _expandData._dayList[_curDate] = lastDayPtr;
                 }
                 lastDayPtr->_tipList.push_back(tmpPtr);
+                _lastTip = tmpPtr;
             }
             else
             {
@@ -159,6 +158,7 @@ struct ODPTime::Impl
     ODPTime::ExpandData _expandData;
     std::string _curDate;
     IntList _lastCurList;
+    OneTipPtr _lastTip;
 };
 
 ODPTime *ODPTime::Instance()
@@ -194,7 +194,7 @@ bool ODPTime::DelDurTime(const int &index_)
     if (index_ >= 0 && index_ < _Impl->_lastCurList.size())
     {
         if (_Impl->_lastCurList[index_] >= 0)
-        Result = ODWayM::Instance()->DeleteModel("ODMTime", _Impl->_lastCurList[index_]);
+            Result = ODWayM::Instance()->DeleteModel("ODMTime", _Impl->_lastCurList[index_]);
     }
     if (Result)
     {
@@ -239,6 +239,16 @@ void ODPTime::GetCurList(StringList &list)
             list.push_back(tmpStr);
             _Impl->_lastCurList.push_back(x->_time);
         });
+    }
+}
+
+void ODPTime::GetRunningTimeStr(std::string &str_)
+{
+    if (_Impl->_lastTip)
+    {
+        time_t curTime = 0;
+        int curTimestamp = time(&curTime);
+        str_ = ODTimeUtil::Duration2String(curTimestamp - _Impl->_lastTip->_time);
     }
 }
 

@@ -12,6 +12,19 @@ Rectangle {
 
         ODVTimeList { id: odvTimeList }
 
+        Item {
+            Timer {
+                interval: 1000; running: true; repeat: true
+                onTriggered: {
+                    if (bar.barHandle == "handleTableTimeAdd" ||
+                            bar.barHandle == "handleTableTimeList")
+                    {
+                        bar.middleStr = odvTimeList.GetRunningTime()
+                    }
+                }
+            }
+        }
+
         ListView {
             id: rootTableTime
             Layout.fillHeight: true
@@ -29,7 +42,7 @@ Rectangle {
                     // list
                     listView.updateCurList()
                     bar.leftStr = "<"
-                    bar.middleStr = "List"
+                    bar.middleStr = odvTimeList.GetRunningTime()
                     bar.rightStr = "-"
                     bar.barHandle = "handleTableTimeList"
                 }
@@ -37,7 +50,7 @@ Rectangle {
                 {
                     // add
                     bar.leftStr = "<"
-                    bar.middleStr = "Add"
+                    bar.middleStr = odvTimeList.GetRunningTime()
                     bar.rightStr = "+"
                     bar.barHandle = "handleTableTimeAdd"
                 }

@@ -90,6 +90,13 @@ bool ODVTime::FastIdle()
     return false;
 }
 
+QString ODVTime::GetRunningTime()
+{
+    std::string tmpStr = "";
+    ODPTime::Instance()->GetRunningTimeStr(tmpStr);
+    return tmpStr.c_str();
+}
+
 void ODVTime::setCurList(QStringList curList)
 {
     if (m_curList == curList)
