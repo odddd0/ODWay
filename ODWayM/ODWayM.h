@@ -17,6 +17,9 @@ public:
 public:
     void GetList(const std::string &type_, ODMBaseList &list);
 
+public:
+    bool DeleteModel(const std::string &type_, const int &id_);
+
 private:
     struct Impl;
     Impl *_Impl;

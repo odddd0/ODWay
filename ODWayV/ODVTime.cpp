@@ -70,6 +70,15 @@ bool ODVTime::addTime(
     return Result;
 }
 
+bool ODVTime::delTime(const int &index_)
+{
+    if (ODPTime::Instance()->DelDurTime(index_))
+    {
+        updateList();
+        return true;
+    }
+}
+
 void ODVTime::setCurList(QStringList curList)
 {
     if (m_curList == curList)

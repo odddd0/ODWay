@@ -16,6 +16,11 @@ Rectangle {
             if (bar.barHandle == "handleTableTimeList")
             {
                 console.log("list right clicked")
+                if (odvTimeList.delTime(tableTimeListView.currentIndex))
+                {
+                    updateCurList()
+                    console.log("delete complete")
+                }
             }
         }
     }
@@ -32,18 +37,30 @@ Rectangle {
             height: 20
             color: "transparent"
             Text {
+                id: wrapperText
                 text: modelData
+            }
+            MouseArea { anchors.fill: parent; onClicked: tableTimeListView.currentIndex = index; }
+            // indent the item if it is the current item
+            states: State {
+                name: "Current"
+                when: wrapper.ListView.isCurrentItem
+                PropertyChanges {
+                    target: wrapperText
+                    font.bold: true
+                    font.underline: true
+                }
             }
         }
     }
 
     ListView {
+        id: tableTimeListView
         anchors.fill: parent
         anchors.topMargin: 65 + 5
         anchors.bottomMargin: 5
         anchors.leftMargin: 5
         anchors.rightMargin: 5
-        id: tableTimeListView
         focus: false
         model: odvTimeList.curList
         delegate: tableTimeListViewDelegate

@@ -44,6 +44,7 @@ public slots:
             const QString &kindFirst_,
             const QString &kindSecond_,
             const QString &content_);
+    bool delTime(const int &index_);
     void updateList();
     void updateClass();
     void prevDay();

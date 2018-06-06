@@ -61,3 +61,25 @@ void ODWayM::GetList(const std::string &type_, ODMBaseList &list)
         }
     });
 }
+
+bool ODWayM::DeleteModel(const std::string &type_, const int &id_)
+{
+    bool Result = false;
+    IntList tmpList;
+    tmpList.push_back(id_);
+    if (type_ == "ODMTime")
+    {
+        Result = ODDBHandle::Instance()->Delete<ODMTime>(tmpList);
+    }
+    if (Result)
+    {
+        auto pos = std::find_if(_Impl->_DBList.begin(), _Impl->_DBList.end(), [id_](ODMBasePtr &x){
+            return x->_id == id_;
+        });
+        if (pos != _Impl->_DBList.end())
+        {
+            _Impl->_DBList.erase(pos);
+        }
+    }
+    return Result;
+}

@@ -24,6 +24,11 @@ class ODPTime
     typedef std::shared_ptr<OneDay> OneDayPtr;
     struct ExpandData
     {
+        void clear()
+        {
+            _dateList.clear();
+            _dayList.clear();
+        }
         StringList _dateList;
         std::map<std::string, OneDayPtr> _dayList;
     };
@@ -32,6 +37,9 @@ public:
 
 public:
     bool AddTime(const ODMTimePtr &curPtr_);
+
+public:
+    bool DelDurTime(const int &index_);
 
 public:
     void GetCurList(StringList &list);

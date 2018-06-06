@@ -19,7 +19,7 @@ Rectangle {
 
     DigitalPicker {
         id: dp
-        theKey: "1234"
-        noEcho: true
+        theKey: "1"
+//        noEcho: true
     }
 }
