@@ -10,5 +10,6 @@
         <file>DateTimePicker.qml</file>
         <file>ClassifyPicker.qml</file>
         <file>DigitalPicker.qml</file>
+        <file>TableTimeSum.qml</file>
     </qresource>
 </RCC>

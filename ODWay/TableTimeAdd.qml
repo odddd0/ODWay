@@ -24,11 +24,11 @@ Rectangle {
                 {
                     content.text = ""
                     dateTime.dateEnable = false
-                    rootTableTime.currentIndex = 0
+                    rootTableTime.currentIndex = 1
                 }
                 else if (bar.rightStr == "Idle" && odvTimeList.FastIdle())
                 {
-                    rootTableTime.currentIndex = 0
+                    rootTableTime.currentIndex = 1
                 }
             }
         }

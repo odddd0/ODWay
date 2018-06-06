@@ -10,6 +10,15 @@ Rectangle {
         GradientStop{ position: 1; color: "#E0EF37";}
     }
 
+    Component.onCompleted: {
+        // list
+        listView.updateCurList()
+        bar.leftStr = "<"
+        bar.middleStr = odvTimeList.GetRunningTime()
+        bar.rightStr = "-"
+        bar.barHandle = "handleTableTimeList"
+    }
+
     Connections{
         target: bar
         onRightBtnClicked:{

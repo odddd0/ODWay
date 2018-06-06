@@ -35,9 +35,18 @@ Rectangle {
             focus: false
             orientation: ListView.Horizontal
             boundsBehavior: Flickable.StopAtBounds
+            currentIndex: 1
 
             onCurrentIndexChanged: {
                 if (currentIndex == 0)
+                {
+                    // add
+                    bar.leftStr = "<"
+                    bar.middleStr = "Sum"
+                    bar.rightStr = ""
+                    bar.barHandle = "handleTableTimeSum"
+                }
+                else if (currentIndex == 1)
                 {
                     // list
                     listView.updateCurList()
@@ -46,7 +55,7 @@ Rectangle {
                     bar.rightStr = "-"
                     bar.barHandle = "handleTableTimeList"
                 }
-                else if (currentIndex == 1)
+                else if (currentIndex == 2)
                 {
                     // add
                     bar.leftStr = "<"
@@ -57,6 +66,12 @@ Rectangle {
             }
 
             model: ObjectModel {
+                TableTimeSum {
+                    id: timeSum
+                    height: rootTableTime.height
+                    width: rootTableTime.width
+                }
+
                 TableTimeList {
                     id: listView
                     height: rootTableTime.height
