@@ -15,7 +15,12 @@ int main(int argc, char* argv[])
      * Init Model layer.
      */
     // get home path.
-    std::string dir = QDir::homePath().toStdString() + "/test.db";
+    std::string dir = QDir::homePath().toStdString();
+#ifdef Q_OS_IOS
+    dir += "/Documents/list.db";
+#else
+    dir += "/brick/List/list.db";
+#endif
     ODWayM::Instance(dir)->ReadDB();
 
     /**
