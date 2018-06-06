@@ -58,7 +58,7 @@ Rectangle {
         id: tableTimeListView
         anchors.fill: parent
         anchors.topMargin: 65 + 5
-        anchors.bottomMargin: 5
+        anchors.bottomMargin: 55
         anchors.leftMargin: 5
         anchors.rightMargin: 5
         focus: false
