@@ -50,9 +50,51 @@ CONFIG(debug, debug|release){
 
     macx: LIBS += -L$$PWD/../build-ODWayV-Desktop_Qt_5_11_0_clang_64bit-Debug/ -lODWayV
     macx: PRE_TARGETDEPS += $$PWD/../build-ODWayV-Desktop_Qt_5_11_0_clang_64bit-Debug/libODWayV.a
+
+    ios: LIBS += -L$$PWD/../3rd/ODBase/lib/ios-Debug/ -lODMBase
+    ios: PRE_TARGETDEPS += $$PWD/../3rd/ODBase/lib/ios-Debug/libODMBase.a
+
+    ios: LIBS += -L$$PWD/../3rd/ODBase/lib/ios-Debug/ -lODUtil
+    ios: PRE_TARGETDEPS += $$PWD/../3rd/ODBase/lib/ios-Debug/libODUtil.a
+
+    ios: LIBS += -L$$PWD/../build-ODWayM-Qt_5_11_0_for_iOS-Debug/ -lODWayM
+    ios: PRE_TARGETDEPS += $$PWD/../build-ODWayM-Qt_5_11_0_for_iOS-Debug/libODWayM.a
+
+    ios: LIBS += -L$$PWD/../build-ODWayP-Qt_5_11_0_for_iOS-Debug/ -lODWayP
+    ios: PRE_TARGETDEPS += $$PWD/../build-ODWayP-Qt_5_11_0_for_iOS-Debug/libODWayP.a
+
+    ios: LIBS += -L$$PWD/../build-ODWayV-Qt_5_11_0_for_iOS-Debug/ -lODWayV
+    ios: PRE_TARGETDEPS += $$PWD/../build-ODWayV-Qt_5_11_0_for_iOS-Debug/libODWayV.a
 } else {
     macx: LIBS += -L$$PWD/../3rd/ODBase/lib/clang64-Release/ -lODMBase
     macx: PRE_TARGETDEPS += $$PWD/../3rd/ODBase/lib/clang64-Release/libODMBase.a
+
+    macx: LIBS += -L$$PWD/../3rd/ODBase/lib/clang64-Release/ -lODUtil
+    macx: PRE_TARGETDEPS += $$PWD/../3rd/ODBase/lib/clang64-Release/libODUtil.a
+
+    macx: LIBS += -L$$PWD/../build-ODWayM-Desktop_Qt_5_11_0_clang_64bit-Release/ -lODWayM
+    macx: PRE_TARGETDEPS += $$PWD/../build-ODWayM-Desktop_Qt_5_11_0_clang_64bit-Release/libODWayM.a
+
+    macx: LIBS += -L$$PWD/../build-ODWayP-Desktop_Qt_5_11_0_clang_64bit-Release/ -lODWayP
+    macx: PRE_TARGETDEPS += $$PWD/../build-ODWayP-Desktop_Qt_5_11_0_clang_64bit-Release/libODWayP.a
+
+    macx: LIBS += -L$$PWD/../build-ODWayV-Desktop_Qt_5_11_0_clang_64bit-Release/ -lODWayV
+    macx: PRE_TARGETDEPS += $$PWD/../build-ODWayV-Desktop_Qt_5_11_0_clang_64bit-Release/libODWayV.a
+
+    ios: LIBS += -L$$PWD/../3rd/ODBase/lib/ios-Release/ -lODMBase
+    ios: PRE_TARGETDEPS += $$PWD/../3rd/ODBase/lib/ios-Release/libODMBase.a
+
+    ios: LIBS += -L$$PWD/../3rd/ODBase/lib/ios-Release/ -lODUtil
+    ios: PRE_TARGETDEPS += $$PWD/../3rd/ODBase/lib/ios-Release/libODUtil.a
+
+    ios: LIBS += -L$$PWD/../build-ODWayM-Qt_5_11_0_for_iOS-Release/ -lODWayM
+    ios: PRE_TARGETDEPS += $$PWD/../build-ODWayM-Qt_5_11_0_for_iOS-Release/libODWayM.a
+
+    ios: LIBS += -L$$PWD/../build-ODWayP-Qt_5_11_0_for_iOS-Release/ -lODWayP
+    ios: PRE_TARGETDEPS += $$PWD/../build-ODWayP-Qt_5_11_0_for_iOS-Release/libODWayP.a
+
+    ios: LIBS += -L$$PWD/../build-ODWayV-Qt_5_11_0_for_iOS-Release/ -lODWayV
+    ios: PRE_TARGETDEPS += $$PWD/../build-ODWayV-Qt_5_11_0_for_iOS-Release/libODWayV.a
 }
 
 

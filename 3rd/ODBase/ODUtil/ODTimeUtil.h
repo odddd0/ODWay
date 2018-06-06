@@ -68,7 +68,7 @@ public:
      *      %S:  Second
      * @param str_
      */
-    static std::string Duration2String(const int &timestamp_, const std::string &format_);
+    static std::string Duration2String(const int &timestamp_, const std::string &format_ = "");
 
     static bool IsSameDay(const int &timstamp1_, const int &timstamp2_);
 };
