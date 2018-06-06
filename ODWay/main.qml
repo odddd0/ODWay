@@ -1,7 +1,7 @@
 import QtQuick 2.9
 
 Rectangle {
-    height: 640
+    height: 680
     width: 480
 
     LauncherList {

@@ -192,7 +192,7 @@ void ODPTime::GetCurList(StringList &list)
         std::for_each(_Impl->_expandData._dayList[_Impl->_curDate]->_tipList.begin(), _Impl->_expandData._dayList[_Impl->_curDate]->_tipList.end(), [&](OneTipPtr &x){
             tmpStr = ODTimeUtil::Timestamp2String(x->_time - x->_durationSecond, "%H:%M") + "-";
             tmpStr += ODTimeUtil::Timestamp2String(x->_time, "%H:%M") + "(";
-            tmpStr += ODTimeUtil::Duration2String(x->_durationSecond, "%0Hh%Mm") + "): ";
+            tmpStr += ODTimeUtil::Duration2String(x->_durationSecond) + "): ";
             tmpStr += x->_classify + "_" + x->_kindFirst + "_" + x->_kindSecond;
             list.push_back(tmpStr);
         });
