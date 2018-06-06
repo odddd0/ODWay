@@ -11,8 +11,15 @@ Rectangle {
     LauncherList {
         id: ll
         anchors.fill: parent
+        visible: dp.isOpen
         Component.onCompleted: {
             addExample("Time table", "Time List Show",  Qt.resolvedUrl("TableTime.qml"));
         }
+    }
+
+    DigitalPicker {
+        id: dp
+        theKey: "1234"
+        noEcho: true
     }
 }
