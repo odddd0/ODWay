@@ -6,17 +6,11 @@ import ODVTime 1.0
 
 Rectangle {
     id: mainRect
-    width: 1000
-    height: 700
-
-    property alias currentIndex: rootTableTime.currentIndex
 
     ColumnLayout {
         anchors.fill: parent
 
-        ODVTimeList {
-            id: odvTimeList
-        }
+        ODVTimeList { id: odvTimeList }
 
         ListView {
             id: rootTableTime
@@ -30,21 +24,36 @@ Rectangle {
             boundsBehavior: Flickable.StopAtBounds
 
             onCurrentIndexChanged: {
-                listView.updateCurList()
-                console.log("changed")
+                if (currentIndex == 0)
+                {
+                    // list
+                    listView.updateCurList()
+                    bar.leftStr = "<"
+                    bar.middleStr = "List"
+                    bar.rightStr = "-"
+                    bar.barHandle = "handleTableTimeList"
+                }
+                else if (currentIndex == 1)
+                {
+                    // add
+                    bar.leftStr = "<"
+                    bar.middleStr = "Add"
+                    bar.rightStr = "+"
+                    bar.barHandle = "handleTableTimeAdd"
+                }
             }
 
             model: ObjectModel {
                 TableTimeList {
                     id: listView
-                    width: root.width
-                    height: root.height
+                    height: rootTableTime.height
+                    width: rootTableTime.width
                 }
 
                 TableTimeAdd {
                     id: addView
-                    width: root.width
-                    height: root.height
+                    height: rootTableTime.height
+                    width: rootTableTime.width
                 }
             }
         }

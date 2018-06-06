@@ -34,6 +34,7 @@ int main(int argc, char* argv[])
     app.setOrganizationDomain("qt-project.org");
     app.setApplicationName(QFileInfo(app.applicationFilePath()).baseName());
     QQuickView view;
+    view.setFlags(Qt::MaximizeUsingFullscreenGeometryHint);
     if (qgetenv("QT_QUICK_CORE_PROFILE").toInt()) {
         QSurfaceFormat f = view.format();
         f.setProfile(QSurfaceFormat::CoreProfile);

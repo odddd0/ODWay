@@ -1,17 +1,27 @@
 import QtQuick 2.9
 
 Rectangle {
-    height: 640
-    width: 480
-
     property bool init_
+
+    anchors.topMargin: 5
+    anchors.bottomMargin: 5
+    anchors.leftMargin: 5
+    anchors.rightMargin: 5
+
+    gradient: Gradient {
+        GradientStop{ position: 0; color: "#A1EF54";}
+        GradientStop{ position: 1; color: "#89EF37";}
+    }
 
     Connections{
         target: bar
         onRightBtnClicked:{
-            if (odvTimeList.addTime(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second,
+            if (bar.barHandle == "handleTableTimeAdd" &&
+                    odvTimeList.addTime(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second,
                                     dateTime.customTime, classify.classText, kindFirst.classText, kindSecond.classText, content.text))
             {
+                content.text = ""
+                dateTime.dateEnable = false
                 rootTableTime.currentIndex = 0
             }
         }
@@ -19,6 +29,10 @@ Rectangle {
 
     Column {
         anchors.fill: parent
+        anchors.topMargin: 65 + 5
+        anchors.bottomMargin: 5
+        anchors.leftMargin: 5
+        anchors.rightMargin: 5
         spacing: 10
         Component.onCompleted: {
             console.log("1")

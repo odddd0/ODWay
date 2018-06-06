@@ -1,36 +1,52 @@
 import QtQuick 2.9
 
 Rectangle {
-    height: 640
-    width: 480
+    anchors.topMargin: 5
+    anchors.bottomMargin: 5
+    anchors.leftMargin: 5
+    anchors.rightMargin: 5
+    gradient: Gradient {
+        GradientStop{ position: 0; color: "#EBEF70";}
+        GradientStop{ position: 1; color: "#E0EF37";}
+    }
 
-    Component.onCompleted: {
-        odvTimeList.updateList()
+    Connections{
+        target: bar
+        onRightBtnClicked:{
+            if (bar.barHandle == "handleTableTimeList")
+            {
+                console.log("list right clicked")
+            }
+        }
     }
 
     function updateCurList() {
-        console.log("update")
         tableTimeListView.model = odvTimeList.curList
     }
 
-    ListView {
-        anchors.fill: parent
-        id: tableTimeListView
-        focus: false
-        model: odvTimeList.curList
-        delegate: tableTimeListViewDelegate
-    }
     Component {
         id: tableTimeListViewDelegate
         Rectangle {
             id: wrapper
             width: parent.width
             height: 20
+            color: "transparent"
             Text {
-                id: contactInfo
                 text: modelData
             }
         }
+    }
+
+    ListView {
+        anchors.fill: parent
+        anchors.topMargin: 65 + 5
+        anchors.bottomMargin: 5
+        anchors.leftMargin: 5
+        anchors.rightMargin: 5
+        id: tableTimeListView
+        focus: false
+        model: odvTimeList.curList
+        delegate: tableTimeListViewDelegate
     }
 
     Row {

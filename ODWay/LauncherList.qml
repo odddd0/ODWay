@@ -52,11 +52,11 @@ import QtQuick 2.0
 
 Rectangle {
     property int activePageCount: 0
+    color: "transparent"
 
     //model is a list of {"name":"somename", "url":"file:///some/url/mainfile.qml"}
     //function used to add to model A) to enforce scheme B) to allow Qt.resolveUrl in url assignments
 
-    color: "#eee"
     function addExample(name, desc, url) {
         myModel.append({"name":name, "description":desc, "url":url})
     }
@@ -66,18 +66,21 @@ Rectangle {
 
     // The container rectangle here is used to give a nice "feel" when
     // transitioning into an example.
+
+    // main window
     Rectangle {
         anchors.fill: parent
-        color: "black"
+        color: "transparent"
 
         ListView {
             id: launcherList
+            anchors.fill: parent
+            anchors.topMargin: 30
             clip: true
             delegate: SimpleLauncherDelegate{
                 onClicked: showExample(url)
             }
             model: ListModel {id:myModel}
-            anchors.fill: parent
             enabled: opacity == 1.0
         }
     }
@@ -94,9 +97,8 @@ Rectangle {
             clip: true
             property url exampleUrl
             width: parent.width
-            height: parent.height - bar.height
-            anchors.bottom: parent.bottom
-            color: "white"
+            height: parent.height
+//            color: "white"
             MouseArea{
                 //Eats mouse events
                 anchors.fill: parent
@@ -127,21 +129,21 @@ Rectangle {
                     property: "opacity"
                     from: 1.0
                     to: 0.0
-                    duration: 500
+                    duration: 200
                 }
                 NumberAnimation {
                     target: launcherList
                     property: "scale"
                     from: 1.0
                     to: 0.0
-                    duration: 500
+                    duration: 200
                 }
                 NumberAnimation {
                     target: page
                     property: "x"
                     from: -page.width
                     to: 0
-                    duration: 300
+                    duration: 100
                 }
             }
             SequentialAnimation {
@@ -157,21 +159,21 @@ Rectangle {
                         property: "opacity"
                         from: 0.0
                         to: 1.0
-                        duration: 300
+                        duration: 100
                     }
                     NumberAnimation {
                         target: launcherList
                         property: "scale"
                         from: 0.0
                         to: 1.0
-                        duration: 300
+                        duration: 100
                     }
                     NumberAnimation {
                         target: page
                         property: "x"
                         from: 0
                         to: -page.width
-                        duration: 300
+                        duration: 100
                     }
                 }
 
@@ -184,7 +186,9 @@ Rectangle {
             }
         }
     }
+
     Bar {
         id:bar
+        anchors.top: parent.top
     }
 }

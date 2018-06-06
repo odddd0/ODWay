@@ -1,105 +1,132 @@
 import QtQuick 2.0
+//import QtGraphicalEffects 1.0
 
 Rectangle {
-    id: bar
-    visible: height > 0
-    anchors.top: parent.top
-    width: parent.width
-    height: activePageCount > 0 ? 40 : 0
+    property string barHandle
+    property string leftStr
+    property string middleStr
+    property string rightStr
 
-    signal rightBtnClicked
+    id: bar
+    height: activePageCount > 0 ? 65 : 0
+    width: parent.width
+    visible: height > 0
 
     Behavior on height {
         NumberAnimation {
-            duration: 300
+            duration: 100
         }
-    }
-
-    Rectangle {
-        height: 1
-        color: "#ccc"
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-    }
-
-    Rectangle {
-        height: 1
-        color: "#fff"
-        anchors.top: parent.top
-        anchors.topMargin: 1
-        anchors.left: parent.left
-        anchors.right: parent.right
     }
 
     gradient: Gradient {
-        GradientStop { position: 0 ; color: "#eee" }
-        GradientStop { position: 1 ; color: "#ccc" }
+        GradientStop { position: 0 ; color: "#FFFFFFFF" }
+        GradientStop { position: 1 ; color: "#000000FF" }
     }
 
-    Image {
-        id: back
-        source: "images/back.png"
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.verticalCenterOffset: 2
-        anchors.left: parent.left
-        anchors.leftMargin: 16
+    signal rightBtnClicked
 
-        MouseArea {
-            hoverEnabled: true
-            anchors.centerIn: parent
-            width: 38
-            height: 31
-            anchors.verticalCenterOffset: -1
-            enabled: activePageCount > 0
-            onClicked: {
-                pageContainer.children[pageContainer.children.length - 1].exit()
+    Rectangle {
+        height: 1
+        color: "#AAA"
+        anchors.bottom: bar.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+    }
+
+    Rectangle {
+        height: parent.height - 30
+        width: parent.width
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
+        color: "transparent"
+        Rectangle {
+            id: leftRect
+            height: parent.height
+            width: 80
+            anchors.left: parent.left
+            color: "transparent"
+
+            Text {
+                anchors.centerIn: parent
+                text: leftStr
+                font.pixelSize: 22
             }
-            Rectangle {
+
+            MouseArea {
+                hoverEnabled: true
                 anchors.fill: parent
-                opacity: parent.pressed ? 1 : 0
-                Behavior on opacity { NumberAnimation{ duration: 100 }}
-                gradient: Gradient {
-                    GradientStop { position: 0 ; color: "#22000000" }
-                    GradientStop { position: 0.2 ; color: "#11000000" }
+                width: 38
+                height: 31
+                anchors.verticalCenterOffset: -1
+                enabled: leftStr != ""
+                onClicked: {
+                    pageContainer.children[pageContainer.children.length - 1].exit()
                 }
-                border.color: "darkgray"
-                antialiasing: true
-                radius: 4
+                Rectangle {
+                    anchors.fill: parent
+                    opacity: parent.pressed ? 1 : 0
+                    Behavior on opacity { NumberAnimation{ duration: 100 }}
+                    gradient: Gradient {
+                        GradientStop { position: 0 ; color: "#22000000" }
+                        GradientStop { position: 0.2 ; color: "#11000000" }
+                    }
+                    border.color: "darkgray"
+                    antialiasing: true
+                    radius: 4
+                }
             }
         }
-    }
+        Rectangle {
+            id: middleRect
+            height: parent.height
+            anchors.left: leftRect.right
+            anchors.right: rightRect.left
+            color: "transparent"
 
-    Image {
-        id: rightBtn
-        source: "images/back.png"
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.verticalCenterOffset: 2
-        anchors.right: parent.right
-        anchors.rightMargin: 16
-
-        MouseArea {
-            hoverEnabled: true
-            anchors.centerIn: parent
-            width: 38
-            height: 31
-            anchors.verticalCenterOffset: -1
-            enabled: activePageCount > 0
-            onClicked: {
-                rightBtnClicked()
-                console.log("Bar Right Btn clicked")
+            Text {
+                id: middleLable
+                anchors.centerIn: parent
+                text: middleStr
+                font.pixelSize: 30
             }
-            Rectangle {
+        }
+        Rectangle {
+            id: rightRect
+            height: parent.height
+            width: 80
+            anchors.right: parent.right
+            color: "transparent"
+
+            Text {
+                anchors.centerIn: parent
+                text: rightStr
+                font.pixelSize: 22
+                color: "red"
+            }
+
+            MouseArea {
+                hoverEnabled: true
                 anchors.fill: parent
-                opacity: parent.pressed ? 1 : 0
-                Behavior on opacity { NumberAnimation{ duration: 100 }}
-                gradient: Gradient {
-                    GradientStop { position: 0 ; color: "#22000000" }
-                    GradientStop { position: 0.2 ; color: "#11000000" }
+                width: 38
+                height: 31
+                anchors.verticalCenterOffset: -1
+                enabled: rightStr != ""
+                onClicked: {
+                    rightBtnClicked()
+                    console.log("Bar Right Btn clicked")
                 }
-                border.color: "darkgray"
-                antialiasing: true
-                radius: 4
+                Rectangle {
+                    anchors.fill: parent
+                    opacity: parent.pressed ? 1 : 0
+                    Behavior on opacity { NumberAnimation{ duration: 100 }}
+                    gradient: Gradient {
+                        GradientStop { position: 0 ; color: "#22000000" }
+                        GradientStop { position: 0.2 ; color: "#11000000" }
+                    }
+                    border.color: "darkgray"
+                    antialiasing: true
+                    radius: 4
+                }
             }
         }
     }
