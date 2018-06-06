@@ -125,17 +125,14 @@ struct ODPTime::Impl
                 }
 
                 _curDate = ODTimeUtil::Timestamp2String(tmpPtr->_time, "%y-%m-%d");
-                if (ODTimeUtil::IsSameDay(tmpPtr->_time, lastTipPtr->_time))
+                if (!ODTimeUtil::IsSameDay(tmpPtr->_time, lastTipPtr->_time))
                 {
-                    // same Day
-                    lastDayPtr->_tipList.push_back(tmpPtr);
-                }
-                else
-                {
+                    // new Day
                     lastDayPtr = std::make_shared<OneDay>();
                     _expandData._dateList.push_back(_curDate);
                     _expandData._dayList[_curDate] = lastDayPtr;
                 }
+                lastDayPtr->_tipList.push_back(tmpPtr);
             }
             else
             {
