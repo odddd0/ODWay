@@ -6,6 +6,7 @@
 class ODVTime : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString runningTimeStr READ runningTimeStr WRITE setRunningTimeStr NOTIFY runningTimeStrChanged)
     Q_PROPERTY(QStringList curList READ curList WRITE setCurList NOTIFY curListChanged)
     Q_PROPERTY(QStringList classifyList READ classifyList WRITE setClassifyList NOTIFY classifyListChanged)
     Q_PROPERTY(QStringList kindFirstList READ kindFirstList WRITE setKindFirstList NOTIFY kindFirstListChanged)
@@ -18,18 +19,21 @@ public:
     QStringList classifyList() const;
     QStringList kindFirstList() const;
     QStringList kindSecondList() const;
+    QString runningTimeStr();
 
 signals:
     void curListChanged(QStringList curList);
     void classifyListChanged(QStringList classifyList);
     void kindFirstListChanged(QStringList kindFirstList);
     void kindSecondListChanged(QStringList kindSecondList);
+    void runningTimeStrChanged(QString runningTimeStr);
 
 public slots:
     void setCurList(QStringList curList);
     void setClassifyList(QStringList classifyList);
     void setKindFirstList(QStringList kindFirstList);
     void setKindSecondList(QStringList kindSecondList);
+    void setRunningTimeStr(QString runningTimeStr);
 
 public slots:
     bool addTime(
@@ -45,14 +49,17 @@ public slots:
             const QString &kindSecond_,
             const QString &content_);
     bool delTime(const int &index_);
-    bool FastIdle();
-    QString GetRunningTime();
-    void updateList();
-    void updateClass();
+
+public slots:
+    bool fastIdle();
     void prevDay();
     void firstDay();
     void nextDay();
     void lastDay();
+
+public slots:
+    void updateList();
+    void updateClass();
     void updateKindFirst(QString classify_);
     void updateKindSecond(QString classify_, QString kind_);
 
@@ -61,6 +68,7 @@ private:
     QStringList m_classifyList;
     QStringList m_kindFirstList;
     QStringList m_kindSecondList;
+    QString m_runningTimeStr;
 };
 
 #endif // ODVTIME_H

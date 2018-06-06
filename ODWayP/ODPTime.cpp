@@ -56,6 +56,7 @@ struct ODPTime::Impl
 
         OneTipPtr oneTipPtr = NULL;
         OneDayPtr oneDayPtr = NULL;
+        DaySumPtr oneSumPtr = NULL;
         ODMBaseList tmpList;
         ODMTimePtr cur;
         ODWayM::Instance()->GetList("ODMTime", tmpList);
@@ -89,13 +90,17 @@ struct ODPTime::Impl
             {
                 // new day
                 oneDayPtr = std::make_shared<OneDay>();
+                oneSumPtr = std::make_shared<DaySum>();
                 _curDate = ODTimeUtil::Timestamp2String(oneTipPtr->_time, "%y-%m-%d");
                 _expandData._dateList.push_back(_curDate);
                 _expandData._dayList[_curDate] = oneDayPtr;
+                _expandData._sumList[_curDate] = oneSumPtr;
             }
             oneDayPtr->_tipList.push_back(oneTipPtr);
 
             _lastTip = oneTipPtr;
+
+            oneSumPtr->AddTip(oneTipPtr->_classify, oneTipPtr->_kindFirst, oneTipPtr->_kindSecond, oneTipPtr->_time);
         });
     }
 
@@ -239,6 +244,28 @@ void ODPTime::GetCurList(StringList &list)
             list.push_back(tmpStr);
             _Impl->_lastCurList.push_back(x->_time);
         });
+    }
+}
+
+void ODPTime::GetCurSumList(StringList &list, const std::string &token_)
+{
+    if (!_Impl->_expandData._sumList.empty())
+    {
+        DaySumPtr oneSum = _Impl->_expandData._sumList[_Impl->_curDate];
+        std::string tmpStr = "";
+        if (oneSum && token_.empty())
+        {
+            list.clear();
+//            std::for_each(oneSum->_classifySum.begin(), oneSum->_classifySum.end(), [&list](int &x){
+//                list.push_back(std::to_string(x));
+//            });
+            for (auto pos = oneSum->_classifySum.begin(); pos != oneSum->_classifySum.end(); ++pos)
+            {
+                tmpStr = pos->first;
+                tmpStr += std::to_string(pos->second);
+                list.push_back(tmpStr);
+            }
+        }
     }
 }
 

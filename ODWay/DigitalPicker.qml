@@ -10,6 +10,10 @@ Rectangle {
     width: parent.width
     color: "transparent"
 
+    Component.onCompleted: {
+        isOpen = theKey == ""
+    }
+
     function addNum(num) {
         numList += num
         if (numList == theKey)

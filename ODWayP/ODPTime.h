@@ -22,15 +22,37 @@ class ODPTime
         std::vector<OneTipPtr> _tipList;
     };
     typedef std::shared_ptr<OneDay> OneDayPtr;
+
+    struct DaySum
+    {
+        void AddTip(const std::string &classify_, const std::string &kindFirst_, const std::string &kindSecond_, const int &second_)
+        {
+            _kindSecondSum[classify_][kindFirst_][kindSecond_] += second_;
+            _kindSecondSum[classify_][kindFirst_]["__SUM__"] += second_;
+            _kindFirstSum[classify_][kindFirst_] += second_;
+            _kindFirstSum[classify_]["__SUM__"] += second_;
+            _classifySum[classify_] += second_;
+            _classifySum["__SUM__"] += second_;
+        }
+
+        // __SUM__ is sum.
+        std::map<std::string, int> _classifySum;
+        std::map<std::string, std::map<std::string, int>> _kindFirstSum;
+        std::map<std::string, std::map<std::string, std::map<std::string, int>>> _kindSecondSum;
+    };
+    typedef std::shared_ptr<DaySum> DaySumPtr;
+
     struct ExpandData
     {
         void clear()
         {
             _dateList.clear();
             _dayList.clear();
+            _sumList.clear();
         }
         StringList _dateList;
         std::map<std::string, OneDayPtr> _dayList;
+        std::map<std::string, DaySumPtr> _sumList;
     };
 public:
     static ODPTime * Instance();
@@ -44,6 +66,7 @@ public:
 
 public:
     void GetCurList(StringList &list);
+    void GetCurSumList(StringList &list, const std::string &token_ = "");
     void GetRunningTimeStr(std::string &str_);
 
 public:

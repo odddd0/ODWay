@@ -29,6 +29,14 @@ QStringList ODVTime::kindSecondList() const
     return m_kindSecondList;
 }
 
+QString ODVTime::runningTimeStr()
+{
+    std::string tmpStr = "";
+    ODPTime::Instance()->GetRunningTimeStr(tmpStr);
+    m_runningTimeStr = tmpStr.c_str();
+    return m_runningTimeStr;
+}
+
 bool ODVTime::addTime(
         const int &year_,
         const int &month_,
@@ -79,7 +87,7 @@ bool ODVTime::delTime(const int &index_)
     }
 }
 
-bool ODVTime::FastIdle()
+bool ODVTime::fastIdle()
 {
     if (ODPTime::Instance()->FastIdle())
     {
@@ -88,13 +96,6 @@ bool ODVTime::FastIdle()
         return true;
     }
     return false;
-}
-
-QString ODVTime::GetRunningTime()
-{
-    std::string tmpStr = "";
-    ODPTime::Instance()->GetRunningTimeStr(tmpStr);
-    return tmpStr.c_str();
 }
 
 void ODVTime::setCurList(QStringList curList)
@@ -200,4 +201,13 @@ void ODVTime::setKindSecondList(QStringList kindSecondList)
 
     m_kindSecondList = kindSecondList;
     emit kindSecondListChanged(m_kindSecondList);
+}
+
+void ODVTime::setRunningTimeStr(QString runningTimeStr)
+{
+    if (m_runningTimeStr == runningTimeStr)
+        return;
+
+    m_runningTimeStr = runningTimeStr;
+    emit runningTimeStrChanged(m_runningTimeStr);
 }

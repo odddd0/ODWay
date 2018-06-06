@@ -14,8 +14,8 @@ Rectangle {
         // list
         listView.updateCurList()
         bar.leftStr = "<"
-        bar.middleStr = odvTimeList.GetRunningTime()
-        bar.rightStr = "-"
+        bar.middleStr = odvTimeList.runningTimeStr
+        bar.rightStr = ""
         bar.barHandle = "handleTableTimeList"
     }
 
@@ -28,6 +28,7 @@ Rectangle {
                 if (odvTimeList.delTime(tableTimeListView.currentIndex))
                 {
                     updateCurList()
+                    bar.rightStr = ""
                     console.log("delete complete")
                 }
             }
@@ -49,7 +50,23 @@ Rectangle {
                 id: wrapperText
                 text: modelData
             }
-            MouseArea { anchors.fill: parent; onClicked: tableTimeListView.currentIndex = index; }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    tableTimeListView.currentIndex = index
+                    if (wrapperText.text.charAt(2) == ':' &&
+                            wrapperText.text.charAt(5) == '-' &&
+                            wrapperText.text.charAt(8) == ':' &&
+                            wrapperText.text.charAt(11) == '(' )
+                    {
+                        bar.rightStr = "-"
+                    }
+                    else
+                    {
+                        bar.rightStr = ""
+                    }
+                }
+            }
             // indent the item if it is the current item
             states: State {
                 name: "Current"

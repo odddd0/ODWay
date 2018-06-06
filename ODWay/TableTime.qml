@@ -14,12 +14,12 @@ Rectangle {
 
         Item {
             Timer {
-                interval: 1000; running: true; repeat: true
+                interval: 500; running: true; repeat: true
                 onTriggered: {
                     if (bar.barHandle == "handleTableTimeAdd" ||
                             bar.barHandle == "handleTableTimeList")
                     {
-                        bar.middleStr = odvTimeList.GetRunningTime()
+                        bar.middleStr = odvTimeList.runningTimeStr
                     }
                 }
             }
@@ -51,15 +51,15 @@ Rectangle {
                     // list
                     listView.updateCurList()
                     bar.leftStr = "<"
-                    bar.middleStr = odvTimeList.GetRunningTime()
-                    bar.rightStr = "-"
+                    bar.middleStr = odvTimeList.runningTimeStr
+                    bar.rightStr = ""
                     bar.barHandle = "handleTableTimeList"
                 }
                 else if (currentIndex == 2)
                 {
                     // add
                     bar.leftStr = "<"
-                    bar.middleStr = odvTimeList.GetRunningTime()
+                    bar.middleStr = odvTimeList.runningTimeStr
                     bar.rightStr = "+"
                     bar.barHandle = "handleTableTimeAdd"
                 }

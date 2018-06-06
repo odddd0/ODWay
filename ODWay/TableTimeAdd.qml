@@ -26,7 +26,7 @@ Rectangle {
                     dateTime.dateEnable = false
                     rootTableTime.currentIndex = 1
                 }
-                else if (bar.rightStr == "Idle" && odvTimeList.FastIdle())
+                else if (bar.rightStr == "Idle" && odvTimeList.fastIdle())
                 {
                     rootTableTime.currentIndex = 1
                 }
