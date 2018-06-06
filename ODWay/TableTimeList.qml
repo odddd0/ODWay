@@ -92,6 +92,11 @@ Rectangle {
                     odvTimeList.updateList()
                     tableTimeListView.model = odvTimeList.curList
                 }
+                onPressAndHold: {
+                    odvTimeList.firstDay()
+                    odvTimeList.updateList()
+                    tableTimeListView.model = odvTimeList.curList
+                }
             }
         }
         Rectangle {
@@ -104,6 +109,11 @@ Rectangle {
                 onClicked: {
                     console.log("clicked table time list right")
                     odvTimeList.nextDay()
+                    odvTimeList.updateList()
+                    tableTimeListView.model = odvTimeList.curList
+                }
+                onPressAndHold: {
+                    odvTimeList.lastDay()
                     odvTimeList.updateList()
                     tableTimeListView.model = odvTimeList.curList
                 }

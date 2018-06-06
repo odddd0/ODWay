@@ -264,6 +264,14 @@ void ODPTime::PrevCur()
     }
 }
 
+void ODPTime::FirstCur()
+{
+    if (!_Impl->_expandData._dateList.empty())
+    {
+        _Impl->_curDate = _Impl->_expandData._dateList[0];
+    }
+}
+
 void ODPTime::NextCur()
 {
     for (int i = 0; i < _Impl->_expandData._dateList.size(); ++i)
@@ -273,6 +281,14 @@ void ODPTime::NextCur()
             _Impl->_curDate = _Impl->_expandData._dateList[i + 1];
             break;
         }
+    }
+}
+
+void ODPTime::LastCur()
+{
+    if (!_Impl->_expandData._dateList.empty())
+    {
+        _Impl->_curDate = _Impl->_expandData._dateList[_Impl->_expandData._dateList.size() - 1];
     }
 }
 

@@ -50,7 +50,9 @@ public slots:
     void updateList();
     void updateClass();
     void prevDay();
+    void firstDay();
     void nextDay();
+    void lastDay();
     void updateKindFirst(QString classify_);
     void updateKindSecond(QString classify_, QString kind_);
 

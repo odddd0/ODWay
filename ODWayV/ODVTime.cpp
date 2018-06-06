@@ -140,9 +140,19 @@ void ODVTime::prevDay()
     ODPTime::Instance()->PrevCur();
 }
 
+void ODVTime::firstDay()
+{
+    ODPTime::Instance()->FirstCur();
+}
+
 void ODVTime::nextDay()
 {
     ODPTime::Instance()->NextCur();
+}
+
+void ODVTime::lastDay()
+{
+    ODPTime::Instance()->LastCur();
 }
 
 void ODVTime::updateKindFirst(QString classify_)

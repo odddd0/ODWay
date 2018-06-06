@@ -48,7 +48,9 @@ public:
 
 public:
     void PrevCur();
+    void FirstCur();
     void NextCur();
+    void LastCur();
 
 public:
     void GetClassifyList(StringList &list);
