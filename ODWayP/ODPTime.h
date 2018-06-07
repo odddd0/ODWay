@@ -25,15 +25,14 @@ class ODPTime
 
     struct DaySum
     {
-        void AddTip(const std::string &classify_, const std::string &kindFirst_, const std::string &kindSecond_, const int &second_)
-        {
-            _kindSecondSum[classify_][kindFirst_][kindSecond_] += second_;
-            _kindSecondSum[classify_][kindFirst_]["__SUM__"] += second_;
-            _kindFirstSum[classify_][kindFirst_] += second_;
-            _kindFirstSum[classify_]["__SUM__"] += second_;
-            _classifySum[classify_] += second_;
-            _classifySum["__SUM__"] += second_;
-        }
+        void AddTip(const std::string &classify_,
+                    const std::string &kindFirst_,
+                    const std::string &kindSecond_,
+                    const int &second_);
+        bool ToString(StringList &strList_);
+        bool ToString(const std::string &classify_, StringList &strList_);
+        bool ToString(const std::string &classify_, const std::string &kindFirst_, StringList &strList_);
+        bool ToString(const std::string &classify_, const std::string &kindFirst_, const std::string &kindSecond_, StringList &strList_);
 
         // __SUM__ is sum.
         std::map<std::string, int> _classifySum;
@@ -44,12 +43,8 @@ class ODPTime
 
     struct ExpandData
     {
-        void clear()
-        {
-            _dateList.clear();
-            _dayList.clear();
-            _sumList.clear();
-        }
+        void clear();
+
         StringList _dateList;
         std::map<std::string, OneDayPtr> _dayList;
         std::map<std::string, DaySumPtr> _sumList;
@@ -66,7 +61,11 @@ public:
 
 public:
     void GetCurList(StringList &list);
-    void GetCurSumList(StringList &list, const std::string &token_ = "");
+    void GetCurSumList(
+            std::vector<StringList> &classifyList_,
+            std::vector<std::vector<StringList>> &kindFirstList_,
+            std::vector<std::vector<std::vector<StringList>>> &kindSecondList_);
+    std::string GetCurSum();
     void GetRunningTimeStr(std::string &str_);
 
 public:

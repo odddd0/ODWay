@@ -23,11 +23,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         ODWayV.cpp \
-    ODVTime.cpp
+    ODVTime.cpp \
+    TreeModel.cpp \
+    TreeItem.cpp
 
 HEADERS += \
         ODWayV.h \
-    ODVTime.h
+    ODVTime.h \
+    TreeModel.h \
+    TreeItem.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

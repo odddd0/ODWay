@@ -107,12 +107,12 @@ Rectangle {
                     console.log("clicked table time list left")
                     odvTimeList.prevDay()
                     odvTimeList.updateList()
-                    tableTimeListView.model = odvTimeList.curList
+                    updateCurList()
                 }
                 onPressAndHold: {
                     odvTimeList.firstDay()
                     odvTimeList.updateList()
-                    tableTimeListView.model = odvTimeList.curList
+                    updateCurList()
                 }
             }
         }
@@ -127,12 +127,12 @@ Rectangle {
                     console.log("clicked table time list right")
                     odvTimeList.nextDay()
                     odvTimeList.updateList()
-                    tableTimeListView.model = odvTimeList.curList
+                    updateCurList()
                 }
                 onPressAndHold: {
                     odvTimeList.lastDay()
                     odvTimeList.updateList()
-                    tableTimeListView.model = odvTimeList.curList
+                    updateCurList()
                 }
             }
         }

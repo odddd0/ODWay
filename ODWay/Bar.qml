@@ -6,6 +6,7 @@ Rectangle {
     property string leftStr
     property string middleStr
     property string rightStr
+    property string rightColor: "red"
 
     id: bar
     height: activePageCount > 0 ? 65 : 0
@@ -49,6 +50,7 @@ Rectangle {
             Text {
                 anchors.centerIn: parent
                 text: leftStr
+                font.bold: true
                 font.pixelSize: 22
             }
 
@@ -101,7 +103,8 @@ Rectangle {
                 anchors.centerIn: parent
                 text: rightStr
                 font.pixelSize: 22
-                color: "red"
+                font.bold: true
+                color: rightColor
             }
 
             MouseArea {
