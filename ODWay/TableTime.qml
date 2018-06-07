@@ -11,7 +11,6 @@ Rectangle {
         anchors.fill: parent
 
         ODVTimeList { id: odvTimeList }
-        ODTreeModel { id: odvTimeSumModel }
 
         Item {
             Timer {
@@ -42,12 +41,11 @@ Rectangle {
                 if (currentIndex == 0)
                 {
                     // add
+                    timeSum.updateSum()
                     bar.leftStr = "<"
-                    bar.middleStr = odvTimeSumModel.daySum
                     bar.rightStr = ">"
                     bar.rightColor = "black"
                     bar.barHandle = "handleTableTimeSum"
-//                    timeSum.updateSum()
                 }
                 else if (currentIndex == 1)
                 {

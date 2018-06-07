@@ -12,7 +12,7 @@ Rectangle {
 
     Component.onCompleted: {
         // list
-        listView.updateCurList()
+        updateCurList()
         bar.leftStr = "<"
         bar.middleStr = odvTimeList.runningTimeStr
         bar.rightStr = ""
@@ -36,6 +36,7 @@ Rectangle {
     }
 
     function updateCurList() {
+        odvTimeList.updateList()
         tableTimeListView.model = odvTimeList.curList
     }
 
@@ -106,13 +107,23 @@ Rectangle {
                 onClicked: {
                     console.log("clicked table time list left")
                     odvTimeList.prevDay()
-                    odvTimeList.updateList()
                     updateCurList()
                 }
                 onPressAndHold: {
                     odvTimeList.firstDay()
-                    odvTimeList.updateList()
                     updateCurList()
+                }
+                Rectangle {
+                    anchors.fill: parent
+                    opacity: parent.pressed ? 1 : 0
+                    Behavior on opacity { NumberAnimation{ duration: 100 }}
+                    gradient: Gradient {
+                        GradientStop { position: 0 ; color: "#22000000" }
+                        GradientStop { position: 0.2 ; color: "#11000000" }
+                    }
+                    border.color: "darkgray"
+                    antialiasing: true
+                    radius: 4
                 }
             }
         }
@@ -126,13 +137,23 @@ Rectangle {
                 onClicked: {
                     console.log("clicked table time list right")
                     odvTimeList.nextDay()
-                    odvTimeList.updateList()
                     updateCurList()
                 }
                 onPressAndHold: {
                     odvTimeList.lastDay()
-                    odvTimeList.updateList()
                     updateCurList()
+                }
+                Rectangle {
+                    anchors.fill: parent
+                    opacity: parent.pressed ? 1 : 0
+                    Behavior on opacity { NumberAnimation{ duration: 100 }}
+                    gradient: Gradient {
+                        GradientStop { position: 0 ; color: "#22000000" }
+                        GradientStop { position: 0.2 ; color: "#11000000" }
+                    }
+                    border.color: "darkgray"
+                    antialiasing: true
+                    radius: 4
                 }
             }
         }

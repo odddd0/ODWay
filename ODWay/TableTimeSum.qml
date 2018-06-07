@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 1.4
 import ODVTime 1.0
+import ODVTime 1.0
 
 Rectangle {
     anchors.topMargin: 5
@@ -12,6 +13,7 @@ Rectangle {
         GradientStop{ position: 0; color: "#E5F2F6";}
         GradientStop{ position: 1; color: "#B1DAE7";}
     }
+    ODTreeModel { id: odvTimeSumModel }
 
     Connections{
         target: bar
@@ -24,16 +26,18 @@ Rectangle {
     }
 
     function updateSum() {
-        odvTimeSumModel.updateSum()
-        view.model = odvTimeSumModel
+        bar.middleStr = odvTimeSumModel.daySum
+//        sumTreeView.model = odvTimeSumModel
+        console.log("sum update")
     }
 
 
 
     TreeView {
-        id: view
+        id: sumTreeView
         anchors.fill: parent
-        anchors.topMargin: 70
+        anchors.topMargin: 65 + 5
+        anchors.bottomMargin: 55
         model: odvTimeSumModel
 
         TableViewColumn {
@@ -46,6 +50,70 @@ Rectangle {
             title: "Simplify"
             role: "simplify"
             resizable: true
+        }
+    }
+
+    Row {
+        width: parent.width
+        height: 50
+        anchors.bottom: parent.bottom
+        Rectangle {
+            width: parent.width / 2
+            height: parent.height
+            anchors.left: parent.left
+            color: "lightgreen"
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    odvTimeList.prevDay()
+                    updateSum()
+                }
+                onPressAndHold: {
+                    odvTimeList.firstDay()
+                    updateSum()
+                }
+                Rectangle {
+                    anchors.fill: parent
+                    opacity: parent.pressed ? 1 : 0
+                    Behavior on opacity { NumberAnimation{ duration: 100 }}
+                    gradient: Gradient {
+                        GradientStop { position: 0 ; color: "#22000000" }
+                        GradientStop { position: 0.2 ; color: "#11000000" }
+                    }
+                    border.color: "darkgray"
+                    antialiasing: true
+                    radius: 4
+                }
+            }
+        }
+        Rectangle {
+            width: parent.width / 2
+            height: parent.height
+            anchors.right: parent.right
+            color: "lightblue"
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    odvTimeList.nextDay()
+                    updateSum()
+                }
+                onPressAndHold: {
+                    odvTimeList.lastDay()
+                    updateSum()
+                }
+                Rectangle {
+                    anchors.fill: parent
+                    opacity: parent.pressed ? 1 : 0
+                    Behavior on opacity { NumberAnimation{ duration: 100 }}
+                    gradient: Gradient {
+                        GradientStop { position: 0 ; color: "#22000000" }
+                        GradientStop { position: 0.2 ; color: "#11000000" }
+                    }
+                    border.color: "darkgray"
+                    antialiasing: true
+                    radius: 4
+                }
+            }
         }
     }
 

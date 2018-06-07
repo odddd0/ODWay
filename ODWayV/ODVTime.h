@@ -15,7 +15,7 @@ class ODVTime : public QObject
 public:
     explicit ODVTime(QObject *parent = nullptr);
 
-    QStringList curList() const;
+    QStringList curList();
     QStringList classifyList() const;
     QStringList kindFirstList() const;
     QStringList kindSecondList() const;
@@ -51,6 +51,7 @@ public slots:
     bool delTime(const int &index_);
 
 public slots:
+    void updateList();
     bool fastIdle();
     void prevDay();
     void firstDay();
@@ -58,7 +59,6 @@ public slots:
     void lastDay();
 
 public slots:
-    void updateList();
     void updateClass();
     void updateKindFirst(QString classify_);
     void updateKindSecond(QString classify_, QString kind_);

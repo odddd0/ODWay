@@ -5,11 +5,10 @@
 
 ODVTime::ODVTime(QObject *parent) : QObject(parent)
 {
-    updateList();
     updateClass();
 }
 
-QStringList ODVTime::curList() const
+QStringList ODVTime::curList()
 {
     return m_curList;
 }
@@ -72,7 +71,6 @@ bool ODVTime::addTime(
     Result = ODPTime::Instance()->AddTime(tmpPtr);
     if (Result)
     {
-        updateList();
         updateClass();
     }
     return Result;
@@ -82,7 +80,6 @@ bool ODVTime::delTime(const int &index_)
 {
     if (ODPTime::Instance()->DelDurTime(index_))
     {
-        updateList();
         return true;
     }
 }
@@ -91,7 +88,6 @@ bool ODVTime::fastIdle()
 {
     if (ODPTime::Instance()->FastIdle())
     {
-        updateList();
         updateClass();
         return true;
     }
