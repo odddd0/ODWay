@@ -41,21 +41,21 @@ Rectangle {
                 if (currentIndex == 0)
                 {
                     // add
-                    timeSum.updateSum()
                     bar.leftStr = "<"
                     bar.rightStr = ">"
                     bar.rightColor = "black"
                     bar.barHandle = "handleTableTimeSum"
+                    timeSum.updateSum()
                 }
                 else if (currentIndex == 1)
                 {
                     // list
-                    listView.updateCurList()
                     bar.leftStr = "<"
                     bar.middleStr = odvTimeList.runningTimeStr
                     bar.rightStr = ""
                     bar.rightColor = "red"
                     bar.barHandle = "handleTableTimeList"
+                    listView.updateCurList()
                 }
                 else if (currentIndex == 2)
                 {

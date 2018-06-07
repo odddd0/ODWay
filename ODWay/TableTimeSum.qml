@@ -4,11 +4,6 @@ import ODVTime 1.0
 import ODVTime 1.0
 
 Rectangle {
-    anchors.topMargin: 5
-    anchors.bottomMargin: 5
-    anchors.leftMargin: 5
-    anchors.rightMargin: 5
-
     gradient: Gradient {
         GradientStop{ position: 0; color: "#E5F2F6";}
         GradientStop{ position: 1; color: "#B1DAE7";}
@@ -26,42 +21,53 @@ Rectangle {
     }
 
     function updateSum() {
+        odvTimeSumModel.updateSum()
         bar.middleStr = odvTimeSumModel.daySum
-//        sumTreeView.model = odvTimeSumModel
+
+        obj = treeComponent.createObject(treeContain, {})
         console.log("sum update")
     }
 
-
-
-    TreeView {
-        id: sumTreeView
+    Rectangle {
+        id: treeContain
         anchors.fill: parent
         anchors.topMargin: 65 + 5
         anchors.bottomMargin: 55
-        model: odvTimeSumModel
+        color: "transparent"
+    }
 
-        TableViewColumn {
-            title: "Name"
-            role: "name"
-            resizable: true
-        }
+    Component {
+        id: treeComponent
+        TreeView {
+            id: sumTreeView
+            anchors.fill: parent
+            model: odvTimeSumModel
 
-        TableViewColumn {
-            title: "Time"
-            role: "simplify"
-            resizable: true
-        }
-        onDoubleClicked: {
-            if (sumTreeView.isExpanded(index))
-            {
-                sumTreeView.collapse(index)
+            TableViewColumn {
+                title: "Name"
+                role: "name"
+                resizable: true
             }
-            else
-            {
-                sumTreeView.expand(index)
+
+            TableViewColumn {
+                title: "Time"
+                role: "simplify"
+                resizable: true
+            }
+            onDoubleClicked: {
+                if (sumTreeView.isExpanded(index))
+                {
+                    sumTreeView.collapse(index)
+                }
+                else
+                {
+                    sumTreeView.expand(index)
+                }
             }
         }
     }
+
+
 
     Row {
         width: parent.width
