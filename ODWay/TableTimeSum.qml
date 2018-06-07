@@ -4,6 +4,8 @@ import ODVTime 1.0
 import ODVTime 1.0
 
 Rectangle {
+    property var treeObj: []
+    property int treeObjCount: 0
     gradient: Gradient {
         GradientStop{ position: 0; color: "#E5F2F6";}
         GradientStop{ position: 1; color: "#B1DAE7";}
@@ -21,11 +23,17 @@ Rectangle {
     }
 
     function updateSum() {
+        console.log("sum update")
         odvTimeSumModel.updateSum()
         bar.middleStr = odvTimeSumModel.daySum
 
-        obj = treeComponent.createObject(treeContain, {})
-        console.log("sum update")
+        var obj = treeComponent.createObject(treeContain, {})
+        for (var i = 0; i < treeObjCount; ++i)
+        {
+            treeObj.pop().destroy()
+        }
+        treeObjCount = 1
+        treeObj.push(obj)
     }
 
     Rectangle {

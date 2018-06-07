@@ -39,10 +39,6 @@ QHash<int, QByteArray> TreeModel::roleNames() const
 
 void TreeModel::updateSum()
 {
-    if (m_rootItem)
-    {
-        delete m_rootItem;
-    }
     _classifyList.clear();
     _kindFirstList.clear();
     _kindSecondList.clear();
