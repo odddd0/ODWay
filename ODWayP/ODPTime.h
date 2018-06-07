@@ -4,6 +4,8 @@
 #include <ODMBase/ODBaseTypes.h>
 #include <ODWayM/ODMTime.h>
 
+typedef std::vector<std::pair<std::string, int>> SIMapList;
+
 class ODPTime
 {
     struct OneTip

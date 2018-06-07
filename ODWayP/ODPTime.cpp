@@ -248,50 +248,74 @@ void ODPTime::GetCurList(StringList &list)
 }
 
 void ODPTime::GetCurSumList(std::vector<StringList> &classifyList_,
-        std::vector<std::vector<StringList> > &kindFirstList_,
-        std::vector<std::vector<std::vector<StringList> > > &kindSecondList_)
+                            std::vector<std::vector<StringList> > &kindFirstList_,
+                            std::vector<std::vector<std::vector<StringList> > > &kindSecondList_)
 {
     if (!_Impl->_expandData._sumList.empty())
     {
         char tmpChar[20];
         DaySumPtr oneSum = _Impl->_expandData._sumList[_Impl->_curDate];
         std::string tmpStr = "";
+        SIMapList listClassifySum, listKindFirstSum, listKindSecondSum;
         double tmpPercentage = 0;
         if (oneSum)
         {
             classifyList_.clear();
             kindFirstList_.clear();
             kindSecondList_.clear();
-            for (auto pos = oneSum->_classifySum.begin(); pos != oneSum->_classifySum.end(); ++pos)
-            {
+
+            std::for_each(oneSum->_classifySum.begin(), oneSum->_classifySum.end(), [&listClassifySum](const std::pair<std::string, int> &x){
+                listClassifySum.push_back(x);
+            });
+            std::sort(listClassifySum.begin(), listClassifySum.end(), [](std::pair<std::string, int> &x, std::pair<std::string, int> &y){
+                return x.second > y.second;
+            });
+
+            std::for_each(listClassifySum.begin(), listClassifySum.end(), [&](std::pair<std::string, int> &x){
                 StringList metaClassify;
                 std::vector<StringList> metaKindFirstClassify;
                 std::vector<std::vector<StringList>> metaKindSecondClassify;
-                if (oneSum->ToString(pos->first, metaClassify))
+                if (oneSum->ToString(x.first, metaClassify))
                 {
                     classifyList_.push_back(metaClassify);
-                    for (auto pos_j = oneSum->_kindFirstSum[pos->first].begin(); pos_j != oneSum->_kindFirstSum[pos->first].end(); ++pos_j)
-                    {
+
+                    listKindFirstSum.clear();
+                    std::for_each(oneSum->_kindFirstSum[x.first].begin(), oneSum->_kindFirstSum[x.first].end(), [&listKindFirstSum](const std::pair<std::string, int> &x){
+                        listKindFirstSum.push_back(x);
+                    });
+                    std::sort(listKindFirstSum.begin(), listKindFirstSum.end(), [](std::pair<std::string, int> &x, std::pair<std::string, int> &y){
+                        return x.second > y.second;
+                    });
+
+                    std::for_each(listKindFirstSum.begin(), listKindFirstSum.end(), [&](std::pair<std::string, int> &y){
                         StringList tmpKindFirst;
-                        if (oneSum->ToString(pos->first, pos_j->first, tmpKindFirst))
+                        if (oneSum->ToString(x.first, y.first, tmpKindFirst))
                         {
                             metaKindFirstClassify.push_back(tmpKindFirst);
                             std::vector<StringList> metaKindSecondKind;
-                            for (auto pos_k = oneSum->_kindSecondSum[pos->first][pos_j->first].begin(); pos_k != oneSum->_kindSecondSum[pos->first][pos_j->first].end(); ++pos_k)
-                            {
+
+                            listKindSecondSum.clear();
+                            std::for_each(oneSum->_kindSecondSum[x.first][y.first].begin(), oneSum->_kindSecondSum[x.first][y.first].end(), [&listKindSecondSum](const std::pair<std::string, int> &x){
+                                listKindSecondSum.push_back(x);
+                            });
+                            std::sort(listKindSecondSum.begin(), listKindSecondSum.end(), [](std::pair<std::string, int> &x, std::pair<std::string, int> &y){
+                                return x.second > y.second;
+                            });
+
+                            std::for_each(listKindSecondSum.begin(), listKindSecondSum.end(), [&](std::pair<std::string, int> &z){
                                 StringList tmpKindSecond;
-                                if (oneSum->ToString(pos->first, pos_j->first, pos_k->first, tmpKindSecond))
+                                if (oneSum->ToString(x.first, y.first, z.first, tmpKindSecond))
                                 {
                                     metaKindSecondKind.push_back(tmpKindSecond);
                                 }
-                            }
+                            });
                             metaKindSecondClassify.push_back(metaKindSecondKind);
                         }
-                    }
+                    });
                     kindFirstList_.push_back(metaKindFirstClassify);
                     kindSecondList_.push_back(metaKindSecondClassify);
                 }
-            }
+            });
         }
     }
 }
@@ -306,7 +330,7 @@ std::string ODPTime::GetCurSum()
         {
             StringList tmpList;
             oneSum->ToString(tmpList);
-            Result = tmpList[1];
+            Result = _Impl->_curDate + ": " + tmpList[1];
         }
     }
     return Result;
@@ -404,6 +428,7 @@ bool ODPTime::DaySum::ToString(StringList &strList_)
         strList_.clear();
         strList_.push_back("_SUM_");
         strList_.push_back(ODTimeUtil::Duration2String(_classifySum["__SUM__"]));
+        strList_.push_back(std::to_string(_classifySum["__SUM__"]));
         Result = true;
     }
     return Result;
@@ -423,6 +448,7 @@ bool ODPTime::DaySum::ToString(const std::string &classify_, StringList &strList
         sprintf(tmpChar, "%.2f", tmpPercentage);
 
         strList_.push_back(ODTimeUtil::Duration2String(_classifySum[classify_]) + " (" + tmpChar + "%)");
+        strList_.push_back(std::to_string(_classifySum[classify_]));
 
         Result = true;
     }
@@ -443,6 +469,7 @@ bool ODPTime::DaySum::ToString(const std::string &classify_, const std::string &
         sprintf(tmpChar, "%.2f", tmpPercentage);
 
         strList_.push_back(ODTimeUtil::Duration2String(_kindFirstSum[classify_][kindFirst_]) + " (" + tmpChar + "%)");
+        strList_.push_back(std::to_string(_kindFirstSum[classify_][kindFirst_]));
 
         Result = true;
     }
@@ -463,6 +490,7 @@ bool ODPTime::DaySum::ToString(const std::string &classify_, const std::string &
         sprintf(tmpChar, "%.2f", tmpPercentage);
 
         strList_.push_back(ODTimeUtil::Duration2String(_kindSecondSum[classify_][kindFirst_][kindSecond_]) + " (" + tmpChar + "%)");
+        strList_.push_back(std::to_string(_kindSecondSum[classify_][kindFirst_][kindSecond_]));
 
         Result = true;
     }
