@@ -346,8 +346,9 @@ void ODPTime::GetRunningTimeStr(std::string &str_)
     }
 }
 
-void ODPTime::PrevCur()
+bool ODPTime::PrevCur()
 {
+    std::string tmpStr = _Impl->_curDate;
     for (int i = 0; i < _Impl->_expandData._dateList.size(); ++i)
     {
         if (_Impl->_expandData._dateList[i] == _Impl->_curDate && i != 0)
@@ -356,18 +357,22 @@ void ODPTime::PrevCur()
             break;
         }
     }
+    return tmpStr != _Impl->_curDate;
 }
 
-void ODPTime::FirstCur()
+bool ODPTime::FirstCur()
 {
+    std::string tmpStr = _Impl->_curDate;
     if (!_Impl->_expandData._dateList.empty())
     {
         _Impl->_curDate = _Impl->_expandData._dateList[0];
     }
+    return tmpStr != _Impl->_curDate;
 }
 
-void ODPTime::NextCur()
+bool ODPTime::NextCur()
 {
+    std::string tmpStr = _Impl->_curDate;
     for (int i = 0; i < _Impl->_expandData._dateList.size(); ++i)
     {
         if (_Impl->_expandData._dateList[i] == _Impl->_curDate && i != _Impl->_expandData._dateList.size() - 1)
@@ -376,14 +381,17 @@ void ODPTime::NextCur()
             break;
         }
     }
+    return tmpStr != _Impl->_curDate;
 }
 
-void ODPTime::LastCur()
+bool ODPTime::LastCur()
 {
+    std::string tmpStr = _Impl->_curDate;
     if (!_Impl->_expandData._dateList.empty())
     {
         _Impl->_curDate = _Impl->_expandData._dateList[_Impl->_expandData._dateList.size() - 1];
     }
+    return tmpStr != _Impl->_curDate;
 }
 
 void ODPTime::GetClassifyList(StringList &list)

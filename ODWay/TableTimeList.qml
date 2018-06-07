@@ -101,13 +101,16 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    console.log("clicked table time list left")
-                    odvTimeList.prevDay()
-                    updateCurList()
+                    if (odvTimeList.prevDay())
+                    {
+                        updateCurList()
+                    }
                 }
                 onPressAndHold: {
-                    odvTimeList.firstDay()
-                    updateCurList()
+                    if (odvTimeList.firstDay())
+                    {
+                        updateCurList()
+                    }
                 }
                 Rectangle {
                     anchors.fill: parent
@@ -131,13 +134,16 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    console.log("clicked table time list right")
-                    odvTimeList.nextDay()
-                    updateCurList()
+                    if (odvTimeList.nextDay())
+                    {
+                        updateCurList()
+                    }
                 }
                 onPressAndHold: {
-                    odvTimeList.lastDay()
-                    updateCurList()
+                    if (odvTimeList.lastDay())
+                    {
+                        updateCurList()
+                    }
                 }
                 Rectangle {
                     anchors.fill: parent

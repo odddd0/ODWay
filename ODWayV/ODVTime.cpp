@@ -132,24 +132,24 @@ void ODVTime::updateClass()
     }
 }
 
-void ODVTime::prevDay()
+bool ODVTime::prevDay()
 {
-    ODPTime::Instance()->PrevCur();
+    return ODPTime::Instance()->PrevCur();
 }
 
-void ODVTime::firstDay()
+bool ODVTime::firstDay()
 {
-    ODPTime::Instance()->FirstCur();
+    return ODPTime::Instance()->FirstCur();
 }
 
-void ODVTime::nextDay()
+bool ODVTime::nextDay()
 {
-    ODPTime::Instance()->NextCur();
+    return ODPTime::Instance()->NextCur();
 }
 
-void ODVTime::lastDay()
+bool ODVTime::lastDay()
 {
-    ODPTime::Instance()->LastCur();
+    return ODPTime::Instance()->LastCur();
 }
 
 void ODVTime::updateKindFirst(QString classify_)

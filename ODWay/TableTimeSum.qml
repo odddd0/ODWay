@@ -89,12 +89,16 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    odvTimeList.prevDay()
-                    updateSum()
+                    if (odvTimeList.prevDay())
+                    {
+                        updateSum()
+                    }
                 }
                 onPressAndHold: {
-                    odvTimeList.firstDay()
-                    updateSum()
+                    if (odvTimeList.firstDay())
+                    {
+                        updateSum()
+                    }
                 }
                 Rectangle {
                     anchors.fill: parent
@@ -118,12 +122,16 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    odvTimeList.nextDay()
-                    updateSum()
+                    if (odvTimeList.nextDay())
+                    {
+                        updateSum()
+                    }
                 }
                 onPressAndHold: {
-                    odvTimeList.lastDay()
-                    updateSum()
+                    if (odvTimeList.lastDay())
+                    {
+                        updateSum()
+                    }
                 }
                 Rectangle {
                     anchors.fill: parent

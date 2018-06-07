@@ -71,10 +71,10 @@ public:
     void GetRunningTimeStr(std::string &str_);
 
 public:
-    void PrevCur();
-    void FirstCur();
-    void NextCur();
-    void LastCur();
+    bool PrevCur();
+    bool FirstCur();
+    bool NextCur();
+    bool LastCur();
 
 public:
     void GetClassifyList(StringList &list);

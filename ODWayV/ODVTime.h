@@ -53,10 +53,10 @@ public slots:
 public slots:
     void updateList();
     bool fastIdle();
-    void prevDay();
-    void firstDay();
-    void nextDay();
-    void lastDay();
+    bool prevDay();
+    bool firstDay();
+    bool nextDay();
+    bool lastDay();
 
 public slots:
     void updateClass();
