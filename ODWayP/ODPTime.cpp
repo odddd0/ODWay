@@ -114,6 +114,7 @@ struct ODPTime::Impl
         {
             // get last day's last tip
             OneDayPtr lastDayPtr = _expandData._dayList[_expandData._dateList[_expandData._dateList.size() - 1]];
+            DaySumPtr lastSumPtr = _expandData._sumList[_expandData._dateList[_expandData._dateList.size() - 1]];
             if (curPtr->_id > _lastTip->_time)
             {
                 InClassify(curPtr->_classify, curPtr->_kindFirst, curPtr->_kindSecond);
@@ -137,10 +138,13 @@ struct ODPTime::Impl
                 {
                     // new Day
                     lastDayPtr = std::make_shared<OneDay>();
+                    lastSumPtr = std::make_shared<DaySum>();
                     _expandData._dateList.push_back(_curDate);
                     _expandData._dayList[_curDate] = lastDayPtr;
+                    _expandData._sumList[_curDate] = lastSumPtr;
                 }
                 lastDayPtr->_tipList.push_back(tmpPtr);
+                lastSumPtr->AddTip(tmpPtr->_classify, tmpPtr->_kindFirst, tmpPtr->_kindSecond, tmpPtr->_durationSecond);
                 _lastTip = tmpPtr;
             }
             else
