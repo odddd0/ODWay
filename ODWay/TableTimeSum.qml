@@ -47,9 +47,19 @@ Rectangle {
         }
 
         TableViewColumn {
-            title: "Simplify"
+            title: "Time"
             role: "simplify"
             resizable: true
+        }
+        onDoubleClicked: {
+            if (sumTreeView.isExpanded(index))
+            {
+                sumTreeView.collapse(index)
+            }
+            else
+            {
+                sumTreeView.expand(index)
+            }
         }
     }
 
