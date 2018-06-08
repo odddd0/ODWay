@@ -6,6 +6,7 @@
 TreeModel::TreeModel(QObject *parent)
     : QAbstractItemModel(parent)
     , m_rootItem(NULL)
+    , _CKKCur(3, "")
 {
     updateSum();
 }
@@ -17,7 +18,7 @@ TreeModel::~TreeModel()
 
 int TreeModel::columnCount(const QModelIndex &parent) const
 {
-    return 2;
+    return 5;
     //返回实际的列数 (实际是他返回了0，因为根节点用的是无参的构造)，TreeView控件会认为表是空表，不获取数据
     if (parent.isValid())
     {
@@ -34,7 +35,15 @@ QHash<int, QByteArray> TreeModel::roleNames() const
     QHash<int, QByteArray> names(QAbstractItemModel::roleNames());
     names[NAME] = "name";
     names[SIMPLIFY] = "simplify";
+    names[OD_CLASSIFY] = "classify";
+    names[OD_KINDFIRST] = "kindFirst";
+    names[OD_KINDSECOND] = "kindSecond";
     return names;
+}
+
+QString TreeModel::daySum() const
+{
+    return m_daySum;
 }
 
 void TreeModel::updateSum()
@@ -66,6 +75,32 @@ void TreeModel::updateSum()
     }
 }
 
+void TreeModel::setSelectIndex(const QModelIndex &index_)
+{
+    if (_CKKCur.size() == 3)
+    {
+        _CKKCur[0] = index_.data(OD_CLASSIFY).toString().toStdString();
+        _CKKCur[1] = index_.data(OD_KINDFIRST).toString().toStdString();
+        _CKKCur[2] = index_.data(OD_KINDSECOND).toString().toStdString();
+    }
+    else
+    {
+        _CKKCur.clear();
+        _CKKCur.push_back(index_.data(OD_CLASSIFY).toString().toStdString());
+        _CKKCur.push_back(index_.data(OD_KINDFIRST).toString().toStdString());
+        _CKKCur.push_back(index_.data(OD_KINDSECOND).toString().toStdString());
+    }
+}
+
+void TreeModel::setDaySum(QString daySum)
+{
+    if (m_daySum == daySum)
+        return;
+
+    m_daySum = daySum;
+    emit daySumChanged(m_daySum);
+}
+
 QVariant TreeModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
@@ -82,6 +117,18 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const
     case SIMPLIFY:
     {
         return static_cast<TreeItem*>(index.internalPointer())->data(1);
+    }
+    case OD_CLASSIFY:
+    {
+        return static_cast<TreeItem*>(index.internalPointer())->data(2);
+    }
+    case OD_KINDFIRST:
+    {
+        return static_cast<TreeItem*>(index.internalPointer())->data(3);
+    }
+    case OD_KINDSECOND:
+    {
+        return static_cast<TreeItem*>(index.internalPointer())->data(4);
     }
     }
 }

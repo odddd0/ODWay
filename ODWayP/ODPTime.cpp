@@ -500,7 +500,9 @@ bool ODPTime::DaySum::ToString(const std::string &classify_, StringList &strList
         sprintf(tmpChar, "%.2f", tmpPercentage);
 
         strList_.push_back(ODTimeUtil::Duration2String(_classifySum[classify_]) + " (" + tmpChar + "%)");
-        strList_.push_back(std::to_string(_classifySum[classify_]));
+        strList_.push_back(classify_);
+        strList_.push_back("");
+        strList_.push_back("");
 
         Result = true;
     }
@@ -521,7 +523,9 @@ bool ODPTime::DaySum::ToString(const std::string &classify_, const std::string &
         sprintf(tmpChar, "%.2f", tmpPercentage);
 
         strList_.push_back(ODTimeUtil::Duration2String(_kindFirstSum[classify_][kindFirst_]) + " (" + tmpChar + "%)");
-        strList_.push_back(std::to_string(_kindFirstSum[classify_][kindFirst_]));
+        strList_.push_back(classify_);
+        strList_.push_back(kindFirst_);
+        strList_.push_back("");
 
         Result = true;
     }
@@ -542,7 +546,9 @@ bool ODPTime::DaySum::ToString(const std::string &classify_, const std::string &
         sprintf(tmpChar, "%.2f", tmpPercentage);
 
         strList_.push_back(ODTimeUtil::Duration2String(_kindSecondSum[classify_][kindFirst_][kindSecond_]) + " (" + tmpChar + "%)");
-        strList_.push_back(std::to_string(_kindSecondSum[classify_][kindFirst_][kindSecond_]));
+        strList_.push_back(classify_);
+        strList_.push_back(kindFirst_);
+        strList_.push_back(kindSecond_);
 
         Result = true;
     }

@@ -76,6 +76,7 @@ Rectangle {
                     }
                 }
                 lastSelectIndex = index
+                odvTimeSumModel.setSelectIndex(index)
             }
             onDoubleClicked: {
                 if (sumTreeView.isExpanded(index))

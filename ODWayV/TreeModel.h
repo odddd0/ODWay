@@ -11,7 +11,10 @@ class TreeModel : public QAbstractItemModel
     Q_PROPERTY(QString daySum READ daySum WRITE setDaySum NOTIFY daySumChanged)
     enum ItemRoles {
         NAME = Qt::UserRole + 1,
-        SIMPLIFY
+        SIMPLIFY,
+        OD_CLASSIFY,
+        OD_KINDFIRST,
+        OD_KINDSECOND
     };
 public:
     TreeModel(QObject *parent = NULL);
@@ -28,22 +31,14 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
     QHash<int, QByteArray> roleNames() const;
 
-    QString daySum() const
-    {
-        return m_daySum;
-    }
+    QString daySum() const;
+
+public slots:
+    void setDaySum(QString daySum);
 
 public slots:
     void updateSum();
-
-    void setDaySum(QString daySum)
-    {
-        if (m_daySum == daySum)
-            return;
-
-        m_daySum = daySum;
-        emit daySumChanged(m_daySum);
-    }
+    void setSelectIndex(const QModelIndex &index_);
 
 signals:
     void daySumChanged(QString daySum);
@@ -54,5 +49,6 @@ private:
     std::vector<std::vector<StringList>> _kindFirstList;
     std::vector<std::vector<std::vector<StringList>>> _kindSecondList;
     QString m_daySum;
+    StringList _CKKCur;
 };
 #endif // TREEMODEL_H
