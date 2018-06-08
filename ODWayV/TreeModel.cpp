@@ -53,6 +53,14 @@ void TreeModel::updateSum()
     _kindSecondList.clear();
     m_rootItem = new TreeItem;
 
+    int si = -1;
+    int sj = -1;
+    int sk = -1;
+    int ss = -1;
+    TreeItem * pi = NULL;
+    TreeItem * pj = NULL;
+    TreeItem * ps = NULL;
+
     ODPTime::Instance()->GetCurSumList(_classifyList, _kindFirstList, _kindSecondList);
     m_daySum = ODPTime::Instance()->GetCurSum().c_str();
 
@@ -60,18 +68,57 @@ void TreeModel::updateSum()
     {
         auto item_I = new TreeItem(_classifyList[i], m_rootItem);
         m_rootItem->appendChild(item_I);
+        if (_CKKCur.size() == 3 && _classifyList[i][0] == _CKKCur[0])
+        {
+            si = i;
+            pi = item_I;
+        }
 
         for (int j = 0; j < _kindFirstList[i].size(); ++j)
         {
             auto item_J = new TreeItem(_kindFirstList[i][j], item_I);
             item_I->appendChild(item_J);
+            if (_CKKCur.size() == 3 && _kindFirstList[i][j][0] == _CKKCur[1])
+            {
+                sj = j;
+                pj = item_J;
+            }
 
             for (int k = 0; k < _kindSecondList[i][j].size(); ++k)
             {
                 auto item_K = new TreeItem(_kindSecondList[i][j][k], item_J);
                 item_J->appendChild(item_K);
+                if (_CKKCur.size() == 3 && _kindSecondList[i][j][k][0] == _CKKCur[2])
+                {
+                    sk = k;
+                }
             }
         }
+    }
+    if (si == -1)
+    {
+        // null; no expand
+    }
+    else if (sj == -1)
+    {
+        // classify level; no expand
+        ss = si;
+        ps = m_rootItem;
+    }
+    else if (sk == -1)
+    {
+        // kindFirst level; expand classify
+        ss = sj;
+        ps = pi;
+        _firstExpand = createIndex(si, 0, m_rootItem->child(si));
+    }
+    else
+    {
+        // kindSecond level; expand classify, kindFirst
+        ss = sk;
+        ps = pj;
+        _firstExpand = createIndex(si, 0, m_rootItem->child(si));
+        _secondExpand = createIndex(sj, 0, m_rootItem->child(si)->child(sj));
     }
 }
 
@@ -92,6 +139,16 @@ void TreeModel::setSelectIndex(const QModelIndex &index_)
     }
 }
 
+QModelIndex TreeModel::getFirstExpand()
+{
+    return _firstExpand;
+}
+
+QModelIndex TreeModel::getSecondExpand()
+{
+    return _secondExpand;
+}
+
 void TreeModel::setDaySum(QString daySum)
 {
     if (m_daySum == daySum)
@@ -99,6 +156,38 @@ void TreeModel::setDaySum(QString daySum)
 
     m_daySum = daySum;
     emit daySumChanged(m_daySum);
+}
+
+QString TreeModel::getCurClassify()
+{
+    if (_CKKCur.size() == 3)
+    {
+        return QString::fromStdString(_CKKCur[0]);
+    }
+    return "";
+}
+
+QString TreeModel::getCurKindFirst()
+{
+    if (_CKKCur.size() == 3)
+    {
+        return QString::fromStdString(_CKKCur[1]);
+    }
+    return "";
+}
+
+QString TreeModel::getCurKindSecond()
+{
+    if (_CKKCur.size() == 3)
+    {
+        return QString::fromStdString(_CKKCur[2]);
+    }
+    return "";
+}
+
+void TreeModel::clearCKK()
+{
+    _CKKCur.clear();
 }
 
 QVariant TreeModel::data(const QModelIndex &index, int role) const

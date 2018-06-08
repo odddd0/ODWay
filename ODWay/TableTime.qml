@@ -52,7 +52,7 @@ Rectangle {
                 {
                     // add
                     bar.leftStr = "<"
-                    bar.rightStr = ">"
+                    bar.rightStr = "x"
                     bar.rightColor = "black"
                     bar.barHandle = "handleTableTimeSum"
                     timeSum.updateSum()

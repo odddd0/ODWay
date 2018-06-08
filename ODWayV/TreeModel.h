@@ -35,10 +35,16 @@ public:
 
 public slots:
     void setDaySum(QString daySum);
+    QString getCurClassify();
+    QString getCurKindFirst();
+    QString getCurKindSecond();
+    void clearCKK();
 
 public slots:
     void updateSum();
     void setSelectIndex(const QModelIndex &index_);
+    QModelIndex getFirstExpand();
+    QModelIndex getSecondExpand();
 
 signals:
     void daySumChanged(QString daySum);
@@ -50,5 +56,7 @@ private:
     std::vector<std::vector<std::vector<StringList>>> _kindSecondList;
     QString m_daySum;
     StringList _CKKCur;
+    QModelIndex _firstExpand;
+    QModelIndex _secondExpand;
 };
 #endif // TREEMODEL_H

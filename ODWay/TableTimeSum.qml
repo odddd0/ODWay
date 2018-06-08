@@ -6,6 +6,11 @@ Rectangle {
     property var treeObj: []
     property int treeObjCount: 0
     property var lastSelectIndex
+    property string lastClassify: ""
+    property string lastKindFirst: ""
+    property string lastKindSecond: ""
+    property var expandFirst
+    property var expandSecond
     gradient: Gradient {
         GradientStop{ position: 0; color: "#E5F2F6";}
         GradientStop{ position: 1; color: "#B1DAE7";}
@@ -15,9 +20,10 @@ Rectangle {
     Connections{
         target: bar
         onRightBtnClicked:{
-            if (bar.barHandle == "handleTableTimeSum")
+            if (bar.barHandle == "handleTableTimeSum" && bar.rightStr == "x")
             {
-                rootTableTime.currentIndex = 1
+                odvTimeSumModel.clearCKK()
+                updateSum()
             }
         }
     }
@@ -26,6 +32,12 @@ Rectangle {
         console.log("sum update")
         odvTimeSumModel.updateSum()
         bar.middleStr = odvTimeSumModel.daySum
+
+        lastClassify = odvTimeSumModel.getCurClassify()
+        lastKindFirst = odvTimeSumModel.getCurKindFirst()
+        lastKindSecond = odvTimeSumModel.getCurKindSecond()
+        expandFirst = odvTimeSumModel.getFirstExpand()
+        expandSecond = odvTimeSumModel.getSecondExpand()
 
         var obj = treeComponent.createObject(treeContain, {})
         for (var i = 0; i < treeObjCount; ++i)
@@ -45,24 +57,62 @@ Rectangle {
     }
 
     Component {
+        id: iiDelegate
+        Rectangle {
+            id: wrapper
+            color: "transparent"
+            Text {
+                id: wrapperText
+                anchors.verticalCenter: parent.verticalCenter
+                color: styleData.textColor
+                elide: styleData.elideMode
+                text: styleData.value
+            }
+            Component.onCompleted: {
+                if (model.classify == lastClassify &&
+                        model.kindFirst == lastKindFirst &&
+                        model.kindSecond == lastKindSecond)
+                {
+                    wrapperText.color = "#FFF300"
+                    wrapper.color = "blue"
+                }
+            }
+        }
+    }
+
+    Component {
         id: treeComponent
         TreeView {
             id: sumTreeView
             anchors.fill: parent
             model: odvTimeSumModel
+            //            itemDelegate: iiDelegate
+            Component.onCompleted: {
+                if (lastKindFirst != "")
+                {
+                    expand(expandFirst)
+                    if (lastKindSecond != "")
+                    {
+                        expand(expandSecond)
+                    }
+                }
+            }
 
             TableViewColumn {
                 title: "Name"
                 role: "name"
                 resizable: true
+                delegate: iiDelegate
             }
 
             TableViewColumn {
                 title: "Time"
                 role: "simplify"
                 resizable: true
+                delegate: iiDelegate
             }
             onClicked: {
+                console.log("cur: ", index)
                 if (lastSelectIndex == index)
                 {
                     if (sumTreeView.isExpanded(index))
@@ -76,6 +126,7 @@ Rectangle {
                 }
                 lastSelectIndex = index
                 odvTimeSumModel.setSelectIndex(index)
+                sumTreeView
             }
             onDoubleClicked: {
                 if (sumTreeView.isExpanded(index))
