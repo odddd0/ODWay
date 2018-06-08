@@ -19,11 +19,11 @@ Rectangle {
                 {
                     content.text = ""
                     dateTime.dateEnable = false
-                    rootTableTime.currentIndex = 1
+                    rootTableTime.currentIndex = 2
                 }
                 else if (bar.rightStr == "Idle" && odvTimeList.fastIdle())
                 {
-                    rootTableTime.currentIndex = 1
+                    rootTableTime.currentIndex = 2
                 }
             }
         }
