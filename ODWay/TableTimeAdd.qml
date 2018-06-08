@@ -37,7 +37,6 @@ Rectangle {
         anchors.rightMargin: 5
         spacing: 10
         Component.onCompleted: {
-            console.log("1")
             init_ = true
         }
 
@@ -45,7 +44,6 @@ Rectangle {
             width: parent.width
             id: dateTime
             Component.onCompleted: {
-                console.log("11")
                 init_ = false
             }
         }
@@ -55,7 +53,6 @@ Rectangle {
             id: classify
             classList: odvTimeList.classifyList
             onClassChanged: {
-                console.log("2")
                 if (!init_)
                 {
                     odvTimeList.updateKindFirst(classify.classComboText)
@@ -66,9 +63,6 @@ Rectangle {
                     kindSecond.syncCombo()
                 }
             }
-            Component.onCompleted: {
-                console.log("5")
-            }
         }
         ClassifyPicker {
             width: parent.width
@@ -76,7 +70,6 @@ Rectangle {
             id: kindFirst
             classList: odvTimeList.kindFirstList
             onClassChanged: {
-                console.log("3")
                 if (!init_)
                 {
                     odvTimeList.updateKindSecond(classify.classComboText, kindFirst.classComboText)
@@ -84,18 +77,12 @@ Rectangle {
                     kindSecond.syncCombo()
                 }
             }
-            Component.onCompleted: {
-                console.log("4")
-            }
         }
         ClassifyPicker {
             width: parent.width
             height: 80
             id: kindSecond
             classList: odvTimeList.kindSecondList
-            Component.onCompleted: {
-                console.log("6")
-            }
         }
         Rectangle {
             width: parent.width
@@ -104,9 +91,6 @@ Rectangle {
             TextEdit {
                 anchors.fill: parent
                 id: content
-            }
-            Component.onCompleted: {
-                console.log("7")
             }
         }
 

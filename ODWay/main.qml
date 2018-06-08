@@ -8,12 +8,14 @@ Rectangle {
         GradientStop{ position: 1; color: "#B1DAE7";}
     }
 
+
+
     LauncherList {
         id: ll
         anchors.fill: parent
         visible: dp.isOpen
         Component.onCompleted: {
-            addExample("Time table", "Time List Show",  Qt.resolvedUrl("TableTime.qml"));
+            addExample("Time table", "",  Qt.resolvedUrl("TableTime.qml"));
         }
     }
 

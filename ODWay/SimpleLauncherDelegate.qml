@@ -48,14 +48,41 @@
 **
 ****************************************************************************/
 import QtQuick 2.0
+import ODVWay 1.0
 
 Rectangle {
     id: container
     property Item exampleItem
+    property string descriptionStr: ""
+    property bool updateTrigger: true
+
     width: ListView.view.width
     height: button.implicitHeight + 22
 
     signal clicked()
+
+    ODVMain { id: odvMain }
+
+    Component.onCompleted: {
+        if (description == "")
+        {
+            descriptionStr = odvMain.getDescription(name)
+        }
+        else
+        {
+            updateTrigger = false
+            descriptionStr = description
+        }
+    }
+
+    Item {
+        Timer {
+            interval: 500; running: updateTrigger; repeat: updateTrigger
+            onTriggered: {
+                descriptionStr = odvMain.getDescription(name)
+            }
+        }
+    }
 
     gradient: Gradient {
         GradientStop {
@@ -120,7 +147,7 @@ Rectangle {
                 id: buttonLabel2
                 anchors.left: parent.left
                 anchors.leftMargin: 10
-                text: description
+                text: descriptionStr
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 color: "#666"
                 font.pixelSize: 12

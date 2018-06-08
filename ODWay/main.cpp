@@ -8,6 +8,7 @@
 #include <ODWayM/ODWayM.h>
 
 #include <ODWayV/ODVTime.h>
+#include <ODWayV/ODWayV.h>
 #include <ODWayV/TreeModel.h>
 
 int main(int argc, char* argv[])
@@ -27,6 +28,7 @@ int main(int argc, char* argv[])
     /**
      * Init View layer.
      */
+    qmlRegisterType<ODWayV>("ODVWay", 1, 0, "ODVMain");
     qmlRegisterType<ODVTime>("ODVTime", 1, 0, "ODVTimeList");
     qmlRegisterType<TreeModel>("ODVTime", 1, 0, "ODTreeModel");
 

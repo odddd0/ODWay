@@ -346,7 +346,7 @@ void ODPTime::GetRunningTimeStr(std::string &str_)
     {
         time_t curTime = 0;
         int curTimestamp = time(&curTime);
-        str_ = ODTimeUtil::Duration2String(curTimestamp - _Impl->_lastTip->_time);
+        str_ = ODTimeUtil::Duration2String(curTimestamp - _Impl->_lastTip->_time, "__DIGITAL__");
     }
 }
 

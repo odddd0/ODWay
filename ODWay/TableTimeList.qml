@@ -20,12 +20,10 @@ Rectangle {
         onRightBtnClicked:{
             if (bar.barHandle == "handleTableTimeList")
             {
-                console.log("list right clicked")
                 if (odvTimeList.delTime(tableTimeListView.currentIndex))
                 {
                     updateCurList()
                     bar.rightStr = ""
-                    console.log("delete complete")
                 }
             }
         }

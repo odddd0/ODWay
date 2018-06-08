@@ -116,7 +116,6 @@ Rectangle {
                 enabled: rightStr != ""
                 onClicked: {
                     rightBtnClicked()
-                    console.log("Bar Right Btn clicked")
                 }
                 Rectangle {
                     anchors.fill: parent
