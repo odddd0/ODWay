@@ -49,10 +49,7 @@ struct ODPTime::Impl
 
     void ExpandData()
     {
-        _classifyList.clear();
-        _kindFirstList.clear();
-        _kindSecondList.clear();
-        _expandData.clear();
+        ResetExpandData();
 
         OneTipPtr oneTipPtr = NULL;
         OneDayPtr oneDayPtr = NULL;
@@ -159,6 +156,17 @@ struct ODPTime::Impl
         // todo, swift delete
         ExpandData();
         _curDate = ODTimeUtil::Timestamp2String(id_, "%y-%m-%d");
+    }
+
+    void ResetExpandData()
+    {
+        _classifyList.clear();
+        _kindFirstList.clear();
+        _kindSecondList.clear();
+        _expandData.clear();
+        _curDate.clear();
+        _lastCurList.clear();
+        _lastTip = NULL;
     }
 
     StringList _classifyList;
@@ -347,6 +355,10 @@ void ODPTime::GetRunningTimeStr(std::string &str_)
         time_t curTime = 0;
         int curTimestamp = time(&curTime);
         str_ = ODTimeUtil::Duration2String(curTimestamp - _Impl->_lastTip->_time, "__DIGITAL__");
+    }
+    else
+    {
+        str_ = "--:--:--";
     }
 }
 
