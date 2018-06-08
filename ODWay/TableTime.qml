@@ -36,10 +36,19 @@ Rectangle {
             focus: false
             orientation: ListView.Horizontal
             boundsBehavior: Flickable.StopAtBounds
-            currentIndex: 1
+            currentIndex: 2
 
             onCurrentIndexChanged: {
                 if (currentIndex == 0)
+                {
+                    // chart
+                    bar.leftStr = "<"
+                    bar.rightStr = ""
+                    bar.rightColor = "black"
+                    bar.middleStr = "Chart"
+                    bar.barHandle = "handleTableTimeChart"
+                }
+                else if (currentIndex == 1)
                 {
                     // add
                     bar.leftStr = "<"
@@ -49,7 +58,7 @@ Rectangle {
                     timeSum.updateSum()
                     listView.endList()
                 }
-                else if (currentIndex == 1)
+                else if (currentIndex == 2)
                 {
                     // list
                     bar.leftStr = "<"
@@ -59,7 +68,7 @@ Rectangle {
                     bar.barHandle = "handleTableTimeList"
                     listView.updateCurList()
                 }
-                else if (currentIndex == 2)
+                else if (currentIndex == 3)
                 {
                     // add
                     bar.leftStr = "<"
@@ -72,6 +81,12 @@ Rectangle {
             }
 
             model: ObjectModel {
+                TableTimeChart {
+                    id: timeChart
+                    height: rootTableTime.height
+                    width: rootTableTime.width
+                }
+
                 TableTimeSum {
                     id: timeSum
                     height: rootTableTime.height

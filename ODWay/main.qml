@@ -8,8 +8,6 @@ Rectangle {
         GradientStop{ position: 1; color: "#B1DAE7";}
     }
 
-
-
     LauncherList {
         id: ll
         anchors.fill: parent

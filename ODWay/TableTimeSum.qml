@@ -1,7 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 1.4
 import ODVTime 1.0
-import ODVTime 1.0
 
 Rectangle {
     property var treeObj: []
