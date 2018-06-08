@@ -25,6 +25,7 @@ Rectangle {
     }
 
     signal rightBtnClicked
+    signal rightBtnDoubleClicked
 
     Rectangle {
         height: 1
@@ -117,6 +118,10 @@ Rectangle {
                 onClicked: {
                     rightBtnClicked()
                 }
+                onDoubleClicked: {
+                    rightBtnDoubleClicked()
+                }
+
                 Rectangle {
                     anchors.fill: parent
                     opacity: parent.pressed ? 1 : 0

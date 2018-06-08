@@ -47,6 +47,7 @@ Rectangle {
                     bar.rightColor = "black"
                     bar.barHandle = "handleTableTimeSum"
                     timeSum.updateSum()
+                    listView.endList()
                 }
                 else if (currentIndex == 1)
                 {
@@ -66,6 +67,7 @@ Rectangle {
                     bar.rightStr = "+"
                     bar.rightColor = "red"
                     bar.barHandle = "handleTableTimeAdd"
+                    listView.endList()
                 }
             }
 

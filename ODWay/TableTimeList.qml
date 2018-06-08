@@ -22,23 +22,22 @@ Rectangle {
     Connections{
         target: bar
         onRightBtnClicked:{
-            if (bar.barHandle == "handleTableTimeList")
+            if (bar.barHandle == "handleTableTimeList" && bar.rightStr == "x")
             {
-                if (bar.rightStr == "-")
+                selectMode = false
+                bar.rightColor = "red"
+                bar.rightStr = ""
+                tableTimeListView.currentIndex = 0
+                lastWrapper.color = "transparent"
+            }
+        }
+        onRightBtnDoubleClicked: {
+            if (bar.barHandle == "handleTableTimeList" && bar.rightStr == "-")
+            {
+                if (odvTimeList.delTime(tableTimeListView.currentIndex))
                 {
-                    if (odvTimeList.delTime(tableTimeListView.currentIndex))
-                    {
-                        updateCurList()
-                        bar.rightStr = ""
-                    }
-                }
-                else if (bar.rightStr == "x")
-                {
-                    selectMode = false
-                    bar.rightColor = "red"
+                    updateCurList()
                     bar.rightStr = ""
-                    tableTimeListView.currentIndex = 0
-                    lastWrapper.color = "transparent"
                 }
             }
         }
@@ -53,12 +52,17 @@ Rectangle {
         tableTimeListView.currentIndex = 0
     }
 
+    function endList() {
+        if (lastWrapper)
+        {
+            lastWrapper.color = "transparent"
+        }
+    }
+
     function calDurTime() {
         if (selectMode && bar.rightStr == "x")
         {
             bar.middleStr = odvTimeList.calDurTime(index1, index2)
-            console.log("1: ", index1)
-            console.log("2: ", index2)
         }
     }
 

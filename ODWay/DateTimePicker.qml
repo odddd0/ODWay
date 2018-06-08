@@ -3,7 +3,7 @@ import QtQuick 2.9
 import QtQuick.Controls 1.4
 
 Column {
-    property var dateEnable
+    property bool dateEnable
     property alias year: spinBoxYear.value
     property alias month: spinBoxMonth.value
     property alias day: spinBoxDay.value

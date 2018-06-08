@@ -212,12 +212,14 @@ bool ODPTime::DelDurTime(const int &index_)
     {
         if (_Impl->_lastCurList[index_])
         {
-            Result = ODWayM::Instance()->DeleteModel("ODMTime", _Impl->_lastCurList[index_]->_time);
+            int tmpTime = _Impl->_lastCurList[index_]->_time;
+
+            if (ODWayM::Instance()->DeleteModel("ODMTime", tmpTime))
+            {
+                _Impl->DeleteData(tmpTime);
+                Result = true;
+            }
         }
-    }
-    if (Result)
-    {
-        _Impl->DeleteData(_Impl->_lastCurList[index_]->_time);
     }
     return Result;
 }
