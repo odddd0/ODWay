@@ -63,6 +63,7 @@ Rectangle {
             color: "transparent"
             Text {
                 id: wrapperText
+                width: parent.width
                 anchors.verticalCenter: parent.verticalCenter
                 color: styleData.textColor
                 elide: styleData.elideMode
