@@ -20,6 +20,7 @@ Rectangle {
                             bar.barHandle == "handleTableTimeList")
                     {
                         bar.middleStr = odvTimeList.runningTimeStr
+                        listView.calDurTime()
                     }
                 }
             }

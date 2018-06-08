@@ -60,6 +60,7 @@ public:
 
 public:
     bool DelDurTime(const int &index_);
+    bool CalDurTime(const int &index1_, const int &index2_, std::string &str_);
 
 public:
     void GetCurList(StringList &list);

@@ -174,7 +174,7 @@ struct ODPTime::Impl
     std::map<std::string, StringListPtrMap> _kindSecondList;
     ODPTime::ExpandData _expandData;
     std::string _curDate;
-    IntList _lastCurList;
+    std::vector<OneTipPtr> _lastCurList;
     OneTipPtr _lastTip;
 };
 
@@ -210,12 +210,38 @@ bool ODPTime::DelDurTime(const int &index_)
     bool Result = false;
     if (index_ >= 0 && index_ < _Impl->_lastCurList.size())
     {
-        if (_Impl->_lastCurList[index_] >= 0)
-            Result = ODWayM::Instance()->DeleteModel("ODMTime", _Impl->_lastCurList[index_]);
+        if (_Impl->_lastCurList[index_])
+        {
+            Result = ODWayM::Instance()->DeleteModel("ODMTime", _Impl->_lastCurList[index_]->_time);
+        }
     }
     if (Result)
     {
-        _Impl->DeleteData(_Impl->_lastCurList[index_]);
+        _Impl->DeleteData(_Impl->_lastCurList[index_]->_time);
+    }
+    return Result;
+}
+
+bool ODPTime::CalDurTime(const int &index1_, const int &index2_, std::string &str_)
+{
+    bool Result = false;
+    if (index1_ >= 0 && index1_ < _Impl->_lastCurList.size() &&
+            index2_ >= 0 && index2_ < _Impl->_lastCurList.size())
+    {
+        OneTipPtr tip1 = _Impl->_lastCurList[index1_];
+        OneTipPtr tip2 = _Impl->_lastCurList[index2_];
+        OneTipPtr tmpTip;
+        if (tip1 && tip2)
+        {
+            Result = true;
+            if (tip1->_time < tip2->_time)
+            {
+                tmpTip = tip1;
+                tip1 = tip2;
+                tip2 = tmpTip;
+            }
+            str_ = ODTimeUtil::Duration2String(tip1->_time - tip2->_time + tip2->_durationSecond);
+        }
     }
     return Result;
 }
@@ -245,16 +271,16 @@ void ODPTime::GetCurList(StringList &list)
         std::string tmpStr;
         list.clear();
         list.push_back(_Impl->_curDate);
-        _Impl->_lastCurList.push_back(-1);
+        _Impl->_lastCurList.push_back(NULL);
         list.push_back("");
-        _Impl->_lastCurList.push_back(-1);
+        _Impl->_lastCurList.push_back(NULL);
         std::for_each(_Impl->_expandData._dayList[_Impl->_curDate]->_tipList.begin(), _Impl->_expandData._dayList[_Impl->_curDate]->_tipList.end(), [&](OneTipPtr &x){
             tmpStr = ODTimeUtil::Timestamp2String(x->_time - x->_durationSecond, "%H:%M") + "-";
             tmpStr += ODTimeUtil::Timestamp2String(x->_time, "%H:%M") + "(";
             tmpStr += ODTimeUtil::Duration2String(x->_durationSecond) + "): ";
             tmpStr += x->_classify + "_" + x->_kindFirst + "_" + x->_kindSecond;
             list.push_back(tmpStr);
-            _Impl->_lastCurList.push_back(x->_time);
+            _Impl->_lastCurList.push_back(x);
         });
     }
 }

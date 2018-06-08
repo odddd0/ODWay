@@ -84,6 +84,13 @@ bool ODVTime::delTime(const int &index_)
     }
 }
 
+QString ODVTime::calDurTime(const int &index1_, const int &index2_)
+{
+    std::string tmpStr = "";
+    ODPTime::Instance()->CalDurTime(index1_, index2_, tmpStr);
+    return QString::fromStdString(tmpStr);
+}
+
 bool ODVTime::fastIdle()
 {
     if (ODPTime::Instance()->FastIdle())

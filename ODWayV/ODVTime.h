@@ -49,6 +49,7 @@ public slots:
             const QString &kindSecond_,
             const QString &content_);
     bool delTime(const int &index_);
+    QString calDurTime(const int &index1_, const int &index2_);
 
 public slots:
     void updateList();

@@ -1,6 +1,10 @@
 import QtQuick 2.9
 
 Rectangle {
+    property bool selectMode: false
+    property int index1: 0
+    property int index2: 0
+    property var lastWrapper
     gradient: Gradient {
         GradientStop{ position: 0; color: "#EBEF70";}
         GradientStop{ position: 1; color: "#E0EF37";}
@@ -20,10 +24,21 @@ Rectangle {
         onRightBtnClicked:{
             if (bar.barHandle == "handleTableTimeList")
             {
-                if (odvTimeList.delTime(tableTimeListView.currentIndex))
+                if (bar.rightStr == "-")
                 {
-                    updateCurList()
+                    if (odvTimeList.delTime(tableTimeListView.currentIndex))
+                    {
+                        updateCurList()
+                        bar.rightStr = ""
+                    }
+                }
+                else if (bar.rightStr == "x")
+                {
+                    selectMode = false
+                    bar.rightColor = "red"
                     bar.rightStr = ""
+                    tableTimeListView.currentIndex = 0
+                    lastWrapper.color = "transparent"
                 }
             }
         }
@@ -32,6 +47,19 @@ Rectangle {
     function updateCurList() {
         odvTimeList.updateList()
         tableTimeListView.model = odvTimeList.curList
+        selectMode = false
+        bar.rightColor = "red"
+        bar.rightStr = ""
+        tableTimeListView.currentIndex = 0
+    }
+
+    function calDurTime() {
+        if (selectMode && bar.rightStr == "x")
+        {
+            bar.middleStr = odvTimeList.calDurTime(index1, index2)
+            console.log("1: ", index1)
+            console.log("2: ", index2)
+        }
     }
 
     Component {
@@ -48,17 +76,49 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    tableTimeListView.currentIndex = index
-                    if (wrapperText.text.charAt(2) == ':' &&
+                    if (selectMode)
+                    {
+                        if (wrapperText.text.charAt(2) == ':' &&
+                                wrapperText.text.charAt(5) == '-' &&
+                                wrapperText.text.charAt(8) == ':' &&
+                                wrapperText.text.charAt(11) == '(' )
+                        {
+                            tableTimeListView.currentIndex = index
+                            bar.rightStr = "x"
+                        }
+                        index2 = index
+                        calDurTime()
+                    }
+                    else
+                    {
+                        tableTimeListView.currentIndex = index
+                        if (wrapperText.text.charAt(2) == ':' &&
+                                wrapperText.text.charAt(5) == '-' &&
+                                wrapperText.text.charAt(8) == ':' &&
+                                wrapperText.text.charAt(11) == '(' )
+                        {
+                            bar.rightStr = "-"
+                        }
+                        else
+                        {
+                            bar.rightStr = ""
+                        }
+                    }
+                }
+                onDoubleClicked: {
+                    if (!selectMode &&
+                            wrapperText.text.charAt(2) == ':' &&
                             wrapperText.text.charAt(5) == '-' &&
                             wrapperText.text.charAt(8) == ':' &&
                             wrapperText.text.charAt(11) == '(' )
                     {
-                        bar.rightStr = "-"
-                    }
-                    else
-                    {
-                        bar.rightStr = ""
+                        wrapper.color = "lightyellow"
+                        selectMode = true
+                        bar.rightStr = "x"
+                        bar.rightColor = "blue"
+                        index1 = index
+                        lastWrapper = wrapper
+                        calDurTime()
                     }
                 }
             }
@@ -70,6 +130,7 @@ Rectangle {
                     target: wrapperText
                     font.bold: true
                     font.underline: true
+                    color: "black"
                 }
             }
         }

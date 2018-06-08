@@ -6,6 +6,7 @@ import ODVTime 1.0
 Rectangle {
     property var treeObj: []
     property int treeObjCount: 0
+    property var lastSelectIndex
     gradient: Gradient {
         GradientStop{ position: 0; color: "#E5F2F6";}
         GradientStop{ position: 1; color: "#B1DAE7";}
@@ -62,6 +63,20 @@ Rectangle {
                 role: "simplify"
                 resizable: true
             }
+            onClicked: {
+                if (lastSelectIndex == index)
+                {
+                    if (sumTreeView.isExpanded(index))
+                    {
+                        sumTreeView.collapse(index)
+                    }
+                    else
+                    {
+                        sumTreeView.expand(index)
+                    }
+                }
+                lastSelectIndex = index
+            }
             onDoubleClicked: {
                 if (sumTreeView.isExpanded(index))
                 {
@@ -71,6 +86,7 @@ Rectangle {
                 {
                     sumTreeView.expand(index)
                 }
+                lastSelectIndex = index
             }
         }
     }
