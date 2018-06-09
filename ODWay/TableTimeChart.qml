@@ -196,7 +196,7 @@ Rectangle {
 
             onPaint: {
                 // todo
-                numPoints = 10;
+                numPoints = lastDay - 1;
                 if (chart.gridSize == 0)
                     chart.gridSize = numPoints
 
@@ -207,23 +207,22 @@ Rectangle {
                 drawBackground(ctx);
 
                 var points = [];
-                console.log("lastDay: ", lastDay)
-                var aaa = odvTimeList.getLastCKKSum(lastDay)
+                var dataList = odvTimeList.getLastCKKSum(lastDay)
                 var lowestValue = 0
                 var highestValue = 0
                 for (var i = lastDay, j = 0; i >= 0 ; i -= pixelSkip, j += pixelSkip) {
-                    if (highestValue < aaa[j])
+                    if (highestValue < dataList[j])
                     {
-                        highestValue = aaa[j]
+                        highestValue = dataList[j]
                     }
-                    if (lowestValue > aaa[j])
+                    if (lowestValue > dataList[j])
                     {
-                        lowestValue = aaa[j]
+                        lowestValue = dataList[j]
                     }
 
                     points.push({
                                     x: j * xGridStep,
-                                    value: aaa[j]
+                                    value: dataList[j]
                                 });
                 }
 

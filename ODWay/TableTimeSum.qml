@@ -134,7 +134,6 @@ Rectangle {
                 delegate: iiDelegate
             }
             onClicked: {
-                console.log("cur: ", index)
                 if (lastSelectIndex == index)
                 {
                     if (sumTreeView.isExpanded(index))

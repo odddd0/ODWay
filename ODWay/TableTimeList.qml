@@ -39,7 +39,7 @@ Rectangle {
                 tableTimeListView.currentIndex = 0
                 lastWrapper.color = "transparent"
             }
-            else if (bar.barHandle == "handleTableTimeList" && bar.rightStr == "-")
+            else if (bar.barHandle == "handleTableTimeList" && bar.rightStr == "Del")
             {
                 if (odvTimeList.delTime(tableTimeListView.currentIndex))
                 {
@@ -133,7 +133,7 @@ Rectangle {
                     {
                         tableTimeListView.currentIndex = index
                         wrapperText.color = "red"
-                        bar.rightStr = "-"
+                        bar.rightStr = "Del"
                     }
                     else
                     {
