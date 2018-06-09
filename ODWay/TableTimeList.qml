@@ -39,9 +39,7 @@ Rectangle {
                 tableTimeListView.currentIndex = 0
                 lastWrapper.color = "transparent"
             }
-        }
-        onRightBtnDoubleClicked: {
-            if (bar.barHandle == "handleTableTimeList" && bar.rightStr == "-")
+            else if (bar.barHandle == "handleTableTimeList" && bar.rightStr == "-")
             {
                 if (odvTimeList.delTime(tableTimeListView.currentIndex))
                 {
@@ -107,17 +105,8 @@ Rectangle {
                     else
                     {
                         tableTimeListView.currentIndex = index
-                        if (wrapperText.text.charAt(2) == ':' &&
-                                wrapperText.text.charAt(5) == '-' &&
-                                wrapperText.text.charAt(8) == ':' &&
-                                wrapperText.text.charAt(11) == '(' )
-                        {
-                            bar.rightStr = "-"
-                        }
-                        else
-                        {
-                            bar.rightStr = ""
-                        }
+                        bar.rightStr = ""
+                        wrapperText.color = "black"
                     }
                 }
                 onDoubleClicked: {
@@ -134,6 +123,21 @@ Rectangle {
                         index1 = index
                         lastWrapper = wrapper
                         calDurTime()
+                    }
+                }
+                onPressAndHold: {
+                    if (!selectMode && wrapperText.text.charAt(2) == ':' &&
+                            wrapperText.text.charAt(5) == '-' &&
+                            wrapperText.text.charAt(8) == ':' &&
+                            wrapperText.text.charAt(11) == '(' )
+                    {
+                        tableTimeListView.currentIndex = index
+                        wrapperText.color = "red"
+                        bar.rightStr = "-"
+                    }
+                    else
+                    {
+                        bar.rightStr = ""
                     }
                 }
             }
