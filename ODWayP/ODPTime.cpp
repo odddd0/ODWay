@@ -255,6 +255,29 @@ bool ODPTime::CalDurTime(const int &index1_, const int &index2_, std::string &st
     return Result;
 }
 
+bool ODPTime::GetPopList(const StringList &ckkList_, IntList &indexList_)
+{
+    bool Result = false;
+    indexList_.clear();
+    if (ckkList_.size() == 3)
+    {
+        int i = 0;
+        std::for_each(_Impl->_lastCurList.begin(), _Impl->_lastCurList.end(), [&](OneTipPtr &x){
+            if (x)
+            {
+                if (!(x->_classify != ckkList_[0] ||
+                        (x->_kindFirst != ckkList_[1] && ckkList_[1] != "") ||
+                        (x->_kindSecond != ckkList_[2] && ckkList_[2] != "")))
+                {
+                    indexList_.push_back(i);
+                }
+            }
+            ++i;
+        });
+    }
+    return Result;
+}
+
 ODPTime::ODPTime()
     : _Impl(new Impl)
 {

@@ -9,11 +9,11 @@
 import QtQuick 2.9
 
 Rectangle {
+    // 0: default; 1: durMode; 2: deleteMode
     property bool selectMode: false
     property int index1: 0
     property int index2: 0
     property var lastWrapper
-    property string tmpStr: "18-06-08"
     gradient: Gradient {
         GradientStop{ position: 0; color: "#EBEF70";}
         GradientStop{ position: 1; color: "#E0EF37";}
@@ -53,6 +53,7 @@ Rectangle {
     }
 
     function updateCurList() {
+        tableTimeListView.model = ""
         odvTimeList.updateList()
         tableTimeListView.model = odvTimeList.curList
         selectMode = false
@@ -139,7 +140,6 @@ Rectangle {
             states: [
                 State {
                     name: "Current"
-                    //                    when: wrapperText.text == tmpStr
                     when: wrapper.ListView.isCurrentItem
                     PropertyChanges {
                         target: wrapperText
@@ -149,9 +149,26 @@ Rectangle {
                     }
                 },
                 State {
-                    name: "Normal"
-                    //                    when: wrapper.ListView.isCurrentItem
-                    //                when: wrapper.ListView.isCurrentItem
+                    name: "Pop"
+                    when: odvTimeList.isPop(index)
+                    PropertyChanges {
+                        target: wrapperText
+                        font.bold: false
+                        font.underline: false
+                        color: "red"
+                    }
+                },
+                State {
+                    name: "BaseDur"
+                    PropertyChanges {
+                        target: wrapperText
+                        font.bold: false
+                        font.underline: false
+                        color: "black"
+                    }
+                },
+                State {
+                    name: "DelReady"
                     PropertyChanges {
                         target: wrapperText
                         font.bold: false
@@ -175,10 +192,12 @@ Rectangle {
         delegate: tableTimeListViewDelegate
     }
 
+    // turn day Button
     Row {
         width: parent.width
         height: 50
         anchors.bottom: parent.bottom
+        // Prev day Button
         Rectangle {
             width: parent.width / 2
             height: parent.height
@@ -212,6 +231,7 @@ Rectangle {
                 }
             }
         }
+        // Next day Button
         Rectangle {
             width: parent.width / 2
             height: parent.height

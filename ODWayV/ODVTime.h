@@ -58,6 +58,8 @@ public slots:
             const QString &content_);
     bool delTime(const int &index_);
     QString calDurTime(const int &index1_, const int &index2_);
+    void setCKKCur(const QStringList ckkList_);
+    void clearCKKCur();
 
 public slots:
     void updateList();
@@ -66,6 +68,7 @@ public slots:
     bool firstDay();
     bool nextDay();
     bool lastDay();
+    bool isPop(const int &index_);
 
 public slots:
     void updateClass();
@@ -78,6 +81,8 @@ private:
     QStringList m_kindFirstList;
     QStringList m_kindSecondList;
     QString m_runningTimeStr;
+    std::vector<int> _popList;
+    std::vector<std::string> _ckkList;
 };
 
 #endif // _ODVTIME_H_FD35CFBB6BDD4D77652D17F1D8BD8EF5_

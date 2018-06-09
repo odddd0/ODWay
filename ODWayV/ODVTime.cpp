@@ -43,6 +43,20 @@ QString ODVTime::runningTimeStr()
     return m_runningTimeStr;
 }
 
+void ODVTime::setCKKCur(const QStringList ckkList_)
+{
+    _ckkList.clear();
+    for (int i = 0; i < ckkList_.size(); ++i)
+    {
+        _ckkList.push_back(ckkList_[i].toStdString());
+    }
+}
+
+void ODVTime::clearCKKCur()
+{
+    _ckkList.clear();
+}
+
 bool ODVTime::addTime(
         const int &year_,
         const int &month_,
@@ -125,6 +139,8 @@ void ODVTime::updateList()
     std::for_each(tmpList.begin(), tmpList.end(), [&](std::string &x){
         m_curList.push_back(x.c_str());
     });
+
+    ODPTime::Instance()->GetPopList(_ckkList, _popList);
 }
 
 void ODVTime::updateClass()
@@ -164,6 +180,20 @@ bool ODVTime::nextDay()
 bool ODVTime::lastDay()
 {
     return ODPTime::Instance()->LastCur();
+}
+
+bool ODVTime::isPop(const int &index_)
+{
+    bool Result = false;
+    for (auto x: _popList)
+    {
+        if (x == index_)
+        {
+            Result = true;
+            break;
+        }
+    }
+    return Result;
 }
 
 void ODVTime::updateKindFirst(QString classify_)

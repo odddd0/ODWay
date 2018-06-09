@@ -50,7 +50,7 @@ public slots:
 
 public slots:
     void updateSum();
-    void setSelectIndex(const QModelIndex &index_);
+    QStringList setSelectIndex(const QModelIndex &index_);
     QModelIndex getFirstExpand();
     QModelIndex getSecondExpand();
 

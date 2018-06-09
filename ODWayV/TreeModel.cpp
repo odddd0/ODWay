@@ -129,8 +129,9 @@ void TreeModel::updateSum()
     }
 }
 
-void TreeModel::setSelectIndex(const QModelIndex &index_)
+QStringList TreeModel::setSelectIndex(const QModelIndex &index_)
 {
+    QStringList Result;
     if (_CKKCur.size() == 3)
     {
         _CKKCur[0] = index_.data(OD_CLASSIFY).toString().toStdString();
@@ -144,6 +145,10 @@ void TreeModel::setSelectIndex(const QModelIndex &index_)
         _CKKCur.push_back(index_.data(OD_KINDFIRST).toString().toStdString());
         _CKKCur.push_back(index_.data(OD_KINDSECOND).toString().toStdString());
     }
+    Result.push_back(index_.data(OD_CLASSIFY).toString());
+    Result.push_back(index_.data(OD_KINDFIRST).toString());
+    Result.push_back(index_.data(OD_KINDSECOND).toString());
+    return Result;
 }
 
 QModelIndex TreeModel::getFirstExpand()

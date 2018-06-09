@@ -60,7 +60,7 @@ Rectangle {
         id: image
         opacity: 0.7
         Behavior on opacity {NumberAnimation {duration: 100}}
-        source: "images/next.png"
+//        source: "images/next.png"
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
         anchors.rightMargin: 16

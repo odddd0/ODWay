@@ -116,7 +116,7 @@ Rectangle {
                     width: 38
                     height: 31
                     anchors.verticalCenterOffset: -1
-                    enabled: rightStr != ""
+                    enabled: bar.rightStr != ""
                     onDoubleClicked: {
                         bar.rightStr = "Idle"
                     }

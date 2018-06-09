@@ -31,6 +31,7 @@ Rectangle {
             if (bar.barHandle == "handleTableTimeSum" && bar.rightStr == "x")
             {
                 odvTimeSumModel.clearCKK()
+                odvTimeList.clearCKKCur()
                 updateSum()
             }
         }
@@ -134,7 +135,7 @@ Rectangle {
                     }
                 }
                 lastSelectIndex = index
-                odvTimeSumModel.setSelectIndex(index)
+                odvTimeList.setCKKCur(odvTimeSumModel.setSelectIndex(index))
                 sumTreeView
             }
             onDoubleClicked: {
@@ -150,8 +151,6 @@ Rectangle {
             }
         }
     }
-
-
 
     Row {
         width: parent.width
