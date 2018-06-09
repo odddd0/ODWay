@@ -1,5 +1,13 @@
-#ifndef ODWAYM_H
-#define ODWAYM_H
+//====================================================================
+//  ODWayM.h
+//  created 6.3.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
+
+#ifndef _ODWAYM_H_16EC2CC73F70B84A068EA4AB4E0606E4_
+#define _ODWAYM_H_16EC2CC73F70B84A068EA4AB4E0606E4_
 
 #include <ODMBase/ODMBase.h>
 
@@ -29,4 +37,4 @@ private:
     ~ODWayM();
 };
 
-#endif // ODWAYM_H
+#endif // _ODWAYM_H_16EC2CC73F70B84A068EA4AB4E0606E4_

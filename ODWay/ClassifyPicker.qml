@@ -1,3 +1,10 @@
+//====================================================================
+//  ClassifyPicker.qml
+//  created 6.5.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
 
 import QtQuick 2.9
 import QtQuick.Controls 1.4

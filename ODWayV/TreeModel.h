@@ -1,5 +1,13 @@
-#ifndef TREEMODEL_H
-#define TREEMODEL_H
+//====================================================================
+//  TreeModel.h
+//  created 6.7.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
+
+#ifndef _TREEMODEL_H_15B5DCB0C305E16CAAF0D86C4FD23BFE_
+#define _TREEMODEL_H_15B5DCB0C305E16CAAF0D86C4FD23BFE_
 
 #include <QAbstractItemModel>
 
@@ -59,4 +67,4 @@ private:
     QModelIndex _firstExpand;
     QModelIndex _secondExpand;
 };
-#endif // TREEMODEL_H
+#endif // _TREEMODEL_H_15B5DCB0C305E16CAAF0D86C4FD23BFE_

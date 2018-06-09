@@ -1,3 +1,11 @@
+//====================================================================
+//  ODMTime.cpp
+//  created 6.4.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
+
 #include "ODMTime.h"
 
 bool ODMTime::_init = true;

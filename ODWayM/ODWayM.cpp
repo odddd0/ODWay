@@ -1,3 +1,10 @@
+//====================================================================
+//  ODWayM.cpp
+//  created 6.3.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
 
 #include <ODMBase/ODDBHandle.h>
 #include <ODWayM/ODMTime.h>

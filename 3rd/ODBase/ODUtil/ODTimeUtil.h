@@ -1,3 +1,11 @@
+//====================================================================
+//  ODTimeUtil.h
+//  created 6.5.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
+
 #ifndef _ODTIMEUTIL_H_2642BAEBF76A480C611A75505D021741
 #define _ODTIMEUTIL_H_2642BAEBF76A480C611A75505D021741
 

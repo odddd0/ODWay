@@ -1,5 +1,13 @@
-#ifndef ODWAYV_H
-#define ODWAYV_H
+//====================================================================
+//  ODWayV.h
+//  created 6.3.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
+
+#ifndef _ODWAYV_H_9F433F37BF2CF3966F72117B88A35683_
+#define _ODWAYV_H_9F433F37BF2CF3966F72117B88A35683_
 
 #include <QObject>
 
@@ -16,4 +24,4 @@ public slots:
 private:
 };
 
-#endif // ODWAYV_H
+#endif // _ODWAYV_H_9F433F37BF2CF3966F72117B88A35683_

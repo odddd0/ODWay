@@ -1,3 +1,11 @@
+//====================================================================
+//  TableTimeList.qml
+//  created 6.5.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
+
 import QtQuick 2.9
 
 Rectangle {
@@ -5,6 +13,7 @@ Rectangle {
     property int index1: 0
     property int index2: 0
     property var lastWrapper
+    property string tmpStr: "18-06-08"
     gradient: Gradient {
         GradientStop{ position: 0; color: "#EBEF70";}
         GradientStop{ position: 1; color: "#E0EF37";}
@@ -127,16 +136,30 @@ Rectangle {
                 }
             }
             // indent the item if it is the current item
-            states: State {
-                name: "Current"
-                when: wrapper.ListView.isCurrentItem
-                PropertyChanges {
-                    target: wrapperText
-                    font.bold: true
-                    font.underline: true
-                    color: "black"
+            states: [
+                State {
+                    name: "Current"
+                    //                    when: wrapperText.text == tmpStr
+                    when: wrapper.ListView.isCurrentItem
+                    PropertyChanges {
+                        target: wrapperText
+                        font.bold: true
+                        font.underline: true
+                        color: "black"
+                    }
+                },
+                State {
+                    name: "Normal"
+                    //                    when: wrapper.ListView.isCurrentItem
+                    //                when: wrapper.ListView.isCurrentItem
+                    PropertyChanges {
+                        target: wrapperText
+                        font.bold: false
+                        font.underline: false
+                        color: "black"
+                    }
                 }
-            }
+            ]
         }
     }
 

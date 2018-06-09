@@ -1,5 +1,13 @@
-#ifndef ODVECTORUTIL_H
-#define ODVECTORUTIL_H
+//====================================================================
+//  ODVectorUtil.h
+//  created 6.5.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
+
+#ifndef _ODVECTORUTIL_H_79F5F3350B2857C60993735A97CE701C_
+#define _ODVECTORUTIL_H_79F5F3350B2857C60993735A97CE701C_
 
 #include <ODMBase/ODBaseTypes.h>
 
@@ -27,4 +35,4 @@ public:
     }
 };
 
-#endif // ODVECTORUTIL_H
+#endif // _ODVECTORUTIL_H_79F5F3350B2857C60993735A97CE701C_

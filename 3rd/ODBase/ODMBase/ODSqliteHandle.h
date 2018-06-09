@@ -1,3 +1,11 @@
+//====================================================================
+//  ODSqliteHandle.h
+//  created 6.3.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
+
 #ifndef _ODSQLITEHANDLE_H_6BC0E607E9DCA3298DCD458978C18C34_
 #define _ODSQLITEHANDLE_H_6BC0E607E9DCA3298DCD458978C18C34_
 

@@ -1,5 +1,13 @@
-#ifndef ODMTIME_H
-#define ODMTIME_H
+//====================================================================
+//  ODMTime.h
+//  created 6.4.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
+
+#ifndef _ODMTIME_H_9BDC54BF1D2AE7E1C4FEB7E13176D8CC_
+#define _ODMTIME_H_9BDC54BF1D2AE7E1C4FEB7E13176D8CC_
 
 #include <ODMBase/ODMBase.h>
 
@@ -28,4 +36,4 @@ private:
 };
 typedef std::shared_ptr<ODMTime> ODMTimePtr;
 
-#endif // ODMTIME_H
+#endif // _ODMTIME_H_9BDC54BF1D2AE7E1C4FEB7E13176D8CC_

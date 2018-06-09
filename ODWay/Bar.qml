@@ -1,3 +1,11 @@
+//====================================================================
+//  Bar.qml
+//  created 6.5.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
+
 import QtQuick 2.0
 //import QtGraphicalEffects 1.0
 

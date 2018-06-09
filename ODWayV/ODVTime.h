@@ -1,5 +1,13 @@
-#ifndef ODVTIME_H
-#define ODVTIME_H
+//====================================================================
+//  ODVTime.h
+//  created 6.5.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
+
+#ifndef _ODVTIME_H_FD35CFBB6BDD4D77652D17F1D8BD8EF5_
+#define _ODVTIME_H_FD35CFBB6BDD4D77652D17F1D8BD8EF5_
 
 #include <QObject>
 
@@ -72,4 +80,4 @@ private:
     QString m_runningTimeStr;
 };
 
-#endif // ODVTIME_H
+#endif // _ODVTIME_H_FD35CFBB6BDD4D77652D17F1D8BD8EF5_

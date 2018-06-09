@@ -1,3 +1,11 @@
+//====================================================================
+//  ODDBHandle.h
+//  created 6.3.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
+
 #ifndef _ODDBHANDLE_H_DB81DA8B00554332D1F1E565FEAE9A99_
 #define _ODDBHANDLE_H_DB81DA8B00554332D1F1E565FEAE9A99_
 

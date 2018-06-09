@@ -1,5 +1,13 @@
-#ifndef ODPTIME_H
-#define ODPTIME_H
+//====================================================================
+//  ODPTime.h
+//  created 6.4.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
+
+#ifndef _ODPTIME_H_E059E08A3569020BF0BF4ED7D07ADC10_
+#define _ODPTIME_H_E059E08A3569020BF0BF4ED7D07ADC10_
 
 #include <ODMBase/ODBaseTypes.h>
 #include <ODWayM/ODMTime.h>
@@ -91,4 +99,4 @@ private:
     ~ODPTime();
 };
 
-#endif // ODPTIME_H
+#endif // _ODPTIME_H_E059E08A3569020BF0BF4ED7D07ADC10_

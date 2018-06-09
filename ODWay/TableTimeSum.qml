@@ -1,3 +1,11 @@
+//====================================================================
+//  TableTimeSum.qml
+//  created 6.6.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
+
 import QtQuick 2.9
 import QtQuick.Controls 1.4
 import ODVTime 1.0

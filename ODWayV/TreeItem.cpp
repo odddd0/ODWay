@@ -1,4 +1,13 @@
+//====================================================================
+//  TreeItem.cpp
+//  created 6.7.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
+
 #include "TreeItem.h"
+
 TreeItem::TreeItem() :m_parentItem(NULL)
 {
 }

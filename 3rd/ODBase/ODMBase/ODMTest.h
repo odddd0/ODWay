@@ -1,5 +1,13 @@
-#ifndef ODMTEST_H
-#define ODMTEST_H
+//====================================================================
+//  ODMTest.h
+//  created 6.3.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
+
+#ifndef _ODMTEST_H_DFBE097664D21A52ED9E1AFF37C5B121_
+#define _ODMTEST_H_DFBE097664D21A52ED9E1AFF37C5B121_
 
 #include "ODMBase.h"
 
@@ -25,4 +33,4 @@ private:
 };
 typedef std::shared_ptr<ODMTest> ODMTestPtr;
 
-#endif // ODMTEST_H
+#endif // _ODMTEST_H_DFBE097664D21A52ED9E1AFF37C5B121_
