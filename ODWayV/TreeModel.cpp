@@ -53,7 +53,7 @@ QString TreeModel::daySum() const
     return m_daySum;
 }
 
-void TreeModel::updateSum()
+void TreeModel::updateSum(const bool &allSum_)
 {
     _classifyList.clear();
     _kindFirstList.clear();
@@ -68,7 +68,14 @@ void TreeModel::updateSum()
     TreeItem * pj = NULL;
     TreeItem * ps = NULL;
 
-    ODPTime::Instance()->GetCurSumList(_classifyList, _kindFirstList, _kindSecondList);
+    if (allSum_)
+    {
+        ODPTime::Instance()->GetAllSumList(_classifyList, _kindFirstList, _kindSecondList);
+    }
+    else
+    {
+        ODPTime::Instance()->GetCurSumList(_classifyList, _kindFirstList, _kindSecondList);
+    }
     m_daySum = ODPTime::Instance()->GetCurSum().c_str();
 
     for (int i = 0; i < _classifyList.size(); ++i)

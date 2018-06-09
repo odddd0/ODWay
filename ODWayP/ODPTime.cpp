@@ -266,14 +266,74 @@ bool ODPTime::GetPopList(const StringList &ckkList_, IntList &indexList_)
             if (x)
             {
                 if (!(x->_classify != ckkList_[0] ||
-                        (x->_kindFirst != ckkList_[1] && ckkList_[1] != "") ||
-                        (x->_kindSecond != ckkList_[2] && ckkList_[2] != "")))
+                      (x->_kindFirst != ckkList_[1] && ckkList_[1] != "") ||
+                      (x->_kindSecond != ckkList_[2] && ckkList_[2] != "")))
                 {
                     indexList_.push_back(i);
                 }
             }
             ++i;
         });
+    }
+    return Result;
+}
+
+bool ODPTime::GetLastCKKSum(const StringList &ckkList_, const int &lastCount, IntList &intList_)
+{
+    bool Result = false;
+    if (ckkList_.size() ==3 && ckkList_[0] != "" && _Impl->_lastTip)
+    {
+        std::string tmpDate = ODTimeUtil::Timestamp2String(_Impl->_lastTip->_time, "%y-%m-%d");
+        ODTimeUtil::DateJump(tmpDate, 1 - lastCount);
+        Result = true;
+        if (ckkList_[1] == "")
+        {
+            // classify level
+            for (int i = 0; i < lastCount; ++i)
+            {
+                if (_Impl->_expandData._sumList[tmpDate])
+                {
+                    intList_.push_back(_Impl->_expandData._sumList[tmpDate]->_classifySum[ckkList_[0]] / 60);
+                }
+                else
+                {
+                    intList_.push_back(0);
+                }
+                ODTimeUtil::DateJump(tmpDate);
+            }
+        }
+        else if (ckkList_[2] == "")
+        {
+            // kindFirst level
+            for (int i = 0; i < lastCount; ++i)
+            {
+                if (_Impl->_expandData._sumList[tmpDate])
+                {
+                    intList_.push_back(_Impl->_expandData._sumList[tmpDate]->_kindFirstSum[ckkList_[0]][ckkList_[1]] / 60);
+                }
+                else
+                {
+                    intList_.push_back(0);
+                }
+                ODTimeUtil::DateJump(tmpDate);
+            }
+        }
+        else
+        {
+            // kindSecond level
+            for (int i = 0; i < lastCount; ++i)
+            {
+                if (_Impl->_expandData._sumList[tmpDate])
+                {
+                    intList_.push_back(_Impl->_expandData._sumList[tmpDate]->_kindSecondSum[ckkList_[0]][ckkList_[1]][ckkList_[2]] / 60);
+                }
+                else
+                {
+                    intList_.push_back(0);
+                }
+                ODTimeUtil::DateJump(tmpDate);
+            }
+        }
     }
     return Result;
 }
@@ -323,11 +383,8 @@ void ODPTime::GetCurSumList(std::vector<StringList> &classifyList_,
 {
     if (!_Impl->_expandData._sumList.empty())
     {
-        char tmpChar[20];
         DaySumPtr oneSum = _Impl->_expandData._sumList[_Impl->_curDate];
-        std::string tmpStr = "";
         SIMapList listClassifySum, listKindFirstSum, listKindSecondSum;
-        double tmpPercentage = 0;
         if (oneSum)
         {
             classifyList_.clear();
@@ -385,6 +442,65 @@ void ODPTime::GetCurSumList(std::vector<StringList> &classifyList_,
                     kindFirstList_.push_back(metaKindFirstClassify);
                     kindSecondList_.push_back(metaKindSecondClassify);
                 }
+            });
+        }
+    }
+}
+
+void ODPTime::GetAllSumList(std::vector<StringList> &classifyList_,
+                            std::vector<std::vector<StringList> > &kindFirstList_,
+                            std::vector<std::vector<std::vector<StringList> > > &kindSecondList_)
+{
+    if (!_Impl->_expandData._sumList.empty())
+    {
+        DaySumPtr oneSum = _Impl->_expandData._sumList[_Impl->_curDate];
+        SIMapList listClassifySum, listKindFirstSum, listKindSecondSum;
+        if (oneSum)
+        {
+            classifyList_.clear();
+            kindFirstList_.clear();
+            kindSecondList_.clear();
+
+            std::for_each(_Impl->_classifyList.begin(), _Impl->_classifyList.end(), [&](std::string &x){
+                StringList metaClassify;
+                std::vector<StringList> metaKindFirstClassify;
+                std::vector<std::vector<StringList>> metaKindSecondClassify;
+
+                metaClassify.push_back(x);
+                metaClassify.push_back("0");
+                metaClassify.push_back(x);
+                metaClassify.push_back("");
+                metaClassify.push_back("");
+
+                classifyList_.push_back(metaClassify);
+
+                std::for_each(_Impl->_kindFirstList[x]->begin(), _Impl->_kindFirstList[x]->end(), [&](std::string &y){
+                    StringList tmpKindFirst;
+
+                    tmpKindFirst.push_back(y);
+                    tmpKindFirst.push_back("0");
+                    tmpKindFirst.push_back(x);
+                    tmpKindFirst.push_back(y);
+                    tmpKindFirst.push_back("");
+
+                    metaKindFirstClassify.push_back(tmpKindFirst);
+                    std::vector<StringList> metaKindSecondKind;
+
+                    std::for_each(_Impl->_kindSecondList[x][y]->begin(), _Impl->_kindSecondList[x][y]->end(), [&](std::string &z){
+                        StringList tmpKindSecond;
+
+                        tmpKindSecond.push_back(z);
+                        tmpKindSecond.push_back("0");
+                        tmpKindSecond.push_back(x);
+                        tmpKindSecond.push_back(y);
+                        tmpKindSecond.push_back(z);
+
+                        metaKindSecondKind.push_back(tmpKindSecond);
+                    });
+                    metaKindSecondClassify.push_back(metaKindSecondKind);
+                });
+                kindFirstList_.push_back(metaKindFirstClassify);
+                kindSecondList_.push_back(metaKindSecondClassify);
             });
         }
     }

@@ -70,10 +70,15 @@ public:
     bool DelDurTime(const int &index_);
     bool CalDurTime(const int &index1_, const int &index2_, std::string &str_);
     bool GetPopList(const StringList &ckkList_, IntList &indexList_);
+    bool GetLastCKKSum(const StringList &ckkList_, const int &lastCount, IntList &intList_);
 
 public:
     void GetCurList(StringList &list);
     void GetCurSumList(
+            std::vector<StringList> &classifyList_,
+            std::vector<std::vector<StringList>> &kindFirstList_,
+            std::vector<std::vector<std::vector<StringList>>> &kindSecondList_);
+    void GetAllSumList(
             std::vector<StringList> &classifyList_,
             std::vector<std::vector<StringList>> &kindFirstList_,
             std::vector<std::vector<std::vector<StringList>>> &kindSecondList_);

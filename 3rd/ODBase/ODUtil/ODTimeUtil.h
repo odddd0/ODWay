@@ -79,6 +79,18 @@ public:
     static std::string Duration2String(const int &timestamp_, const std::string &format_ = "");
 
     static bool IsSameDay(const int &timstamp1_, const int &timstamp2_);
+
+    /**
+     * @brief DateJump
+     * @param date_: like 18-01-22
+     *              when count_ = 1
+     *              return 18-01-23
+     *              when count_ = -2
+     *              return 18-01-20
+     * @param count_
+     * @return
+     */
+    static void DateJump(std::string &date_, const int &count_ = 1);
 };
 
 #endif // _ODTIMEUTIL_H_2642BAEBF76A480C611A75505D021741

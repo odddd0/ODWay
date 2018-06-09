@@ -6,14 +6,249 @@
 //  https://github.com/odddd0/ODWay
 //====================================================================
 
-import QtQuick 2.9
-import QtQuick.Controls 1.4
-import ODVTime 1.0
+
+import QtQuick 2.0
+import QtQuick.Layouts 1.1
 
 Rectangle {
+    id: chart
 
-    gradient: Gradient {
-        GradientStop{ position: 0; color: "#A1EF54";}
-        GradientStop{ position: 1; color: "#89EF37";}
+    property string activeChart: "week"
+    property int gridSize: 4
+    property int lastDay: 7
+    property real gridStep: gridSize ? (canvas.width - canvas.tickMargin) / gridSize : canvas.xGridStep
+
+    function update() {
+        if (chart.activeChart === "month") {
+            gridSize = 4;
+            lastDay = 30;
+        }
+        else if (chart.activeChart === "quarter") {
+            gridSize = 3;
+            lastDay = 90;
+        }
+        else if (chart.activeChart === "halfyear") {
+            gridSize = 6;
+            lastDay = 180;
+        }
+        else {
+            gridSize = 0;
+            lastDay = 7;
+        }
+
+        canvas.requestPaint();
+    }
+
+    GridLayout {
+        anchors.fill: parent
+        columns: 6
+        rows: 3
+        columnSpacing: 4
+        anchors.topMargin: 70
+        Button {
+            id: weekButton
+            text: "Week"
+            buttonEnabled: chart.activeChart === "week"
+            onClicked: {
+                chart.activeChart = "week";
+                chart.update();
+            }
+        }
+
+        Button {
+            id: monthButton
+            text: "Month"
+            buttonEnabled: chart.activeChart === "month"
+            onClicked: {
+                chart.activeChart = "month";
+                chart.update();
+            }
+        }
+
+        Button {
+            id: quarterlyButton
+            text: "3 Months"
+            buttonEnabled: chart.activeChart === "quarter"
+            onClicked: {
+                chart.activeChart = "quarter";
+                chart.update();
+            }
+        }
+
+        Button {
+            id: halfYearlyButton
+            text: "6 Months"
+            buttonEnabled: chart.activeChart === "halfyear"
+            onClicked: {
+                chart.activeChart = "halfyear";
+                chart.update();
+            }
+        }
+
+        Canvas {
+            id: canvas
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.columnSpan: 6
+
+            property int pixelSkip: 1
+            property int numPoints: 1
+            property int tickMargin: 34
+
+            property real xGridStep: (canvas.width - tickMargin) / numPoints
+            property real yGridOffset: canvas.height / 26
+            property real yGridStep: canvas.height / 12
+
+            function drawBackground(ctx) {
+                ctx.save();
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.strokeStyle = "#d7d7d7";
+                ctx.beginPath();
+                // Horizontal grid lines
+                for (var i = 0; i < 12; i++) {
+                    ctx.moveTo(0, canvas.yGridOffset + i * canvas.yGridStep);
+                    ctx.lineTo(canvas.width, canvas.yGridOffset + i * canvas.yGridStep);
+                }
+
+                // Vertical grid lines
+                var height = 35 * canvas.height / 36;
+                var yOffset = canvas.height - height;
+                var xOffset = 0;
+                for (i = 0; i < chart.gridSize; i++) {
+                    ctx.moveTo(xOffset + i * chart.gridStep, yOffset);
+                    ctx.lineTo(xOffset + i * chart.gridStep, height);
+                }
+                ctx.stroke();
+
+                // Right ticks
+                ctx.strokeStyle = "#666666";
+                ctx.beginPath();
+                var xStart = canvas.width - tickMargin;
+                ctx.moveTo(xStart, 0);
+                ctx.lineTo(xStart, canvas.height);
+                for (i = 0; i < 12; i++) {
+                    ctx.moveTo(xStart, canvas.yGridOffset + i * canvas.yGridStep);
+                    ctx.lineTo(canvas.width, canvas.yGridOffset + i * canvas.yGridStep);
+                }
+                ctx.moveTo(0, canvas.yGridOffset + 9 * canvas.yGridStep);
+                ctx.lineTo(canvas.width, canvas.yGridOffset + 9 * canvas.yGridStep);
+                ctx.closePath();
+                ctx.stroke();
+
+                ctx.restore();
+            }
+
+            function drawScales(ctx, high, low)
+            {
+                ctx.save();
+                ctx.strokeStyle = "#888888";
+                ctx.font = "10px Open Sans"
+
+                ctx.beginPath();
+
+                // prices on y-axis
+                var x = canvas.width - tickMargin + 3;
+                var priceStep = (high - low) / 9.0;
+                for (var i = 0; i < 10; i += 2) {
+                    var price = parseFloat(high - i * priceStep).toFixed(1);
+                    ctx.text(price, x, canvas.yGridOffset + i * yGridStep - 2);
+                }
+
+                ctx.closePath();
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            function drawPrice(ctx, points, highest, lowest)
+            {
+                ctx.save();
+                ctx.globalAlpha = 0.7;
+                ctx.strokeStyle = "blue";
+
+                ctx.lineWidth = 3
+
+                ctx.beginPath();
+
+                var end = points.length;
+
+                var range = highest - lowest;
+                if (range == 0) {
+                    range = 1;
+                }
+
+                for (var i = 0; i < end; i += pixelSkip) {
+                    var x = points[i]["x"];
+                    var y = points[i]["value"];
+                    var h = 9 * yGridStep;
+
+                    y = h * (lowest - y)/range + h + yGridOffset;
+
+                    if (i == 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            onPaint: {
+                // todo
+                numPoints = 10;
+                if (chart.gridSize == 0)
+                    chart.gridSize = numPoints
+
+                var ctx = canvas.getContext("2d");
+                ctx.globalCompositeOperation = "source-over";
+                ctx.lineWidth = 1;
+
+                drawBackground(ctx);
+
+                var points = [];
+                console.log("lastDay: ", lastDay)
+                var aaa = odvTimeList.getLastCKKSum(lastDay)
+                var lowestValue = 0
+                var highestValue = 0
+                for (var i = lastDay, j = 0; i >= 0 ; i -= pixelSkip, j += pixelSkip) {
+                    if (highestValue < aaa[j])
+                    {
+                        highestValue = aaa[j]
+                    }
+                    if (lowestValue > aaa[j])
+                    {
+                        lowestValue = aaa[j]
+                    }
+
+                    points.push({
+                                    x: j * xGridStep,
+                                    value: aaa[j]
+                                });
+                }
+
+                drawPrice(ctx, points, highestValue, lowestValue);
+                drawScales(ctx, highestValue, lowestValue);
+            }
+        }
+
+        Text {
+            id: fromDate
+            color: "#000000"
+            font.family: "Open Sans"
+            font.pointSize: 8
+            Layout.alignment: Qt.AlignLeft
+            text: "| "
+        }
+        Text {
+            id: toDate
+            color: "#000000"
+            font.family: "Open Sans"
+            font.pointSize: 8
+            Layout.alignment: Qt.AlignRight
+            Layout.rightMargin: canvas.tickMargin
+            Layout.columnSpan: 5
+            text: " |"
+        }
     }
 }

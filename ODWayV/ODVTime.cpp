@@ -57,6 +57,17 @@ void ODVTime::clearCKKCur()
     _ckkList.clear();
 }
 
+QList<int> ODVTime::getLastCKKSum(const int &lastDay_)
+{
+    QList<int> Result;
+    IntList tmpList;
+    ODPTime::Instance()->GetLastCKKSum(_ckkList, lastDay_, tmpList);
+    std::for_each(tmpList.begin(), tmpList.end(), [&Result](int &x){
+        Result.push_back(x);
+    });
+    return Result;
+}
+
 bool ODVTime::addTime(
         const int &year_,
         const int &month_,

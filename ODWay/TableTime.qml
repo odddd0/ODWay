@@ -43,6 +43,7 @@ Rectangle {
             focus: false
             orientation: ListView.Horizontal
             boundsBehavior: Flickable.StopAtBounds
+            // todo 0 -> 2
             currentIndex: 2
 
             onCurrentIndexChanged: {
@@ -54,12 +55,13 @@ Rectangle {
                     bar.rightColor = "black"
                     bar.middleStr = "Chart"
                     bar.barHandle = "handleTableTimeChart"
+                    timeChart.update()
                 }
                 else if (currentIndex == 1)
                 {
                     // add
                     bar.leftStr = "<"
-                    bar.rightStr = "x"
+                    bar.rightStr = "All"
                     bar.rightColor = "black"
                     bar.barHandle = "handleTableTimeSum"
                     timeSum.updateSum()

@@ -49,7 +49,7 @@ public slots:
     void clearCKK();
 
 public slots:
-    void updateSum();
+    void updateSum(const bool &allSum_ = false);
     QStringList setSelectIndex(const QModelIndex &index_);
     QModelIndex getFirstExpand();
     QModelIndex getSecondExpand();

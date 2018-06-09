@@ -60,6 +60,7 @@ public slots:
     QString calDurTime(const int &index1_, const int &index2_);
     void setCKKCur(const QStringList ckkList_);
     void clearCKKCur();
+    QList<int> getLastCKKSum(const int &lastDay_);
 
 public slots:
     void updateList();

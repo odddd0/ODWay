@@ -85,6 +85,7 @@ Rectangle {
             color: "transparent"
             Text {
                 id: wrapperText
+                width: parent.width
                 text: modelData
             }
             MouseArea {

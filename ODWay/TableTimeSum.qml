@@ -19,6 +19,7 @@ Rectangle {
     property string lastKindSecond: ""
     property var expandFirst
     property var expandSecond
+    property bool allSum: false
     gradient: Gradient {
         GradientStop{ position: 0; color: "#E5F2F6";}
         GradientStop{ position: 1; color: "#B1DAE7";}
@@ -32,15 +33,26 @@ Rectangle {
             {
                 odvTimeSumModel.clearCKK()
                 odvTimeList.clearCKKCur()
-                updateSum()
+                bar.rightStr = "All"
             }
+            else if (bar.barHandle == "handleTableTimeSum" && bar.rightStr == "All")
+            {
+                allSum = true
+                bar.middleStr = "ALL"
+                bar.rightStr = ""
+            }
+            updateSum()
         }
     }
 
     function updateSum() {
         console.log("sum update")
-        odvTimeSumModel.updateSum()
-        bar.middleStr = odvTimeSumModel.daySum
+        odvTimeSumModel.updateSum(allSum)
+        if (!allSum)
+        {
+            bar.middleStr = odvTimeSumModel.daySum
+        }
+        allSum = false
 
         lastClassify = odvTimeSumModel.getCurClassify()
         lastKindFirst = odvTimeSumModel.getCurKindFirst()
@@ -136,7 +148,7 @@ Rectangle {
                 }
                 lastSelectIndex = index
                 odvTimeList.setCKKCur(odvTimeSumModel.setSelectIndex(index))
-                sumTreeView
+                bar.rightStr = "x"
             }
             onDoubleClicked: {
                 if (sumTreeView.isExpanded(index))
@@ -148,6 +160,7 @@ Rectangle {
                     sumTreeView.expand(index)
                 }
                 lastSelectIndex = index
+                bar.rightStr = "x"
             }
         }
     }

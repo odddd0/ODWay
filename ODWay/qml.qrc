@@ -12,5 +12,6 @@
         <file>DigitalPicker.qml</file>
         <file>TableTimeSum.qml</file>
         <file>TableTimeChart.qml</file>
+        <file>Button.qml</file>
     </qresource>
 </RCC>
