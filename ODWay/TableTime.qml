@@ -64,6 +64,7 @@ Rectangle {
                     bar.rightStr = "All"
                     bar.rightColor = "black"
                     bar.barHandle = "handleTableTimeSum"
+                    timeSum.allSum = false
                     timeSum.updateSum()
                     listView.endList()
                 }
