@@ -43,16 +43,16 @@ public:
 
 public slots:
     void setDaySum(QString daySum);
-    QString getCurClassify();
-    QString getCurKindFirst();
-    QString getCurKindSecond();
     void clearCKK();
+    bool isSelectHighlight(const QString &classify_, const QString &kindFirst_, const QString &kindSecond_);
 
 public slots:
     void updateSum(const bool &allSum_ = false);
     QStringList setSelectIndex(const QModelIndex &index_);
     QModelIndex getFirstExpand();
     QModelIndex getSecondExpand();
+    bool isFirstExpand();
+    bool isSecondExpand();
 
 signals:
     void daySumChanged(QString daySum);
@@ -66,5 +66,7 @@ private:
     StringList _CKKCur;
     QModelIndex _firstExpand;
     QModelIndex _secondExpand;
+    bool _isFirstExpand;
+    bool _isSecondExpand;
 };
 #endif // _TREEMODEL_H_15B5DCB0C305E16CAAF0D86C4FD23BFE_

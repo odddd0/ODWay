@@ -285,54 +285,52 @@ bool ODPTime::GetLastCKKSum(const StringList &ckkList_, const int &lastCount, In
     {
         std::string tmpDate = ODTimeUtil::Timestamp2String(_Impl->_lastTip->_time, "%y-%m-%d");
         ODTimeUtil::DateJump(tmpDate, 1 - lastCount);
+        int tmpValue = 0;
         Result = true;
-        if (ckkList_[1] == "")
+
+        for (int i = 0; i < lastCount; ++i)
         {
-            // classify level
-            for (int i = 0; i < lastCount; ++i)
+            if (_Impl->_expandData._sumList[tmpDate])
             {
-                if (_Impl->_expandData._sumList[tmpDate])
+
+                if (ckkList_[1] == "")
                 {
-                    intList_.push_back(_Impl->_expandData._sumList[tmpDate]->_classifySum[ckkList_[0]] / 60);
+                    if (tmpValue = _Impl->_expandData._sumList[tmpDate]->_classifySum[ckkList_[0]])
+                    {
+                        tmpValue /= 60;
+                    }
+                    else
+                    {
+                        _Impl->_expandData._sumList[tmpDate]->_classifySum.erase(ckkList_[0]);
+                    }
+                }
+                else if (ckkList_[2] == "")
+                {
+                    if (tmpValue = _Impl->_expandData._sumList[tmpDate]->_kindFirstSum[ckkList_[0]][ckkList_[1]])
+                    {
+                        tmpValue /= 60;
+                    }
+                    else
+                    {
+                        _Impl->_expandData._sumList[tmpDate]->_kindFirstSum.erase(ckkList_[0]);
+                    }
                 }
                 else
                 {
-                    intList_.push_back(0);
+                    if (tmpValue = _Impl->_expandData._sumList[tmpDate]->_kindSecondSum[ckkList_[0]][ckkList_[1]][ckkList_[2]])
+                    {
+                        tmpValue /= 60;
+                    }
+                    else
+                    {
+                        _Impl->_expandData._sumList[tmpDate]->_kindSecondSum.erase(ckkList_[0]);
+                    }
+
                 }
-                ODTimeUtil::DateJump(tmpDate);
             }
-        }
-        else if (ckkList_[2] == "")
-        {
-            // kindFirst level
-            for (int i = 0; i < lastCount; ++i)
-            {
-                if (_Impl->_expandData._sumList[tmpDate])
-                {
-                    intList_.push_back(_Impl->_expandData._sumList[tmpDate]->_kindFirstSum[ckkList_[0]][ckkList_[1]] / 60);
-                }
-                else
-                {
-                    intList_.push_back(0);
-                }
-                ODTimeUtil::DateJump(tmpDate);
-            }
-        }
-        else
-        {
-            // kindSecond level
-            for (int i = 0; i < lastCount; ++i)
-            {
-                if (_Impl->_expandData._sumList[tmpDate])
-                {
-                    intList_.push_back(_Impl->_expandData._sumList[tmpDate]->_kindSecondSum[ckkList_[0]][ckkList_[1]][ckkList_[2]] / 60);
-                }
-                else
-                {
-                    intList_.push_back(0);
-                }
-                ODTimeUtil::DateJump(tmpDate);
-            }
+
+            intList_.push_back(tmpValue);
+            ODTimeUtil::DateJump(tmpDate);
         }
     }
     return Result;

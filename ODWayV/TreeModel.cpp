@@ -14,6 +14,8 @@ TreeModel::TreeModel(QObject *parent)
     : QAbstractItemModel(parent)
     , m_rootItem(NULL)
     , _CKKCur(3, "")
+    , _isFirstExpand(false)
+    , _isSecondExpand(false)
 {
     updateSum();
 }
@@ -63,10 +65,6 @@ void TreeModel::updateSum(const bool &allSum_)
     int si = -1;
     int sj = -1;
     int sk = -1;
-    int ss = -1;
-    TreeItem * pi = NULL;
-    TreeItem * pj = NULL;
-    TreeItem * ps = NULL;
 
     if (allSum_)
     {
@@ -85,7 +83,6 @@ void TreeModel::updateSum(const bool &allSum_)
         if (_CKKCur.size() == 3 && _classifyList[i][0] == _CKKCur[0])
         {
             si = i;
-            pi = item_I;
         }
 
         for (int j = 0; j < _kindFirstList[i].size(); ++j)
@@ -95,7 +92,6 @@ void TreeModel::updateSum(const bool &allSum_)
             if (_CKKCur.size() == 3 && _kindFirstList[i][j][0] == _CKKCur[1])
             {
                 sj = j;
-                pj = item_J;
             }
 
             for (int k = 0; k < _kindSecondList[i][j].size(); ++k)
@@ -109,30 +105,26 @@ void TreeModel::updateSum(const bool &allSum_)
             }
         }
     }
-    if (si == -1)
-    {
-        // null; no expand
-    }
-    else if (sj == -1)
-    {
-        // classify level; no expand
-        ss = si;
-        ps = m_rootItem;
-    }
-    else if (sk == -1)
+
+    if (si != -1 && sj != -1 && sk == -1)
     {
         // kindFirst level; expand classify
-        ss = sj;
-        ps = pi;
         _firstExpand = createIndex(si, 0, m_rootItem->child(si));
+        _isFirstExpand = true;
+        _isSecondExpand = false;
+    }
+    else if (si != -1 && sj != -1 && sk != -1)
+    {
+        // kindSecond level; expand classify, kindFirst
+        _firstExpand = createIndex(si, 0, m_rootItem->child(si));
+        _secondExpand = createIndex(sj, 0, m_rootItem->child(si)->child(sj));
+        _isFirstExpand = true;
+        _isSecondExpand = true;
     }
     else
     {
-        // kindSecond level; expand classify, kindFirst
-        ss = sk;
-        ps = pj;
-        _firstExpand = createIndex(si, 0, m_rootItem->child(si));
-        _secondExpand = createIndex(sj, 0, m_rootItem->child(si)->child(sj));
+        _isFirstExpand = false;
+        _isSecondExpand = false;
     }
 }
 
@@ -158,6 +150,16 @@ QStringList TreeModel::setSelectIndex(const QModelIndex &index_)
     return Result;
 }
 
+bool TreeModel::isFirstExpand()
+{
+    return _isFirstExpand;
+}
+
+bool TreeModel::isSecondExpand()
+{
+    return _isSecondExpand;
+}
+
 QModelIndex TreeModel::getFirstExpand()
 {
     return _firstExpand;
@@ -177,36 +179,24 @@ void TreeModel::setDaySum(QString daySum)
     emit daySumChanged(m_daySum);
 }
 
-QString TreeModel::getCurClassify()
-{
-    if (_CKKCur.size() == 3)
-    {
-        return QString::fromStdString(_CKKCur[0]);
-    }
-    return "";
-}
-
-QString TreeModel::getCurKindFirst()
-{
-    if (_CKKCur.size() == 3)
-    {
-        return QString::fromStdString(_CKKCur[1]);
-    }
-    return "";
-}
-
-QString TreeModel::getCurKindSecond()
-{
-    if (_CKKCur.size() == 3)
-    {
-        return QString::fromStdString(_CKKCur[2]);
-    }
-    return "";
-}
-
 void TreeModel::clearCKK()
 {
     _CKKCur.clear();
+    _isFirstExpand = false;
+    _isSecondExpand = false;
+}
+
+bool TreeModel::isSelectHighlight(const QString &classify_, const QString &kindFirst_, const QString &kindSecond_)
+{
+    bool Result = true;
+    if (_CKKCur.size() != 3 ||
+            kindSecond_ != QString::fromStdString(_CKKCur[2]) ||
+            kindFirst_ != QString::fromStdString(_CKKCur[1]) ||
+            classify_ != QString::fromStdString(_CKKCur[0]))
+    {
+        Result = false;
+    }
+    return Result;
 }
 
 QVariant TreeModel::data(const QModelIndex &index, int role) const

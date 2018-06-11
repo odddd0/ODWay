@@ -12,13 +12,7 @@ import ODVTime 1.0
 
 Rectangle {
     property var treeObj: []
-    property int treeObjCount: 0
     property var lastSelectIndex
-    property string lastClassify: ""
-    property string lastKindFirst: ""
-    property string lastKindSecond: ""
-    property var expandFirst
-    property var expandSecond
     property bool allSum: false
     gradient: Gradient {
         GradientStop{ position: 0; color: "#E5F2F6";}
@@ -46,7 +40,6 @@ Rectangle {
     }
 
     function updateSum() {
-        console.log("sum update")
         odvTimeSumModel.updateSum(allSum)
         if (!allSum)
         {
@@ -54,18 +47,12 @@ Rectangle {
         }
         allSum = false
 
-        lastClassify = odvTimeSumModel.getCurClassify()
-        lastKindFirst = odvTimeSumModel.getCurKindFirst()
-        lastKindSecond = odvTimeSumModel.getCurKindSecond()
-        expandFirst = odvTimeSumModel.getFirstExpand()
-        expandSecond = odvTimeSumModel.getSecondExpand()
-
+        // create and destroy Tree Object
         var obj = treeComponent.createObject(treeContain, {})
-        for (var i = 0; i < treeObjCount; ++i)
+        for (var i = 0; i < treeObj.length; ++i)
         {
             treeObj.pop().destroy()
         }
-        treeObjCount = 1
         treeObj.push(obj)
     }
 
@@ -91,9 +78,7 @@ Rectangle {
                 text: styleData.value
             }
             Component.onCompleted: {
-                if (model.classify == lastClassify &&
-                        model.kindFirst == lastKindFirst &&
-                        model.kindSecond == lastKindSecond)
+                if (odvTimeSumModel.isSelectHighlight(model.classify, model.kindFirst, model.kindSecond))
                 {
                     wrapperText.color = "#FFF300"
                     wrapper.color = "blue"
@@ -108,15 +93,15 @@ Rectangle {
             id: sumTreeView
             anchors.fill: parent
             model: odvTimeSumModel
-            //            itemDelegate: iiDelegate
             Component.onCompleted: {
-                if (lastKindFirst != "")
+                if (odvTimeSumModel.isFirstExpand())
                 {
-                    expand(expandFirst)
-                    if (lastKindSecond != "")
-                    {
-                        expand(expandSecond)
-                    }
+                    expand(odvTimeSumModel.getFirstExpand())
+                }
+
+                if (odvTimeSumModel.isSecondExpand())
+                {
+                    expand(odvTimeSumModel.getSecondExpand())
                 }
             }
 
@@ -164,10 +149,12 @@ Rectangle {
         }
     }
 
+    // turn day Button
     Row {
         width: parent.width
         height: 50
         anchors.bottom: parent.bottom
+        // Prev day Button
         Rectangle {
             width: parent.width / 2
             height: parent.height
@@ -201,6 +188,7 @@ Rectangle {
                 }
             }
         }
+        // Next day Button
         Rectangle {
             width: parent.width / 2
             height: parent.height
