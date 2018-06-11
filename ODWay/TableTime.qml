@@ -91,7 +91,7 @@ Rectangle {
             }
 
             model: ObjectModel {
-                TableTimeChart {
+                TableTimeChartList {
                     id: timeChart
                     height: rootTableTime.height
                     width: rootTableTime.width

@@ -68,6 +68,27 @@ QList<int> ODVTime::getLastCKKSum(const int &lastDay_)
     return Result;
 }
 
+QStringList ODVTime::getLastCKKSumStr(const int &lastDay_)
+{
+    QStringList Result;
+    StringList tmpList;
+    ODPTime::Instance()->GetLastCKKSum(_ckkList, lastDay_, tmpList);
+    std::for_each(tmpList.begin(), tmpList.end(), [&Result](std::string &x){
+        Result.push_back(QString::fromStdString(x));
+    });
+    return Result;
+}
+
+QString ODVTime::getLastCKKSumStrColor(const int &index_, const QString &defaultColor_)
+{
+    std::string tmpStr;
+    if (!ODPTime::Instance()->GetLastCKKSumColor(index_, tmpStr))
+    {
+        tmpStr = defaultColor_.toStdString();
+    }
+    return QString::fromStdString(tmpStr);
+}
+
 bool ODVTime::addTime(
         const int &year_,
         const int &month_,

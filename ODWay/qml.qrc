@@ -13,5 +13,7 @@
         <file>TableTimeSum.qml</file>
         <file>TableTimeChart.qml</file>
         <file>Button.qml</file>
+        <file>TableTimeChartList.qml</file>
+        <file>TableTimeChartSum.qml</file>
     </qresource>
 </RCC>

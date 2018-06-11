@@ -174,6 +174,7 @@ struct ODPTime::Impl
         _curDate.clear();
         _lastCurList.clear();
         _lastTip = NULL;
+        _lastCKKSumColor.clear();
     }
 
     StringList _classifyList;
@@ -183,6 +184,7 @@ struct ODPTime::Impl
     std::string _curDate;
     std::vector<OneTipPtr> _lastCurList;
     OneTipPtr _lastTip;
+    IntList _lastCKKSumColor;
 };
 
 ODPTime *ODPTime::Instance()
@@ -286,6 +288,8 @@ bool ODPTime::GetLastCKKSum(const StringList &ckkList_, const int &lastCount, In
         std::string tmpDate = ODTimeUtil::Timestamp2String(_Impl->_lastTip->_time, "%y-%m-%d");
         ODTimeUtil::DateJump(tmpDate, 1 - lastCount);
         int tmpValue = 0;
+        _Impl->_lastCKKSumColor.clear();
+        _Impl->_lastCKKSumColor.push_back(0);
         Result = true;
 
         for (int i = 0; i < lastCount; ++i)
@@ -329,8 +333,69 @@ bool ODPTime::GetLastCKKSum(const StringList &ckkList_, const int &lastCount, In
             }
 
             intList_.push_back(tmpValue);
+            _Impl->_lastCKKSumColor[0] += tmpValue;
+            _Impl->_lastCKKSumColor.push_back(tmpValue);
             ODTimeUtil::DateJump(tmpDate);
         }
+    }
+    return Result;
+}
+
+bool ODPTime::GetLastCKKSum(const StringList &ckkList_, const int &lastCount, StringList &strList_)
+{
+    bool Result = false;
+    IntList tmpIntList;
+    if (GetLastCKKSum(ckkList_, lastCount, tmpIntList))
+    {
+        int tmpSum = 0;
+        std::string tmpDate = ODTimeUtil::Timestamp2String(_Impl->_lastTip->_time, "%y-%m-%d");
+
+        // average
+        int tmpAverage = _Impl->_lastCKKSumColor[0] / (_Impl->_lastCKKSumColor.size() - 1);
+
+        _Impl->_lastCKKSumColor.clear();
+        std::for_each(tmpIntList.crbegin(), tmpIntList.crend(), [&](const int &x){
+            strList_.push_back(tmpDate + ": " + ODTimeUtil::Duration2String(x * 60));
+            ODTimeUtil::DateJump(tmpDate, -1);
+
+            if (x < tmpAverage)
+            {
+                // less
+                _Impl->_lastCKKSumColor.push_back(0);
+            }
+            else if (x > tmpAverage)
+            {
+                // more
+                _Impl->_lastCKKSumColor.push_back(1);
+            }
+            else
+            {
+                // others
+                _Impl->_lastCKKSumColor.push_back(2);
+            }
+        });
+    }
+    return Result;
+}
+
+bool ODPTime::GetLastCKKSumColor(const int &index_, std::string &color_)
+{
+    bool Result = false;
+    if (index_ >= 0 && index_ < _Impl->_lastCKKSumColor.size())
+    {
+        if (_Impl->_lastCKKSumColor[index_] == 0)
+        {
+            color_ = "red";
+        }
+        else if (_Impl->_lastCKKSumColor[index_] == 1)
+        {
+            color_ = "green";
+        }
+        else
+        {
+            color_ = "black";
+        }
+        Result = true;
     }
     return Result;
 }

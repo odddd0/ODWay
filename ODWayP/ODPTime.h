@@ -71,6 +71,8 @@ public:
     bool CalDurTime(const int &index1_, const int &index2_, std::string &str_);
     bool GetPopList(const StringList &ckkList_, IntList &indexList_);
     bool GetLastCKKSum(const StringList &ckkList_, const int &lastCount, IntList &intList_);
+    bool GetLastCKKSum(const StringList &ckkList_, const int &lastCount, StringList &strList_);
+    bool GetLastCKKSumColor(const int &index_, std::string &color_);
 
 public:
     void GetCurList(StringList &list);

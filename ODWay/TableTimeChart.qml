@@ -6,13 +6,13 @@
 //  https://github.com/odddd0/ODWay
 //====================================================================
 
-
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
 
 Rectangle {
     id: chart
 
+    property string baseChart: "week"
     property string activeChart: "week"
     property int gridSize: 4
     property int lastDay: 7
@@ -22,16 +22,42 @@ Rectangle {
         if (chart.activeChart === "month") {
             gridSize = 4;
             lastDay = 30;
-        }
-        else if (chart.activeChart === "quarter") {
-            gridSize = 3;
-            lastDay = 90;
-        }
-        else if (chart.activeChart === "halfyear") {
-            gridSize = 6;
-            lastDay = 180;
-        }
-        else {
+        } else if (chart.activeChart === "more") {
+            if (chart.baseChart == "month")
+            {
+                lastDay += 30
+            }
+            else
+            {
+                lastDay += 7
+                if (lastDay > 13)
+                {
+                    gridSize = 13
+                }
+            }
+        } else if (chart.activeChart === "less") {
+            if (chart.baseChart == "month")
+            {
+                lastDay -= 30
+                if (lastDay <= 30)
+                {
+                    lastDay = 30
+                }
+            }
+            else
+            {
+                lastDay -= 7
+                if (lastDay <= 7)
+                {
+                    lastDay = 7
+                }
+                gridSize = lastDay - 1
+                if (lastDay > 13)
+                {
+                    gridSize = 13
+                }
+            }
+        } else {
             gridSize = 0;
             lastDay = 7;
         }
@@ -46,11 +72,22 @@ Rectangle {
         columnSpacing: 4
         anchors.topMargin: 70
         Button {
+            id: lessButton
+            text: "-"
+            buttonEnabled: chart.activeChart === "less"
+            onClicked: {
+                chart.activeChart = "less";
+                chart.update();
+            }
+        }
+
+        Button {
             id: weekButton
             text: "Week"
             buttonEnabled: chart.activeChart === "week"
             onClicked: {
                 chart.activeChart = "week";
+                chart.baseChart = "week";
                 chart.update();
             }
         }
@@ -61,26 +98,17 @@ Rectangle {
             buttonEnabled: chart.activeChart === "month"
             onClicked: {
                 chart.activeChart = "month";
+                chart.baseChart = "month";
                 chart.update();
             }
         }
 
         Button {
-            id: quarterlyButton
-            text: "3 Months"
-            buttonEnabled: chart.activeChart === "quarter"
+            id: moreButton
+            text: "+"
+            buttonEnabled: chart.activeChart === "more"
             onClicked: {
-                chart.activeChart = "quarter";
-                chart.update();
-            }
-        }
-
-        Button {
-            id: halfYearlyButton
-            text: "6 Months"
-            buttonEnabled: chart.activeChart === "halfyear"
-            onClicked: {
-                chart.activeChart = "halfyear";
+                chart.activeChart = "more";
                 chart.update();
             }
         }
