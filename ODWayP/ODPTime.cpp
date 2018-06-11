@@ -312,7 +312,7 @@ bool ODPTime::GetLastCKKSum(const StringList &ckkList_, const int &lastCount, In
                     }
                     else
                     {
-                        _Impl->_expandData._sumList[tmpDate]->_kindFirstSum.erase(ckkList_[0]);
+                        _Impl->_expandData._sumList[tmpDate]->_kindFirstSum[ckkList_[0]].erase(ckkList_[1]);
                     }
                 }
                 else
@@ -323,9 +323,8 @@ bool ODPTime::GetLastCKKSum(const StringList &ckkList_, const int &lastCount, In
                     }
                     else
                     {
-                        _Impl->_expandData._sumList[tmpDate]->_kindSecondSum.erase(ckkList_[0]);
+                        _Impl->_expandData._sumList[tmpDate]->_kindSecondSum[ckkList_[0]][ckkList_[1]].erase(ckkList_[2]);
                     }
-
                 }
             }
 
