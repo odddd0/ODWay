@@ -79,6 +79,28 @@ QStringList ODVTime::getLastCKKSumStr(const int &lastDay_)
     return Result;
 }
 
+QString ODVTime::getCKKStr(const QString &defaultStr_)
+{
+    QString Result = defaultStr_;
+    if (_ckkList.size() == 3)
+    {
+        Result = "";
+        if (_ckkList[0] != "")
+        {
+            Result = QString::fromStdString(_ckkList[0]);
+        }
+        if (_ckkList[1] != "")
+        {
+            Result += "_" + QString::fromStdString(_ckkList[1]);
+        }
+        if (_ckkList[2] != "")
+        {
+            Result += "_" + QString::fromStdString(_ckkList[2]);
+        }
+    }
+    return Result;
+}
+
 QString ODVTime::getLastCKKSumStrColor(const int &index_, const QString &defaultColor_)
 {
     std::string tmpStr;

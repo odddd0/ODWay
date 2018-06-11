@@ -62,6 +62,7 @@ public slots:
     void clearCKKCur();
     QList<int> getLastCKKSum(const int &lastDay_);
     QStringList getLastCKKSumStr(const int &lastDay_);
+    QString getCKKStr(const QString &defaultStr_);
     QString getLastCKKSumStrColor(const int &index_, const QString &defaultColor_ = "black");
 
 public slots:

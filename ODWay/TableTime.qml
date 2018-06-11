@@ -53,7 +53,7 @@ Rectangle {
                     bar.leftStr = "<"
                     bar.rightStr = ""
                     bar.rightColor = "black"
-                    bar.middleStr = "Chart"
+                    bar.middleStr = odvTimeList.getCKKStr("Chart")
                     bar.barHandle = "handleTableTimeChart"
                     timeChart.update()
                 }

@@ -25,11 +25,11 @@ Rectangle {
         } else if (chart.activeChart === "more") {
             if (chart.baseChart == "month")
             {
-                lastDay += 30
+                lastDay += 7
             }
             else
             {
-                lastDay += 7
+                lastDay += 1
                 if (lastDay > 13)
                 {
                     gridSize = 13
@@ -38,7 +38,7 @@ Rectangle {
         } else if (chart.activeChart === "less") {
             if (chart.baseChart == "month")
             {
-                lastDay -= 30
+                lastDay -= 7
                 if (lastDay <= 30)
                 {
                     lastDay = 30
@@ -46,7 +46,7 @@ Rectangle {
             }
             else
             {
-                lastDay -= 7
+                lastDay -= 1
                 if (lastDay <= 7)
                 {
                     lastDay = 7
