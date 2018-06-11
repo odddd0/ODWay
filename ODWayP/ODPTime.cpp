@@ -358,20 +358,24 @@ bool ODPTime::GetLastCKKSum(const StringList &ckkList_, const int &lastCount, St
             strList_.push_back(tmpDate + ": " + ODTimeUtil::Duration2String(x * 60));
             ODTimeUtil::DateJump(tmpDate, -1);
 
-            if (x < tmpAverage)
+            if (x == 0)
+            {
+                _Impl->_lastCKKSumColor.push_back(0);
+            }
+            else if (x < tmpAverage)
             {
                 // less
-                _Impl->_lastCKKSumColor.push_back(0);
+                _Impl->_lastCKKSumColor.push_back(1);
             }
             else if (x > tmpAverage)
             {
                 // more
-                _Impl->_lastCKKSumColor.push_back(1);
+                _Impl->_lastCKKSumColor.push_back(2);
             }
             else
             {
                 // others
-                _Impl->_lastCKKSumColor.push_back(2);
+                _Impl->_lastCKKSumColor.push_back(3);
             }
         });
     }
@@ -385,9 +389,13 @@ bool ODPTime::GetLastCKKSumColor(const int &index_, std::string &color_)
     {
         if (_Impl->_lastCKKSumColor[index_] == 0)
         {
-            color_ = "red";
+            color_ = "grey";
         }
         else if (_Impl->_lastCKKSumColor[index_] == 1)
+        {
+            color_ = "red";
+        }
+        else if (_Impl->_lastCKKSumColor[index_] == 2)
         {
             color_ = "green";
         }
