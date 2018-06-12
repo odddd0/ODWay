@@ -188,6 +188,39 @@ Rectangle {
                 ctx.restore();
             }
 
+            function drawVolume(ctx, points, highest)
+            {
+                ctx.save();
+                ctx.fillStyle = "#14aaff";
+                ctx.globalAlpha = 0.8;
+                ctx.lineWidth = 0;
+                ctx.beginPath();
+
+                var end = points.length;
+                var margin = 0;
+
+                if (chart.activeChart === "month" || chart.activeChart === "week") {
+                    margin = 8;
+                    ctx.shadowOffsetX = 4;
+                    ctx.shadowBlur = 3.5;
+                    ctx.shadowColor = Qt.darker("#14aaff");
+                }
+
+                // To match the volume graph with price grid, skip drawing the initial
+                // volume of the first day on chart.
+                for (var i = 1; i < end; i += pixelSkip) {
+                    var x = points[i - 1]["x"];
+                    var y = points[i]["value"];
+                    y = canvas.height * (y / highest);
+                    y = 3 * y / 12;
+                    ctx.fillRect(x, canvas.height - y + yGridOffset,
+                                 canvas.xGridStep - margin, y);
+                }
+
+                ctx.stroke();
+                ctx.restore();
+            }
+
             function drawPrice(ctx, points, highest, lowest)
             {
                 ctx.save();
@@ -255,6 +288,7 @@ Rectangle {
                 }
 
                 drawPrice(ctx, points, highestValue, lowestValue);
+                drawVolume(ctx, points, highestValue);
                 drawScales(ctx, highestValue, lowestValue);
 
                 fromDate.text = "| " + odvTimeList.getStartDate()
