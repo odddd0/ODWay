@@ -15,6 +15,11 @@
 struct ODPGoblin::Impl
 {
     Impl(){}
+
+    void ExpandData()
+    {
+
+    }
 };
 
 ODPGoblin *ODPGoblin::Instance()
@@ -26,6 +31,7 @@ ODPGoblin *ODPGoblin::Instance()
 ODPGoblin::ODPGoblin()
     : _Impl(new Impl)
 {
+    _Impl->ExpandData();
 }
 
 ODPGoblin::~ODPGoblin()

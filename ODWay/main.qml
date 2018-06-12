@@ -22,6 +22,7 @@ Rectangle {
         visible: dp.isOpen
         Component.onCompleted: {
             addExample("Time table", "",  Qt.resolvedUrl("TableTime.qml"));
+            addExample("Goblin table", "goblin",  Qt.resolvedUrl("TableGoblin.qml"));
         }
     }
 

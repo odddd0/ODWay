@@ -15,5 +15,11 @@
         <file>Button.qml</file>
         <file>TableTimeChartList.qml</file>
         <file>TableTimeChartSum.qml</file>
+        <file>TableGoblin.qml</file>
+        <file>TableGoblinAdd.qml</file>
+        <file>TableGoblinList.qml</file>
+        <file>TableGoblinAddBasic.qml</file>
+        <file>TableGoblinAddBill.qml</file>
+        <file>TableGoblinAddTransit.qml</file>
     </qresource>
 </RCC>
