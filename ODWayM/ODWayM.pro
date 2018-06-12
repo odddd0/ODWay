@@ -23,11 +23,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         ODWayM.cpp \
-    ODMTime.cpp
+    ODMTime.cpp \
+    ODMGnome.cpp
 
 HEADERS += \
         ODWayM.h \
-    ODMTime.h
+    ODMTime.h \
+    ODMGnome.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

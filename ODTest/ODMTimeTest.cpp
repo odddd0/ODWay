@@ -8,7 +8,7 @@
 
 #include <gtest/gtest.h>
 #include <ODWayM/ODMTime.h>
-#include <ODBase/ODDBHandle.h>
+#include <ODMBase/ODDBHandle.h>
 
 StringTable tempTable_insert = {
     {"101", "201", "CC1", "KF1", "KS1", "C1"},
