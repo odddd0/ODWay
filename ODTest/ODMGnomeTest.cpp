@@ -25,11 +25,16 @@ StringTable tempGnome_update = {
 //TEST(ODMGnome, insert)
 //{
 //    ODDBHandle::Instance()->Setup("test.db");
+//    std::string errMsg;
 //    ODMBaseList tmpList;
 //    tmpList.push_back(std::make_shared<ODMGnome>(tempGnome_insert[0]));
 //    tmpList.push_back(std::make_shared<ODMGnome>(tempGnome_insert[1]));
 //    tmpList.push_back(std::make_shared<ODMGnome>(tempGnome_insert[2]));
-//    ODDBHandle::Instance()->Insert(tmpList);
+//    EXPECT_TRUE(ODDBHandle::Instance()->Insert(tmpList, errMsg));
+//    if (!errMsg.empty())
+//    {
+//        std::cout << errMsg << std::endl;
+//    }
 //}
 
 //TEST(ODMTime, Update)

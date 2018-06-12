@@ -1,24 +1,24 @@
 //====================================================================
-//  ODMGoblin.h
+//  ODMGoblinCoin.h
 //  created 6.12.18
 //  written by odddd0
 //
 //  https://github.com/odddd0/ODWay
 //====================================================================
 
-#ifndef _ODMGOBLIN_H_F9BD27BFA65BDF45C7B8F9C567C4DAA5_
-#define _ODMGOBLIN_H_F9BD27BFA65BDF45C7B8F9C567C4DAA5_
+#ifndef _ODMGOBLINCOIN_H_820C8F36F0820D4B04935EEEFBD9DEE4_
+#define _ODMGOBLINCOIN_H_820C8F36F0820D4B04935EEEFBD9DEE4_
 
 #include <ODMBase/ODMBase.h>
 /**
- * @brief The ODMGoblin struct
+ * @brief The ODMGoblinCoin struct
  *      !!! 12.22(double) -> 1222(int)
  */
-struct ODMGoblin : public ODMBase
+struct ODMGoblinCoin : public ODMBase
 {
 public:
-    ODMGoblin();
-    ODMGoblin(const StringList &stringList);
+    ODMGoblinCoin();
+    ODMGoblinCoin(const StringList &stringList);
 
 public:
     static void GetSqlCreateTable(std::string &sql_);
@@ -29,14 +29,15 @@ public:
 
 public:
     int _state;
-    int _month;
-    int _rate;
-    int _tips;
-    int _amount;
+    std::string _goldFrom;
+    int _bill;
+    std::string _classify;
+    std::string _kindFirst;
+    std::string _kindSecond;
 
 private:
     static bool _init;
 };
-typedef std::shared_ptr<ODMGoblin> ODMGoblinPtr;
+typedef std::shared_ptr<ODMGoblinCoin> ODMGoblinCoinPtr;
 
-#endif // _ODMGOBLIN_H_F9BD27BFA65BDF45C7B8F9C567C4DAA5_
+#endif // _ODMGOBLINCOIN_H_820C8F36F0820D4B04935EEEFBD9DEE4_

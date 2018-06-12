@@ -25,13 +25,15 @@ SOURCES += \
         ODWayM.cpp \
     ODMTime.cpp \
     ODMGnome.cpp \
-    ODMGoblin.cpp
+    ODMGoblin.cpp \
+    ODMGoblinCoin.cpp
 
 HEADERS += \
         ODWayM.h \
     ODMTime.h \
     ODMGnome.h \
-    ODMGoblin.h
+    ODMGoblin.h \
+    ODMGoblinCoin.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

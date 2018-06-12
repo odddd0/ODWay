@@ -18,7 +18,9 @@ SOURCES += \
     gtest_main.cc \
     ODMTimeTest.cpp \
     ODWayMTest.cpp \
-    ODMGnomeTest.cpp
+    ODMGnomeTest.cpp \
+    ODMGoblinCoinTest.cpp \
+    ODMGoblinTest.cpp
 
 INCLUDEPATH += $$PWD/../3rd/gtest
 DEPENDPATH += $$PWD/../3rd/gtest

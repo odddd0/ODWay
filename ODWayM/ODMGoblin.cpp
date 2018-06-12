@@ -12,21 +12,30 @@ bool ODMGoblin::_init = true;
 
 ODMGoblin::ODMGoblin()
     : ODMBase("ODMGoblin")
+    , _state(0)
+    , _month(0)
+    , _rate(0)
+    , _tips(0)
+    , _amount(0)
 {
 }
 
 ODMGoblin::ODMGoblin(const StringList &stringList)
     : ODMBase("ODMGoblin")
+    , _state(0)
+    , _month(0)
+    , _rate(0)
+    , _tips(0)
+    , _amount(0)
 {
-    if (stringList.size() == 7)
+    if (stringList.size() == 6)
     {
-//        _preId = _id = std::stoi(stringList[0]);
-//        _name = stringList[1];
-//        _balance = std::stoi(stringList[2]);
-//        _availableCreditLimits = std::stoi(stringList[3]);
-//        _creditLimits = std::stoi(stringList[4]);
-//        _billDates = std::stoi(stringList[5]);
-//        _dueDay = std::stoi(stringList[6]);
+        _preId = _id = std::stoi(stringList[0]);
+        _state = std::stoi(stringList[1]);
+        _month = std::stoi(stringList[2]);
+        _rate = std::stoi(stringList[3]);
+        _tips = std::stoi(stringList[4]);
+        _amount = std::stoi(stringList[5]);
     }
 }
 
@@ -34,14 +43,13 @@ void ODMGoblin::GetSqlCreateTable(std::string &sql_)
 {
     if (_init)
     {
-        sql_ = "CREATE TABLE IF NOT EXISTS 'GnomeTable' ("
+        sql_ = "CREATE TABLE IF NOT EXISTS 'GoblinTable' ("
                "'Id' integer PRIMARY KEY NOT NULL,"
-               "'Name' varchar(128),"
-               "'Balance' integer DEFAULT(0),"
-               "'AvailableCreditLimits' integer DEFAULT(0),"
-               "'CreditLimits' integer DEFAULT(0),"
-               "'BillDates' integer DEFAULT(0),"
-               "'DueDay' integer DEFAULT(0));";
+               "'State' integer DEFAULT(0),"
+               "'Month' integer DEFAULT(0),"
+               "'Rate' integer DEFAULT(0),"
+               "'Tips' integer DEFAULT(0),"
+               "'Amount' integer DEFAULT(0));";
         _init = false;
     }
 }
@@ -49,38 +57,36 @@ void ODMGoblin::GetSqlCreateTable(std::string &sql_)
 void ODMGoblin::GetSqlSelect(std::string &sql_)
 {
     GetSqlCreateTable(sql_);
-    sql_ += "SELECT * FROM GnomeTable";
+    sql_ += "SELECT * FROM GoblinTable";
 }
 
 void ODMGoblin::GetSqlDelete(std::string &sql_, const int &id_)
 {
     GetSqlCreateTable(sql_);
-    sql_ += "DELETE FROM GnomeTable WHERE Id='" + std::to_string(id_) + "';";
+    sql_ += "DELETE FROM GoblinTable WHERE Id='" + std::to_string(id_) + "';";
 }
 
 void ODMGoblin::GetSqlUpdate(std::string &sql_)
 {
     GetSqlCreateTable(sql_);
-//    sql_ += "UPDATE GnomeTable SET "
-//            "Id='" + std::to_string(_id) +
-//            "',Name='" + _name +
-//            "',Balance='" + std::to_string(_balance) +
-//            "',AvailableCreditLimits='" + std::to_string(_availableCreditLimits) +
-//            "',CreditLimits='" + std::to_string(_creditLimits) +
-//            "',BillDates='" + std::to_string(_billDates) +
-//            "',DueDay='" + std::to_string(_dueDay) +
-//            "' where Id='" + std::to_string(_preId) + "';";
+    sql_ += "UPDATE GoblinTable SET "
+            "Id='" + std::to_string(_id) +
+            "',State='" + std::to_string(_state) +
+            "',Month='" + std::to_string(_month) +
+            "',Rate='" + std::to_string(_rate) +
+            "',Tips='" + std::to_string(_tips) +
+            "',Amount='" + std::to_string(_amount) +
+            "' where Id='" + std::to_string(_preId) + "';";
 }
 
 void ODMGoblin::GetSqlInsert(std::string &sql_)
 {
     GetSqlCreateTable(sql_);
-//    sql_ += "INSERT INTO GnomeTable VALUES('" +
-//            std::to_string(_id) + "','" +
-//            _name + "','" +
-//            std::to_string(_balance) + "','" +
-//            std::to_string(_availableCreditLimits) + "','" +
-//            std::to_string(_creditLimits) + "','" +
-//            std::to_string(_billDates) + "','" +
-//            std::to_string(_dueDay) + "');";
+    sql_ += "INSERT INTO GoblinTable VALUES('" +
+            std::to_string(_id) + "','" +
+            std::to_string(_state) + "','" +
+            std::to_string(_month) + "','" +
+            std::to_string(_rate) + "','" +
+            std::to_string(_tips) + "','" +
+            std::to_string(_amount) + "');";
 }
