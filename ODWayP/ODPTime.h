@@ -37,6 +37,8 @@ class ODPTime
         std::string _classify;
         std::string _kindFirst;
         std::string _kindSecond;
+        std::string _startDate;
+        std::string _endDate;
         int _totalValue;
         std::vector<LastChartPtr> _list;
     };
@@ -92,6 +94,7 @@ public:
 public:
     // overview
     void GetRunningTimeStr(std::string &str_);
+    std::string GetDate();
 
 public:
     // TableTimeChart
@@ -100,6 +103,11 @@ public:
     // second
     bool GetLastCKKSum(StringList &strList_);
     bool GetLastCKKSumColor(const int &index_, std::string &color_);
+    bool SetDateByChartSum(const int &index_);
+    std::string GetStartDate();
+    std::string GetEndDate();
+    bool IsChartSumCurrentDay(const int &index_);
+    int getChartSumCurrentIndex();
 
 public:
     // TableTimeSum

@@ -10,8 +10,11 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.1
 
 Rectangle {
-
+    property bool isInit: true
+    property var lastWrapper
     function updateSum() {
+        isInit = true
+        tableTimeChartSumListView.model = ""
         tableTimeChartSumListView.model = odvTimeList.getLastCKKSumStr()
     }
 
@@ -29,8 +32,46 @@ Rectangle {
             }
             Component.onCompleted: {
                 wrapperText.color = odvTimeList.getLastCKKSumStrColor(index, "black")
-//                wrapperText.color = "green"
+                console.log(index, modelData)
+                if (odvTimeList.isChartSumCurrentDay(index))
+                {
+                    wrapper.state = "Current"
+                    lastWrapper = wrapper
+                }
             }
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: {
+                    if (lastWrapper)
+                    {
+                        lastWrapper.state = "Normal"
+                    }
+                    isInit = false
+                    tableTimeChartSumListView.currentIndex = index
+                    odvTimeList.selectChartSum(index)
+                }
+            }
+            // indent the item if it is the current item
+            states: [
+                State {
+                    name: "Normal"
+                    PropertyChanges {
+                        target: wrapperText
+                        font.bold: false
+                        font.underline: false
+                    }
+                },
+                State {
+                    name: "Current"
+                    when: wrapper.ListView.isCurrentItem && !isInit
+                    PropertyChanges {
+                        target: wrapperText
+                        font.bold: true
+                        font.underline: true
+                    }
+                }
+            ]
         }
     }
 
@@ -42,7 +83,6 @@ Rectangle {
         anchors.leftMargin: 5
         anchors.rightMargin: 5
         focus: false
-        model: odvTimeList.curList
         delegate: tableTimeChartSumDelegate
     }
 }

@@ -60,10 +60,18 @@ public slots:
     QString calDurTime(const int &index1_, const int &index2_);
     void setCKKCur(const QStringList ckkList_);
     void clearCKKCur();
+
+public slots:
+    // TableTimeChart
+    QString getStartDate();
+    QString getEndDate();
     QList<int> getLastCKKSum(const int &lastDay_);
     QStringList getLastCKKSumStr();
     QString getCKKStr(const QString &defaultStr_);
     QString getLastCKKSumStrColor(const int &index_, const QString &defaultColor_ = "black");
+    bool isChartSumCurrentDay(const int &index_);
+    int getChartSumCurrentDayIndex();
+    void selectChartSum(const int &index_);
 
 public slots:
     void updateList();

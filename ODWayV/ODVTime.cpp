@@ -111,6 +111,31 @@ QString ODVTime::getLastCKKSumStrColor(const int &index_, const QString &default
     return QString::fromStdString(tmpStr);
 }
 
+bool ODVTime::isChartSumCurrentDay(const int &index_)
+{
+    return ODPTime::Instance()->IsChartSumCurrentDay(index_);
+}
+
+int ODVTime::getChartSumCurrentDayIndex()
+{
+    return ODPTime::Instance()->getChartSumCurrentIndex();
+}
+
+void ODVTime::selectChartSum(const int &index_)
+{
+    ODPTime::Instance()->SetDateByChartSum(index_);
+}
+
+QString ODVTime::getStartDate()
+{
+    return QString::fromStdString(ODPTime::Instance()->GetStartDate());
+}
+
+QString ODVTime::getEndDate()
+{
+    return QString::fromStdString(ODPTime::Instance()->GetEndDate());
+}
+
 bool ODVTime::addTime(
         const int &year_,
         const int &month_,

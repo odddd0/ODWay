@@ -299,6 +299,7 @@ bool ODPTime::GetLastCKKSum(const StringList &ckkList_, const int &lastCount, In
         _Impl->_lastChartList._classify = ckkList_[0];
         _Impl->_lastChartList._kindFirst = ckkList_[1];
         _Impl->_lastChartList._kindSecond = ckkList_[2];
+        _Impl->_lastChartList._startDate = tmpDate;
         Result = true;
 
         for (int i = 0; i < lastCount; ++i)
@@ -342,6 +343,7 @@ bool ODPTime::GetLastCKKSum(const StringList &ckkList_, const int &lastCount, In
             }
 
             intList_.push_back(tmpValue);
+            _Impl->_lastChartList._endDate = tmpDate;
             _Impl->_lastChartList._totalValue += tmpValue;
             _Impl->_lastChartList._list.push_back(std::make_shared<LastChart>(tmpDate, tmpValue));
             ODTimeUtil::DateJump(tmpDate);
@@ -370,6 +372,51 @@ bool ODPTime::GetLastCKKSumColor(const int &index_, std::string &color_)
         Result = true;
     }
     return Result;
+}
+
+bool ODPTime::SetDateByChartSum(const int &index_)
+{
+    bool Result = false;
+    if (index_ >= 0 && index_ < _Impl->_lastChartList._list.size())
+    {
+        _Impl->_curDate = _Impl->_lastChartList._list[_Impl->_lastChartList._list.size() - index_ - 1]->_date;
+        Result = true;
+    }
+    return Result;
+}
+
+std::string ODPTime::GetStartDate()
+{
+    return _Impl->_lastChartList._startDate;
+}
+
+std::string ODPTime::GetEndDate()
+{
+    return _Impl->_lastChartList._endDate;
+}
+
+bool ODPTime::IsChartSumCurrentDay(const int &index_)
+{
+    bool Result = false;
+    if (index_ >= 0 && index_ < _Impl->_lastChartList._list.size())
+    {
+        Result = _Impl->_lastChartList._list[_Impl->_lastChartList._list.size() - index_ - 1]->_date == _Impl->_curDate;
+    }
+    return Result;
+}
+
+int ODPTime::getChartSumCurrentIndex()
+{
+    int Result = -1;
+    for (auto pos = _Impl->_lastChartList._list.crbegin(); pos != _Impl->_lastChartList._list.crend(); pos++)
+    {
+        Result++;
+        if ((*pos)->_date == _Impl->_curDate)
+        {
+            return Result;
+        }
+    }
+    return -1;
 }
 
 void ODPTime::GetCurList(StringList &list)
@@ -558,6 +605,11 @@ void ODPTime::GetRunningTimeStr(std::string &str_)
     }
 }
 
+std::string ODPTime::GetDate()
+{
+    return _Impl->_curDate;
+}
+
 bool ODPTime::PrevCur()
 {
     std::string tmpStr = _Impl->_curDate;
@@ -738,6 +790,8 @@ void ODPTime::LastChartList::clear()
     _classify.clear();
     _kindFirst.clear();
     _kindSecond.clear();
+    _startDate.clear();
+    _endDate.clear();
     _totalValue = 0;
     _list.clear();
 }
