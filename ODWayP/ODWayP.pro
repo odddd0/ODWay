@@ -23,11 +23,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         ODWayP.cpp \
-    ODPTime.cpp
+    ODPTime.cpp \
+    ODPGnome.cpp \
+    ODPGoblin.cpp
 
 HEADERS += \
         ODWayP.h \
-    ODPTime.h
+    ODPTime.h \
+    ODPGnome.h \
+    ODPGoblin.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

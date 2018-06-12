@@ -22,15 +22,15 @@ StringTable tempGnome_update = {
     {"103", "N333", "31203", "313404", "305", "306123", "307"}
 };
 
-TEST(ODMGnome, insert)
-{
-    ODDBHandle::Instance()->Setup("test.db");
-    ODMBaseList tmpList;
-    tmpList.push_back(std::make_shared<ODMGnome>(tempGnome_insert[0]));
-    tmpList.push_back(std::make_shared<ODMGnome>(tempGnome_insert[1]));
-    tmpList.push_back(std::make_shared<ODMGnome>(tempGnome_insert[2]));
-    ODDBHandle::Instance()->Insert(tmpList);
-}
+//TEST(ODMGnome, insert)
+//{
+//    ODDBHandle::Instance()->Setup("test.db");
+//    ODMBaseList tmpList;
+//    tmpList.push_back(std::make_shared<ODMGnome>(tempGnome_insert[0]));
+//    tmpList.push_back(std::make_shared<ODMGnome>(tempGnome_insert[1]));
+//    tmpList.push_back(std::make_shared<ODMGnome>(tempGnome_insert[2]));
+//    ODDBHandle::Instance()->Insert(tmpList);
+//}
 
 //TEST(ODMTime, Update)
 //{
@@ -43,18 +43,18 @@ TEST(ODMGnome, insert)
 //    ODDBHandle::Instance()->Update(tmpList);
 //}
 
-TEST(ODMTime, Select)
-{
-    ODMBaseList tmpList;
-    ODDBHandle::Instance()->Select<ODMGnome>(tmpList);
-    ODMGnomePtr tmpPtr = std::static_pointer_cast<ODMGnome>(tmpList[0]);
-    tmpPtr = std::static_pointer_cast<ODMGnome>(tmpList[1]);
-    tmpPtr = std::static_pointer_cast<ODMGnome>(tmpList[2]);
-}
+//TEST(ODMTime, Select)
+//{
+//    ODMBaseList tmpList;
+//    ODDBHandle::Instance()->Select<ODMGnome>(tmpList);
+//    ODMGnomePtr tmpPtr = std::static_pointer_cast<ODMGnome>(tmpList[0]);
+//    tmpPtr = std::static_pointer_cast<ODMGnome>(tmpList[1]);
+//    tmpPtr = std::static_pointer_cast<ODMGnome>(tmpList[2]);
+//}
 
-TEST(ODDBHandle, Delete)
-{
-    IntList tmpList = {102, 103};
-    std::string tmpStr;
-    ODDBHandle::Instance()->Delete<ODMGnome>(tmpList, tmpStr);
-}
+//TEST(ODDBHandle, Delete)
+//{
+//    IntList tmpList = {102, 103};
+//    std::string tmpStr;
+//    ODDBHandle::Instance()->Delete<ODMGnome>(tmpList, tmpStr);
+//}

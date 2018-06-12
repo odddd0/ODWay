@@ -8,6 +8,7 @@
 
 #include <ODMBase/ODDBHandle.h>
 #include <ODWayM/ODMTime.h>
+#include <ODWayM/ODMGnome.h>
 
 #include "ODWayM.h"
 
@@ -41,6 +42,7 @@ void ODWayM::ReadDB()
 {
     _Impl->_DBList.clear();
     ODDBHandle::Instance()->Select<ODMTime>(_Impl->_DBList);
+    ODDBHandle::Instance()->Select<ODMGnome>(_Impl->_DBList);
 }
 
 bool ODWayM::AddModel(const ODMBasePtr &ptr_)
@@ -78,10 +80,14 @@ bool ODWayM::DeleteModel(const std::string &type_, const int &id_)
     {
         Result = ODDBHandle::Instance()->Delete<ODMTime>(tmpList);
     }
+    else if (type_ == "ODMGnome")
+    {
+        Result = ODDBHandle::Instance()->Delete<ODMGnome>(tmpList);
+    }
     if (Result)
     {
-        auto pos = std::find_if(_Impl->_DBList.begin(), _Impl->_DBList.end(), [id_](ODMBasePtr &x){
-            return x->_id == id_;
+        auto pos = std::find_if(_Impl->_DBList.begin(), _Impl->_DBList.end(), [id_, type_](ODMBasePtr &x){
+            return x->_id == id_ && x->_type == type_;
         });
         if (pos != _Impl->_DBList.end())
         {
