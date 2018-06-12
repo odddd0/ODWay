@@ -24,31 +24,31 @@ struct ODPTime::Impl
     {
         StringListPtr tmpStrListPtr;
         // classify
-        if (ODVectorUtil::RefreshInsert<std::string>(_classifyList, classify_))
+        if (ODVectorUtil::RefreshInsert<std::string>(_expandData._classifyList, classify_))
         {
             // classify first appearance
             tmpStrListPtr = std::make_shared<StringList>();
             tmpStrListPtr->push_back(kindFirst_);
-            _kindFirstList[classify_] = tmpStrListPtr;
+            _expandData._kindFirstList[classify_] = tmpStrListPtr;
 
             tmpStrListPtr = std::make_shared<StringList>();
             tmpStrListPtr->push_back(kindSecond_);
             StringListPtrMap tmpStrListPtrMap;
             tmpStrListPtrMap[kindFirst_] = tmpStrListPtr;
-            _kindSecondList[classify_] = tmpStrListPtrMap;
+            _expandData._kindSecondList[classify_] = tmpStrListPtrMap;
         }
         else
         {
-            tmpStrListPtr = _kindFirstList[classify_];
+            tmpStrListPtr = _expandData._kindFirstList[classify_];
             if (ODVectorUtil::RefreshInsert<std::string>(*tmpStrListPtr, kindFirst_))
             {
                 tmpStrListPtr = std::make_shared<StringList>();
                 tmpStrListPtr->push_back(kindSecond_);
-                _kindSecondList[classify_][kindFirst_] = tmpStrListPtr;
+                _expandData._kindSecondList[classify_][kindFirst_] = tmpStrListPtr;
             }
             else
             {
-                tmpStrListPtr = _kindSecondList[classify_][kindFirst_];
+                tmpStrListPtr = _expandData._kindSecondList[classify_][kindFirst_];
                 ODVectorUtil::RefreshInsert<std::string>(*tmpStrListPtr, kindSecond_);
             }
         }
@@ -167,30 +167,37 @@ struct ODPTime::Impl
 
     void ResetExpandData()
     {
-        _classifyList.clear();
-        _kindFirstList.clear();
-        _kindSecondList.clear();
         _expandData.clear();
         _curDate.clear();
-        _lastCurList.clear();
         _lastTip = NULL;
-        _lastCKKSumColor.clear();
+        _lastCurList.clear();
+        _lastChartList.clear();
     }
 
-    StringList _classifyList;
-    StringListPtrMap _kindFirstList;
-    std::map<std::string, StringListPtrMap> _kindSecondList;
     ODPTime::ExpandData _expandData;
     std::string _curDate;
-    std::vector<OneTipPtr> _lastCurList;
-    OneTipPtr _lastTip;
-    IntList _lastCKKSumColor;
+
+    ODPTime::OneTipPtr _lastTip;
+    std::vector<ODPTime::OneTipPtr> _lastCurList;
+    ODPTime::LastChartList _lastChartList;
 };
 
 ODPTime *ODPTime::Instance()
 {
     static ODPTime * obj = new ODPTime;
     return obj;
+}
+
+ODPTime::ODPTime()
+    : _Impl(new Impl)
+{
+    _Impl->ExpandData();
+}
+
+ODPTime::~ODPTime()
+{
+    delete _Impl;
+    _Impl = NULL;
 }
 
 bool ODPTime::AddTime(const ODMTimePtr &curPtr_)
@@ -288,8 +295,10 @@ bool ODPTime::GetLastCKKSum(const StringList &ckkList_, const int &lastCount, In
         std::string tmpDate = ODTimeUtil::Timestamp2String(_Impl->_lastTip->_time, "%y-%m-%d");
         ODTimeUtil::DateJump(tmpDate, 1 - lastCount);
         int tmpValue = 0;
-        _Impl->_lastCKKSumColor.clear();
-        _Impl->_lastCKKSumColor.push_back(0);
+        _Impl->_lastChartList.clear();
+        _Impl->_lastChartList._classify = ckkList_[0];
+        _Impl->_lastChartList._kindFirst = ckkList_[1];
+        _Impl->_lastChartList._kindSecond = ckkList_[2];
         Result = true;
 
         for (int i = 0; i < lastCount; ++i)
@@ -333,91 +342,34 @@ bool ODPTime::GetLastCKKSum(const StringList &ckkList_, const int &lastCount, In
             }
 
             intList_.push_back(tmpValue);
-            _Impl->_lastCKKSumColor[0] += tmpValue;
-            _Impl->_lastCKKSumColor.push_back(tmpValue);
+            _Impl->_lastChartList._totalValue += tmpValue;
+            _Impl->_lastChartList._list.push_back(std::make_shared<LastChart>(tmpDate, tmpValue));
             ODTimeUtil::DateJump(tmpDate);
         }
+        _Impl->_lastChartList.CalColor();
     }
     return Result;
 }
 
-bool ODPTime::GetLastCKKSum(const StringList &ckkList_, const int &lastCount, StringList &strList_)
+bool ODPTime::GetLastCKKSum(StringList &strList_)
 {
-    bool Result = false;
-    IntList tmpIntList;
-    if (GetLastCKKSum(ckkList_, lastCount, tmpIntList))
-    {
-        int tmpSum = 0;
-        std::string tmpDate = ODTimeUtil::Timestamp2String(_Impl->_lastTip->_time, "%y-%m-%d");
+    strList_.clear();
+    std::for_each(_Impl->_lastChartList._list.crbegin(), _Impl->_lastChartList._list.crend(), [&strList_](const LastChartPtr &x){
+        strList_.push_back(x->_date + ": " + ODTimeUtil::Duration2String(x->_value * 60));
+    });
 
-        // average
-        int tmpAverage = _Impl->_lastCKKSumColor[0] / (_Impl->_lastCKKSumColor.size() - 1);
-
-        _Impl->_lastCKKSumColor.clear();
-        std::for_each(tmpIntList.crbegin(), tmpIntList.crend(), [&](const int &x){
-            strList_.push_back(tmpDate + ": " + ODTimeUtil::Duration2String(x * 60));
-            ODTimeUtil::DateJump(tmpDate, -1);
-
-            if (x == 0)
-            {
-                _Impl->_lastCKKSumColor.push_back(0);
-            }
-            else if (x < tmpAverage)
-            {
-                // less
-                _Impl->_lastCKKSumColor.push_back(1);
-            }
-            else if (x > tmpAverage)
-            {
-                // more
-                _Impl->_lastCKKSumColor.push_back(2);
-            }
-            else
-            {
-                // others
-                _Impl->_lastCKKSumColor.push_back(3);
-            }
-        });
-    }
-    return Result;
+    return !strList_.empty();
 }
 
 bool ODPTime::GetLastCKKSumColor(const int &index_, std::string &color_)
 {
     bool Result = false;
-    if (index_ >= 0 && index_ < _Impl->_lastCKKSumColor.size())
+    if (index_ >= 0 && index_ < _Impl->_lastChartList._list.size())
     {
-        if (_Impl->_lastCKKSumColor[index_] == 0)
-        {
-            color_ = "grey";
-        }
-        else if (_Impl->_lastCKKSumColor[index_] == 1)
-        {
-            color_ = "red";
-        }
-        else if (_Impl->_lastCKKSumColor[index_] == 2)
-        {
-            color_ = "green";
-        }
-        else
-        {
-            color_ = "black";
-        }
+        color_ = _Impl->_lastChartList._list[_Impl->_lastChartList._list.size() - index_ - 1]->_color;
         Result = true;
     }
     return Result;
-}
-
-ODPTime::ODPTime()
-    : _Impl(new Impl)
-{
-    _Impl->ExpandData();
-}
-
-ODPTime::~ODPTime()
-{
-    delete _Impl;
-    _Impl = NULL;
 }
 
 void ODPTime::GetCurList(StringList &list)
@@ -531,7 +483,7 @@ void ODPTime::GetAllSumList(std::vector<StringList> &classifyList_,
             kindFirstList_.clear();
             kindSecondList_.clear();
 
-            std::for_each(_Impl->_classifyList.begin(), _Impl->_classifyList.end(), [&](std::string &x){
+            std::for_each(_Impl->_expandData._classifyList.begin(), _Impl->_expandData._classifyList.end(), [&](std::string &x){
                 StringList metaClassify;
                 std::vector<StringList> metaKindFirstClassify;
                 std::vector<std::vector<StringList>> metaKindSecondClassify;
@@ -544,7 +496,7 @@ void ODPTime::GetAllSumList(std::vector<StringList> &classifyList_,
 
                 classifyList_.push_back(metaClassify);
 
-                std::for_each(_Impl->_kindFirstList[x]->begin(), _Impl->_kindFirstList[x]->end(), [&](std::string &y){
+                std::for_each(_Impl->_expandData._kindFirstList[x]->begin(), _Impl->_expandData._kindFirstList[x]->end(), [&](std::string &y){
                     StringList tmpKindFirst;
 
                     tmpKindFirst.push_back(y);
@@ -556,7 +508,7 @@ void ODPTime::GetAllSumList(std::vector<StringList> &classifyList_,
                     metaKindFirstClassify.push_back(tmpKindFirst);
                     std::vector<StringList> metaKindSecondKind;
 
-                    std::for_each(_Impl->_kindSecondList[x][y]->begin(), _Impl->_kindSecondList[x][y]->end(), [&](std::string &z){
+                    std::for_each(_Impl->_expandData._kindSecondList[x][y]->begin(), _Impl->_expandData._kindSecondList[x][y]->end(), [&](std::string &z){
                         StringList tmpKindSecond;
 
                         tmpKindSecond.push_back(z);
@@ -656,26 +608,26 @@ bool ODPTime::LastCur()
 
 void ODPTime::GetClassifyList(StringList &list)
 {
-    list = _Impl->_classifyList;
+    list = _Impl->_expandData._classifyList;
 }
 
 void ODPTime::GetKindFirstList(StringList &list, const std::string &key_)
 {
-    if (key_.empty() && !_Impl->_classifyList.empty())
+    if (key_.empty() && !_Impl->_expandData._classifyList.empty())
     {
-        list = *(_Impl->_kindFirstList[_Impl->_classifyList[0]]);
+        list = *(_Impl->_expandData._kindFirstList[_Impl->_expandData._classifyList[0]]);
     }
     else
     {
-        list = *(_Impl->_kindFirstList[key_]);
+        list = *(_Impl->_expandData._kindFirstList[key_]);
     }
 }
 
 void ODPTime::GetKindSecondList(StringList &list, const std::string &classify_, const std::string &key_)
 {
-    list = *(_Impl->_kindSecondList[classify_][key_]);
-    //    _Impl->_kindFirstList[classify_][""];
-    //    list = *(_Impl->_kindSecondList[""]);
+    list = *(_Impl->_expandData._kindSecondList[classify_][key_]);
+    //    _Impl->_expandData._kindFirstList[classify_][""];
+    //    list = *(_Impl->_expandData._kindSecondList[""]);
 }
 
 void ODPTime::DaySum::AddTip(const std::string &classify_, const std::string &kindFirst_, const std::string &kindSecond_, const int &second_)
@@ -776,4 +728,39 @@ void ODPTime::ExpandData::clear()
     _dateList.clear();
     _dayList.clear();
     _sumList.clear();
+    _classifyList.clear();
+    _kindFirstList.clear();
+    _kindSecondList.clear();
+}
+
+void ODPTime::LastChartList::clear()
+{
+    _classify.clear();
+    _kindFirst.clear();
+    _kindSecond.clear();
+    _totalValue = 0;
+    _list.clear();
+}
+
+void ODPTime::LastChartList::CalColor()
+{
+    int tmpAverage = _totalValue / _list.size();
+    std::for_each(_list.begin(), _list.end(), [tmpAverage](LastChartPtr &x){
+        if (x->_value == 0)
+        {
+            x->_color = "grey";
+        }
+        else if (x->_value < tmpAverage)
+        {
+            x->_color = "red";
+        }
+        else if (x->_value > tmpAverage)
+        {
+            x->_color = "green";
+        }
+        else
+        {
+            x->_color = "black";
+        }
+    });
 }

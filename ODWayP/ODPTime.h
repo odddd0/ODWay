@@ -16,6 +16,30 @@ typedef std::vector<std::pair<std::string, int>> SIMapList;
 
 class ODPTime
 {
+    struct LastChart
+    {
+        LastChart(const std::string &date_, const int &value_)
+            : _date(date_)
+            , _color("")
+            , _value(value_)
+        {}
+
+        std::string _date;
+        std::string _color;
+        int _value;
+    };
+    typedef std::shared_ptr<LastChart> LastChartPtr;
+    struct LastChartList
+    {
+        void clear();
+        void CalColor();
+
+        std::string _classify;
+        std::string _kindFirst;
+        std::string _kindSecond;
+        int _totalValue;
+        std::vector<LastChartPtr> _list;
+    };
     struct OneTip
     {
         int _time;
@@ -58,24 +82,28 @@ class ODPTime
         StringList _dateList;
         std::map<std::string, OneDayPtr> _dayList;
         std::map<std::string, DaySumPtr> _sumList;
+        StringList _classifyList;
+        StringListPtrMap _kindFirstList;
+        std::map<std::string, StringListPtrMap> _kindSecondList;
     };
 public:
     static ODPTime * Instance();
 
 public:
-    bool AddTime(const ODMTimePtr &curPtr_);
-    bool FastIdle();
+    // overview
+    void GetRunningTimeStr(std::string &str_);
 
 public:
-    bool DelDurTime(const int &index_);
-    bool CalDurTime(const int &index1_, const int &index2_, std::string &str_);
-    bool GetPopList(const StringList &ckkList_, IntList &indexList_);
+    // TableTimeChart
+    // first init lastChartData
     bool GetLastCKKSum(const StringList &ckkList_, const int &lastCount, IntList &intList_);
-    bool GetLastCKKSum(const StringList &ckkList_, const int &lastCount, StringList &strList_);
+    // second
+    bool GetLastCKKSum(StringList &strList_);
     bool GetLastCKKSumColor(const int &index_, std::string &color_);
 
 public:
-    void GetCurList(StringList &list);
+    // TableTimeSum
+    std::string GetCurSum();
     void GetCurSumList(
             std::vector<StringList> &classifyList_,
             std::vector<std::vector<StringList>> &kindFirstList_,
@@ -84,19 +112,28 @@ public:
             std::vector<StringList> &classifyList_,
             std::vector<std::vector<StringList>> &kindFirstList_,
             std::vector<std::vector<std::vector<StringList>>> &kindSecondList_);
-    std::string GetCurSum();
-    void GetRunningTimeStr(std::string &str_);
 
 public:
+    // TableTimeList
+    void GetCurList(StringList &list);
+    bool DelDurTime(const int &index_);
+    bool CalDurTime(const int &index1_, const int &index2_, std::string &str_);
+    bool GetPopList(const StringList &ckkList_, IntList &indexList_);
+
+public:
+    // TableTimeAdd
+    bool AddTime(const ODMTimePtr &curPtr_);
+    bool FastIdle();
+    void GetClassifyList(StringList &list);
+    void GetKindFirstList(StringList &list, const std::string &key_ = "");
+    void GetKindSecondList(StringList &list, const std::string &classify_, const std::string &key_);
+
+public:
+    // turn day
     bool PrevCur();
     bool FirstCur();
     bool NextCur();
     bool LastCur();
-
-public:
-    void GetClassifyList(StringList &list);
-    void GetKindFirstList(StringList &list, const std::string &key_ = "");
-    void GetKindSecondList(StringList &list, const std::string &classify_, const std::string &key_);
 
 private:
     struct Impl;

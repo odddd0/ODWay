@@ -68,11 +68,11 @@ QList<int> ODVTime::getLastCKKSum(const int &lastDay_)
     return Result;
 }
 
-QStringList ODVTime::getLastCKKSumStr(const int &lastDay_)
+QStringList ODVTime::getLastCKKSumStr()
 {
     QStringList Result;
     StringList tmpList;
-    ODPTime::Instance()->GetLastCKKSum(_ckkList, lastDay_, tmpList);
+    ODPTime::Instance()->GetLastCKKSum(tmpList);
     std::for_each(tmpList.begin(), tmpList.end(), [&Result](std::string &x){
         Result.push_back(QString::fromStdString(x));
     });

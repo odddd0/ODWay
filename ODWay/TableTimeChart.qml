@@ -14,6 +14,8 @@ Rectangle {
 
     property string baseChart: "week"
     property string activeChart: "week"
+    property string startDate
+    property string endDate
     property int gridSize: 4
     property int lastDay: 7
     property real gridStep: gridSize ? (canvas.width - canvas.tickMargin) / gridSize : canvas.xGridStep
@@ -265,7 +267,7 @@ Rectangle {
             font.family: "Open Sans"
             font.pointSize: 8
             Layout.alignment: Qt.AlignLeft
-            text: "| "
+            text: "| " + chart.startDate
         }
         Text {
             id: toDate
@@ -275,7 +277,7 @@ Rectangle {
             Layout.alignment: Qt.AlignRight
             Layout.rightMargin: canvas.tickMargin
             Layout.columnSpan: 5
-            text: " |"
+            text: chart.endDate + " |"
         }
     }
 }

@@ -11,8 +11,8 @@ import QtQuick.Layouts 1.1
 
 Rectangle {
 
-    function updateSum(lastDay_) {
-        tableTimeChartSumListView.model = odvTimeList.getLastCKKSumStr(lastDay_)
+    function updateSum() {
+        tableTimeChartSumListView.model = odvTimeList.getLastCKKSumStr()
     }
 
     Component {

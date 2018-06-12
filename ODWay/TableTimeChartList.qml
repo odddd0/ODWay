@@ -34,7 +34,7 @@ Rectangle {
                 if (currentIndex == 1)
                 {
                     // chart
-                    tableTimeChartSumObject.updateSum(tableTimeChartObject.lastDay)
+                    tableTimeChartSumObject.updateSum()
                 }
             }
 
