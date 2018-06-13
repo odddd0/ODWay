@@ -16,6 +16,11 @@ Rectangle {
     property string rightStr
     property string rightColor: "red"
 
+    property var barHandleList: []
+    property var middleStrList: []
+    property var rightStrList: []
+    property var rightColorList: []
+
     id: bar
     height: activePageCount > 0 ? 65 : 0
     width: parent.width
@@ -34,6 +39,24 @@ Rectangle {
 
     signal rightBtnClicked
     signal rightBtnDoubleClicked
+
+    function back() {
+        pageContainer.children[pageContainer.children.length - 1].exit()
+        if (barHandleList.length)
+        {
+            barHandle = barHandleList.pop()
+            middleStr = middleStrList.pop()
+            rightStr = rightStrList.pop()
+            rightColor = rightColorList.pop()
+        }
+    }
+
+    function deepIn() {
+        barHandleList.push(barHandle)
+        middleStrList.push(middleStr)
+        rightStrList.push(rightStr)
+        rightColorList.push(rightColor)
+    }
 
     Rectangle {
         height: 1
@@ -71,7 +94,7 @@ Rectangle {
                 anchors.verticalCenterOffset: -1
                 enabled: leftStr != ""
                 onClicked: {
-                    pageContainer.children[pageContainer.children.length - 1].exit()
+                    back()
                 }
                 Rectangle {
                     anchors.fill: parent

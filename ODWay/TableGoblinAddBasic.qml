@@ -23,7 +23,7 @@ Rectangle {
                 console.log("goblin add basic")
                 if (bar.rightStr == "+" &&
                         odvGoblinList.addSimplePay(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second,
-                                                   dateTime.customTime, goldFrom.classText, ckk.classify, ckk.kindFirst, ckk.kindSecond, count.value, content.text))
+                                                   dateTime.customTime, goldFrom.currentText, ckk.classify, ckk.kindFirst, ckk.kindSecond, count.value, content.text))
                 {
                     rootTableGoblin.currentIndex = 0
                 }
@@ -43,23 +43,30 @@ Rectangle {
             id: dateTime
             width: parent.width
         }
-        ClassifyPicker {
-            id: goldFrom
-            width: parent.width
-            height: 60
-        }
         CKKPicker {
             id: ckk
             width: parent.width
             height: 180
             ckkList: odvGoblinList.getCKK()
         }
-        SpinBox {
-            id: count
+        Row {
             width: parent.width
             height: 60
-            minimumValue: 0
-            maximumValue: 2147483648
+            spacing: 10
+
+            ComboBox {
+                id: goldFrom
+                width: parent.width / 2 - 10
+                height: parent.height
+                model: odvGoblinList.getGoldFromList()
+            }
+            SpinBox {
+                id: count
+                width: parent.width / 2 - 10
+                height: parent.height
+                minimumValue: 0
+                maximumValue: 2147483648
+            }
         }
 
         Rectangle {

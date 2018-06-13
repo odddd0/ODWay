@@ -17,12 +17,19 @@
 
 class ODPGoblin
 {
+    struct OneGnome
+    {
+
+    };
+    typedef std::shared_ptr<OneGnome> OneGnomePtr;
+
     struct ExpandData
     {
         ExpandData();
         void clear();
 
         StringList _goldFromList;
+        std::map<std::string, OneGnomePtr> _gnomeMap;
         CKKPtr _ckk;
     };
 public:
@@ -32,6 +39,14 @@ public:
     // add
     bool AddSimplePay(const ODMGoblinCoinPtr &ptr_);
     void GetCKK(CKKPtr &ckk_);
+
+public:
+    // Gnome
+    // add
+    bool AddGnome(const ODMBasePtr &ptr_);
+
+    // get
+    void GetGoldFromList(StringList &list_);
 
 private:
     struct Impl;

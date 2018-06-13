@@ -11,7 +11,7 @@
 
 #include "ODVGoblin.h"
 
-Q_DECLARE_METATYPE(CKKPtr)
+Q_DECLARE_METATYPE(CKKPtr);
 
 ODVGoblin::ODVGoblin(QObject *parent) : QObject(parent)
 {
@@ -22,6 +22,17 @@ QVariant ODVGoblin::getCKK()
     CKKPtr tmpPtr;
     ODPGoblin::Instance()->GetCKK(tmpPtr);
     return QVariant::fromValue<CKKPtr>(tmpPtr);
+}
+
+QStringList ODVGoblin::getGoldFromList()
+{
+    QStringList Result;
+    StringList tmpList;
+    ODPGoblin::Instance()->GetGoldFromList(tmpList);
+    std::for_each(tmpList.begin(), tmpList.end(), [&Result](std::string &x){
+        Result.push_back(QString::fromStdString(x));
+    });
+    return Result;
 }
 
 bool ODVGoblin::addSimplePay(
@@ -64,6 +75,26 @@ bool ODVGoblin::addSimplePay(
     if (Result)
     {
 
+    }
+    return Result;
+}
+
+bool ODVGoblin::addGnome(const QString &name_, const int &CreditLimits_, const int &BillDates_, const int &DueDay_)
+{
+    bool Result = false;
+    if (!name_.isEmpty())
+    {
+        ODMGnomePtr tmpPtr = std::make_shared<ODMGnome>();
+        tmpPtr->_name = name_.toStdString();
+        tmpPtr->_creditLimits = CreditLimits_;
+        tmpPtr->_billDates = BillDates_;
+        tmpPtr->_dueDay = DueDay_;
+
+        Result = ODPGoblin::Instance()->AddGnome(tmpPtr);
+        if (Result)
+        {
+
+        }
     }
     return Result;
 }

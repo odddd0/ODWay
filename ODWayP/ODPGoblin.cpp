@@ -20,12 +20,31 @@ struct ODPGoblin::Impl
     {
         ResetExpanddata();
         ODMBaseList tmpList;
-        ODWayM::Instance()->GetList("ODMGoblinCoin", tmpList);
-        ODMGoblinCoinPtr tmpPtr;
+
+        // ODMGnome
+        tmpList.clear();
+        ODWayM::Instance()->GetList("ODMGnome", tmpList);
+        ODMGnomePtr tmpGnomePtr;
         std::for_each(tmpList.begin(), tmpList.end(), [&](ODMBasePtr &x){
-            tmpPtr = std::static_pointer_cast<ODMGoblinCoin>(x);
-            ODVectorUtil::RefreshInsert<std::string>(_expandData._goldFromList, tmpPtr->_goldFrom);
-            _expandData._ckk->appendData(tmpPtr->_classify, tmpPtr->_kindFirst, tmpPtr->_kindSecond);
+            tmpGnomePtr = std::static_pointer_cast<ODMGnome>(x);
+
+            // Gnome
+            if (ODVectorUtil::RefreshInsert<std::string>(_expandData._goldFromList, tmpGnomePtr->_name))
+            {
+                // new gnome
+                _expandData._gnomeMap[tmpGnomePtr->_name] = std::make_shared<ODPGoblin::OneGnome>();
+            }
+        });
+
+        // ODMGoblinCoin
+        tmpList.clear();
+        ODWayM::Instance()->GetList("ODMGoblinCoin", tmpList);
+        ODMGoblinCoinPtr tmpGoblinCoinPtr;
+        std::for_each(tmpList.begin(), tmpList.end(), [&](ODMBasePtr &x){
+            tmpGoblinCoinPtr = std::static_pointer_cast<ODMGoblinCoin>(x);
+
+            // CKK
+            _expandData._ckk->appendData(tmpGoblinCoinPtr->_classify, tmpGoblinCoinPtr->_kindFirst, tmpGoblinCoinPtr->_kindSecond);
         });
     }
 
@@ -53,6 +72,21 @@ bool ODPGoblin::AddSimplePay(const ODMGoblinCoinPtr &ptr_)
 void ODPGoblin::GetCKK(CKKPtr &ckk_)
 {
     ckk_ = _Impl->_expandData._ckk;
+}
+
+bool ODPGoblin::AddGnome(const ODMBasePtr &ptr_)
+{
+    bool Result = false;
+    if (ptr_->_type == "ODMGnome")
+    {
+        Result = ODWayM::Instance()->AddModel(ptr_);
+    }
+    return Result;
+}
+
+void ODPGoblin::GetGoldFromList(StringList &list_)
+{
+    list_ = _Impl->_expandData._goldFromList;
 }
 
 ODPGoblin::ODPGoblin()

@@ -9,7 +9,7 @@
 
 #include "ODVCKK.h"
 
-Q_DECLARE_METATYPE(CKKPtr)
+Q_DECLARE_METATYPE(CKKPtr);
 
 ODVCKK::ODVCKK(QObject *parent)
     : QObject(parent)

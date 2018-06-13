@@ -23,6 +23,7 @@ public:
     bool AddModel(const ODMBasePtr &ptr_);
 
 public:
+    // only append
     void GetList(const std::string &type_, ODMBaseList &list);
 
 public:

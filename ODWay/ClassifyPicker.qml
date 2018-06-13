@@ -30,6 +30,7 @@ Rectangle {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.left: parent.left
+
         Component.onCompleted: {
             textEdit.text = comboBox.currentText
         }

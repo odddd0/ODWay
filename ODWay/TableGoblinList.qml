@@ -30,8 +30,12 @@ Rectangle {
     Connections{
         target: bar
         onRightBtnClicked:{
-            if (bar.barHandle == "handleTableGoblinList")
+            if (bar.barHandle == "handleTableGoblinList" && bar.rightStr == "Add")
             {
+                // open TableGoblinAddGnome
+                bar.rightStr = ""
+                bar.deepIn()
+                ll.showExample("TableGoblinAddGnome.qml")
             }
         }
     }
@@ -47,17 +51,28 @@ Rectangle {
         Rectangle {
             id: wrapper
             width: parent.width
-            height: 20
+            height: 30
             color: "transparent"
             Text {
                 id: wrapperText
                 width: parent.width
-                text: modelData
+                font.pixelSize: 20
+                text: name
             }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
                     tableGoblinListView.currentIndex = index
+                    if (wrapperText.text != "Add")
+                    {
+                        bar.rightStr = ""
+                    }
+                }
+                onDoubleClicked: {
+                    if (wrapperText.text == "Add")
+                    {
+                        bar.rightStr = "Add"
+                    }
                 }
             }
             // indent the item if it is the current item
@@ -68,7 +83,6 @@ Rectangle {
                     PropertyChanges {
                         target: wrapperText
                         font.bold: true
-                        font.underline: true
                         color: "black"
                     }
                 },
@@ -77,13 +91,13 @@ Rectangle {
                     PropertyChanges {
                         target: wrapperText
                         font.bold: false
-                        font.underline: false
                         color: "black"
                     }
                 }
             ]
         }
     }
+
 
     ListView {
         id: tableGoblinListView
@@ -92,9 +106,15 @@ Rectangle {
         anchors.bottomMargin: 55
         anchors.leftMargin: 5
         anchors.rightMargin: 5
+
         focus: false
-        model: odvTimeList.curList
+        model: aaa
         delegate: tableGoblinListViewDelegate
+    }
+
+    ListModel{
+        id: aaa
+        ListElement{name:"Add"}
     }
 }
 

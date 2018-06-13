@@ -25,7 +25,9 @@ public:
 signals:
 
 public slots:
+    // add
     QVariant getCKK();
+    QStringList getGoldFromList();
     bool addSimplePay(const int &year_,
                       const int &month_,
                       const int &day_,
@@ -39,6 +41,10 @@ public slots:
                       const QString &kindSecond_,
                       const int &count_,
                       const QString &content_);
+
+public slots:
+    // gnome
+    bool addGnome(const QString &name_, const int &CreditLimits_, const int &BillDates_, const int &DueDay_);
 
 private:
 };

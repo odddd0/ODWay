@@ -22,5 +22,7 @@
         <file>TableGoblinAddBill.qml</file>
         <file>TableGoblinAddTransit.qml</file>
         <file>CKKPicker.qml</file>
+        <file>TableGoblinAddGnome.qml</file>
+        <file>RowSpinBox.qml</file>
     </qresource>
 </RCC>
