@@ -103,13 +103,19 @@ void ODPGoblin::GetGnomeList(StringList &list_)
         // credit
         if (cur->_creditLimits)
         {
+            tmpStr += "LastBill:  " + std::to_string(cur->_billList[1]);
+            if (cur->_billList[1])
+            {
+                tmpStr.insert(tmpStr.end() - 2, '.');
+            }
+            tmpStr += "(" + std::to_string(cur->_billDates) + ")\n";
+
             tmpStr += "CurrentBill:  " + std::to_string(cur->_billList[0]);
             if (cur->_billList[0])
             {
                 tmpStr.insert(tmpStr.end() - 2, '.');
             }
-            tmpStr += "(" + std::to_string(cur->_billDates) + ")\n";
-            tmpStr += "AvailableCredit:  " + std::to_string(cur->_creditLimits + cur->_balance);
+            tmpStr += "\nAvailableCredit:  " + std::to_string(cur->_creditLimits + cur->_balance);
             if (cur->_creditLimits + cur->_balance)
             {
                 tmpStr.insert(tmpStr.end() - 2, '.');
@@ -178,6 +184,8 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
 {
     bool Result = false;
     ODMGoblinCoinPtr cur = std::static_pointer_cast<ODMGoblinCoin>(ptr_);
+    int tmpIndex = -1;
+    std::string tmpStr;
     ODPGoblin::OneGnomePtr gnome = NULL;
     if (cur)
     {
@@ -191,8 +199,6 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
         {
             if (gnome = _gnomeMap[cur->_goldFrom])
             {
-                int tmpIndex = -1;
-                std::string tmpStr;
                 // CreditPay
                 if (gnome->_creditLimits)
                 {
@@ -216,14 +222,31 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
         // NormalTransit
         else if (cur->_state == ODMGoblinCoin::GoblinState::NormalTransit)
         {
+            if (gnome = _gnomeMap[cur->_classify])
+            {
+                if (gnome->_creditLimits)
+                {
+                    // repay credit
+                    if (ODTimeUtil::CalBillList(cur->_id, gnome->_billDates, tmpIndex, tmpStr) && tmpIndex >= 0)
+                    {
+                        while (gnome->_billList.size() <= tmpIndex + 1)
+                        {
+                            gnome->_billList.push_back(0);
+                        }
+                        gnome->_billList[tmpIndex + 1] -= cur->_count;
+                        gnome->_balance += cur->_count;
+                    }
+                }
+                else
+                {
+                    gnome->_balance += cur->_count;
+                }
+            }
             if (gnome = _gnomeMap[cur->_goldFrom])
             {
                 gnome->_balance -= cur->_count;
             }
-            if (gnome = _gnomeMap[cur->_classify])
-            {
-                gnome->_balance += cur->_count;
-            }
+
         }
     }
     return Result;
@@ -235,5 +258,6 @@ ODPGoblin::OneGnome::OneGnome()
     _creditLimits = 0;
     _billDates = 1;
     _dueDay = 1;
+    _billList.push_back(0);
     _billList.push_back(0);
 }

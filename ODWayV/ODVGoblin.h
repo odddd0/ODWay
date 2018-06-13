@@ -41,17 +41,18 @@ public slots:
                       const QString &kindSecond_,
                       const double &count_,
                       const QString &content_);
-    bool addNormalTransit(const int &year_,
-                          const int &month_,
-                          const int &day_,
-                          const int &hour_,
-                          const int &minute_,
-                          const int &second_,
-                          const bool &customTime_,
-                          const QString &goldFrom_,
-                          const QString &goldTo_,
-                          const double &count_,
-                          const QString &content_);
+    bool addTransit(
+            const int &year_,
+            const int &month_,
+            const int &day_,
+            const int &hour_,
+            const int &minute_,
+            const int &second_,
+            const bool &customTime_,
+            const QString &goldFrom_,
+            const QString &goldTo_,
+            const double &count_,
+            const QString &content_);
 
 public slots:
     // gnome

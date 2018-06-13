@@ -82,7 +82,7 @@ bool ODVGoblin::addSimplePay(
     return Result;
 }
 
-bool ODVGoblin::addNormalTransit(
+bool ODVGoblin::addTransit(
         const int &year_,
         const int &month_,
         const int &day_,

@@ -24,7 +24,7 @@ Rectangle {
             {
                 console.log("goblin add transit")
                 if (bar.rightStr == "+" &&
-                        odvGoblinList.addNormalTransit(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second,
+                        odvGoblinList.addTransit(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second,
                                                    dateTime.customTime, goldFrom.currentText, goldTo.currentText, count.value, content.text))
                 {
                     rootTableGoblin.currentIndex = 0
@@ -45,7 +45,7 @@ Rectangle {
             id: transitType
             width: parent.width
             height: 60
-            model: ["Normal"]
+            model: ["Normal", "RepayBill"]
         }
 
         Row {

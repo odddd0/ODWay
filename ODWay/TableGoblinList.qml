@@ -50,13 +50,20 @@ Rectangle {
         Rectangle {
             id: wrapper
             width: parent.width
-            height: 80
+            height: 122
             color: "transparent"
+
             Text {
                 id: wrapperText
                 width: parent.width
                 font.pixelSize: 20
                 text: modelData
+//                Rectangle {
+//                    anchors.fill: parent
+//                    border.color: "transparent"
+//                    antialiasing: true
+//                    radius: 4
+//                }
             }
             MouseArea {
                 anchors.fill: parent
