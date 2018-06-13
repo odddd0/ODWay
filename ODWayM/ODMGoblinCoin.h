@@ -16,6 +16,11 @@
  */
 struct ODMGoblinCoin : public ODMBase
 {
+    enum GoblinState
+    {
+        SimplePay = 0,
+        NormalTransit = 1,
+    };
 public:
     ODMGoblinCoin();
     ODMGoblinCoin(const StringList &stringList);
@@ -28,7 +33,7 @@ public:
     void GetSqlInsert(std::string &sql_);
 
 public:
-    int _state;
+    GoblinState _state;
     std::string _goldFrom;
     int _bill;
     std::string _classify;

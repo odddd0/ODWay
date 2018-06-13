@@ -24,34 +24,15 @@ struct ODPGoblin::Impl
         // ODMGnome
         tmpList.clear();
         ODWayM::Instance()->GetList("ODMGnome", tmpList);
-        ODMGnomePtr tmpGnomePtr;
-        std::for_each(tmpList.begin(), tmpList.end(), [&](ODMBasePtr &x){
-            tmpGnomePtr = std::static_pointer_cast<ODMGnome>(x);
-
-            // Gnome
-            if (ODVectorUtil::RefreshInsert<std::string>(_expandData._goldFromList, tmpGnomePtr->_name))
-            {
-                // new gnome
-                _expandData._gnomeMap[tmpGnomePtr->_name] = std::make_shared<ODPGoblin::OneGnome>();
-            }
+        std::for_each(tmpList.cbegin(), tmpList.cend(), [&](const ODMBasePtr &x){
+            _expandData.appendGnome(x);
         });
 
         // ODMGoblinCoin
         tmpList.clear();
         ODWayM::Instance()->GetList("ODMGoblinCoin", tmpList);
-        ODMGoblinCoinPtr tmpGoblinCoinPtr;
-        OneGnomePtr tmpOneGnomePtr;
-        std::for_each(tmpList.begin(), tmpList.end(), [&](ODMBasePtr &x){
-            tmpGoblinCoinPtr = std::static_pointer_cast<ODMGoblinCoin>(x);
-
-            // CKK
-            _expandData._ckk->appendData(tmpGoblinCoinPtr->_classify, tmpGoblinCoinPtr->_kindFirst, tmpGoblinCoinPtr->_kindSecond);
-
-            // Compute Gnome
-            if (tmpOneGnomePtr = _expandData._gnomeMap[tmpGoblinCoinPtr->_goldFrom])
-            {
-                tmpOneGnomePtr->_balance -= tmpGoblinCoinPtr->_count;
-            }
+        std::for_each(tmpList.cbegin(), tmpList.cend(), [&](const ODMBasePtr &x){
+            _expandData.appendCoin(x);
         });
     }
 
@@ -69,15 +50,31 @@ ODPGoblin *ODPGoblin::Instance()
     return obj;
 }
 
-bool ODPGoblin::AddSimplePay(const ODMGoblinCoinPtr &ptr_)
+bool ODPGoblin::AddGoblin(const ODMBasePtr &ptr_)
 {
-    bool Result = false;
-    Result = ODWayM::Instance()->AddModel(ptr_);
+    bool Result = true;
+    if (ptr_->_type == "ODMGnome")
+    {
+        // gnome name exist?
+        ODMGnomePtr tmpPtr = std::static_pointer_cast<ODMGnome>(ptr_);
+        auto pos = std::find(_Impl->_expandData._goldFromList.begin(), _Impl->_expandData._goldFromList.end(), tmpPtr->_name);
+        if (pos != _Impl->_expandData._goldFromList.end())
+        {
+            Result = false;
+        }
+    }
     if (Result)
     {
-        if (_Impl->_expandData._gnomeMap[ptr_->_goldFrom])
+        if (ODWayM::Instance()->AddModel(ptr_))
         {
-            _Impl->_expandData._gnomeMap[ptr_->_goldFrom]->_balance -= ptr_->_count;
+            if (ptr_->_type == "ODMGoblinCoin")
+            {
+                Result = _Impl->_expandData.appendCoin(ptr_);
+            }
+            else if (ptr_->_type == "ODMGnome")
+            {
+                Result = _Impl->_expandData.appendGnome(ptr_);
+            }
         }
     }
     return Result;
@@ -86,16 +83,6 @@ bool ODPGoblin::AddSimplePay(const ODMGoblinCoinPtr &ptr_)
 void ODPGoblin::GetCKK(CKKPtr &ckk_)
 {
     ckk_ = _Impl->_expandData._ckk;
-}
-
-bool ODPGoblin::AddGnome(const ODMBasePtr &ptr_)
-{
-    bool Result = false;
-    if (ptr_->_type == "ODMGnome")
-    {
-        Result = ODWayM::Instance()->AddModel(ptr_);
-    }
-    return Result;
 }
 
 void ODPGoblin::GetGoldFromList(StringList &list_)
@@ -147,4 +134,57 @@ void ODPGoblin::ExpandData::clear()
     _ckk.reset();
     _ckk = std::make_shared<ODCKK>();
     _gnomeMap.clear();
+}
+
+bool ODPGoblin::ExpandData::appendGnome(const ODMBasePtr &ptr_)
+{
+    bool Result = false;
+    ODMGnomePtr cur = std::static_pointer_cast<ODMGnome>(ptr_);
+    if (cur)
+    {
+        Result = true;
+        // Gnome
+        if (ODVectorUtil::RefreshInsert<std::string>(_goldFromList, cur->_name))
+        {
+            // new gnome
+            _gnomeMap[cur->_name] = std::make_shared<ODPGoblin::OneGnome>();
+        }
+    }
+    return Result;
+}
+
+bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
+{
+    bool Result = false;
+    ODMGoblinCoinPtr cur = std::static_pointer_cast<ODMGoblinCoin>(ptr_);
+    ODPGoblin::OneGnomePtr tmpOneGnomePtr = NULL;
+    if (cur)
+    {
+        Result = true;
+        // CKK
+        _ckk->appendData(cur->_classify, cur->_kindFirst, cur->_kindSecond);
+
+        // Compute Gnome
+        // SimplePay
+        if (cur->_state == ODMGoblinCoin::GoblinState::SimplePay)
+        {
+            if (tmpOneGnomePtr = _gnomeMap[cur->_goldFrom])
+            {
+                tmpOneGnomePtr->_balance -= cur->_count;
+            }
+        }
+        // NormalTransit
+        else if (cur->_state == ODMGoblinCoin::GoblinState::NormalTransit)
+        {
+            if (tmpOneGnomePtr = _gnomeMap[cur->_goldFrom])
+            {
+                tmpOneGnomePtr->_balance -= cur->_count;
+            }
+            if (tmpOneGnomePtr = _gnomeMap[cur->_classify])
+            {
+                tmpOneGnomePtr->_balance += cur->_count;
+            }
+        }
+    }
+    return Result;
 }

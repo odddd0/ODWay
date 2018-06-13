@@ -73,7 +73,51 @@ bool ODVGoblin::addSimplePay(
             time_t lt = mktime(&tmpTm);
             tmpPtr->_id = lt;
         }
-        Result = ODPGoblin::Instance()->AddSimplePay(tmpPtr);
+        Result = ODPGoblin::Instance()->AddGoblin(tmpPtr);
+        if (Result)
+        {
+
+        }
+    }
+    return Result;
+}
+
+bool ODVGoblin::addNormalTransit(
+        const int &year_,
+        const int &month_,
+        const int &day_,
+        const int &hour_,
+        const int &minute_,
+        const int &second_,
+        const bool &customTime_,
+        const QString &goldFrom_,
+        const QString &goldTo_,
+        const double &count_,
+        const QString &content_)
+{
+    bool Result = false;
+    if (!goldFrom_.isEmpty() &&!goldTo_.isEmpty())
+    {
+        ODMGoblinCoinPtr tmpPtr = std::make_shared<ODMGoblinCoin>();
+        tmpPtr->_state = ODMGoblinCoin::GoblinState::NormalTransit;
+        tmpPtr->_goldFrom = goldFrom_.toStdString();
+        tmpPtr->_classify = goldTo_.toStdString();
+        tmpPtr->_count = count_ * 100;
+        tmpPtr->_content = content_.toStdString();
+        if (customTime_)
+        {
+            struct tm tmpTm;
+            tmpTm.tm_year = year_ - 1900;
+            tmpTm.tm_mon = month_ - 1;
+            tmpTm.tm_mday = day_;
+            tmpTm.tm_hour = hour_;
+            tmpTm.tm_min = minute_;
+            tmpTm.tm_sec = second_;
+            tmpTm.tm_isdst = 0;
+            time_t lt = mktime(&tmpTm);
+            tmpPtr->_id = lt;
+        }
+        Result = ODPGoblin::Instance()->AddGoblin(tmpPtr);
         if (Result)
         {
 
@@ -105,7 +149,7 @@ bool ODVGoblin::addGnome(const QString &name_, const int &CreditLimits_, const i
         tmpPtr->_billDates = BillDates_;
         tmpPtr->_dueDay = DueDay_;
 
-        Result = ODPGoblin::Instance()->AddGnome(tmpPtr);
+        Result = ODPGoblin::Instance()->AddGoblin(tmpPtr);
         if (Result)
         {
 

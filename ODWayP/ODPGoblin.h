@@ -27,6 +27,8 @@ class ODPGoblin
     {
         ExpandData();
         void clear();
+        bool appendGnome(const ODMBasePtr &ptr_);
+        bool appendCoin(const ODMBasePtr &ptr_);
 
         StringList _goldFromList;
         std::map<std::string, OneGnomePtr> _gnomeMap;
@@ -37,14 +39,11 @@ public:
 
 public:
     // add
-    bool AddSimplePay(const ODMGoblinCoinPtr &ptr_);
+    bool AddGoblin(const ODMBasePtr &ptr_);
     void GetCKK(CKKPtr &ckk_);
 
 public:
     // Gnome
-    // add
-    bool AddGnome(const ODMBasePtr &ptr_);
-
     // get
     void GetGoldFromList(StringList &list_);
     void GetGnomeList(StringList &list_);

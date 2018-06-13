@@ -21,6 +21,8 @@ Rectangle {
     property var rightStrList: []
     property var rightColorList: []
 
+    property var thisPtrList: []
+
     id: bar
     height: activePageCount > 0 ? 65 : 0
     width: parent.width
@@ -48,14 +50,17 @@ Rectangle {
             middleStr = middleStrList.pop()
             rightStr = rightStrList.pop()
             rightColor = rightColorList.pop()
+            thisPtrList.pop().update()
         }
     }
 
-    function deepIn() {
+    function openUrl(thisPtr, url) {
         barHandleList.push(barHandle)
         middleStrList.push(middleStr)
         rightStrList.push(rightStr)
         rightColorList.push(rightColor)
+        thisPtrList.push(thisPtr)
+        ll.showExample(url)
     }
 
     Rectangle {

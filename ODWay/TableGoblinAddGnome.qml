@@ -27,7 +27,6 @@ Rectangle {
                 {
                     bar.back()
                 }
-
             }
         }
     }

@@ -9,6 +9,7 @@
 import QtQuick 2.9
 
 Rectangle {
+    id: iiTableGoblinList
     // 0: default; 1: durMode; 2: deleteMode
     property bool selectMode: false
     property int index1: 0
@@ -34,13 +35,13 @@ Rectangle {
             {
                 // open TableGoblinAddGnome
                 bar.rightStr = ""
-                bar.deepIn()
-                ll.showExample("TableGoblinAddGnome.qml")
+                bar.openUrl(iiTableGoblinList, "TableGoblinAddGnome.qml")
+
             }
         }
     }
 
-    function updateCurList() {
+    function update() {
         tableGoblinListView.model = ""
         tableGoblinListView.model = odvGoblinList.getGnomeList()
     }
@@ -62,15 +63,13 @@ Rectangle {
                 anchors.fill: parent
                 onClicked: {
                     tableGoblinListView.currentIndex = index
-                    if (wrapperText.text != "Add")
-                    {
-                        bar.rightStr = ""
-                    }
-                }
-                onDoubleClicked: {
                     if (wrapperText.text == "Add")
                     {
                         bar.rightStr = "Add"
+                    }
+                    else
+                    {
+                        bar.rightStr = ""
                     }
                 }
             }

@@ -12,7 +12,7 @@ bool ODMGoblinCoin::_init = true;
 
 ODMGoblinCoin::ODMGoblinCoin()
     : ODMBase("ODMGoblinCoin")
-    , _state(0)
+    , _state(ODMGoblinCoin::GoblinState::SimplePay)
     , _goldFrom("")
     , _bill(0)
     , _classify("")
@@ -25,7 +25,7 @@ ODMGoblinCoin::ODMGoblinCoin()
 
 ODMGoblinCoin::ODMGoblinCoin(const StringList &stringList)
     : ODMBase("ODMGoblinCoin")
-    , _state(0)
+    , _state(ODMGoblinCoin::GoblinState::SimplePay)
     , _goldFrom("")
     , _bill(0)
     , _classify("")
@@ -37,7 +37,7 @@ ODMGoblinCoin::ODMGoblinCoin(const StringList &stringList)
     if (stringList.size() == 9)
     {
         _preId = _id = std::stoi(stringList[0]);
-        _state = std::stoi(stringList[1]);
+        _state = static_cast<ODMGoblinCoin::GoblinState>(std::stoi(stringList[1]));
         _goldFrom = stringList[2];
         _bill = std::stoi(stringList[3]);
         _classify = stringList[4];

@@ -9,6 +9,7 @@
 import QtQuick 2.9
 
 Rectangle {
+    property var dateTime
 
     gradient: Gradient {
         GradientStop{ position: 0; color: "#A1EF54";}

@@ -39,7 +39,7 @@ Rectangle {
                     bar.rightColor = "black"
                     bar.middleStr = "List"
                     bar.barHandle = "handleTableGoblinList"
-                    listView.updateCurList()
+                    listView.update()
                 }
                 else if (currentIndex == 1)
                 {

@@ -11,7 +11,6 @@ import QtQml.Models 2.1
 import QtQuick.Layouts 1.1
 
 Rectangle {
-
     function updateList(){
         tableGoblinAddList.currentIndex = 1
     }
@@ -38,6 +37,7 @@ Rectangle {
                     bar.rightStr = "+"
                     bar.rightColor = "red"
                     bar.barHandle = "handleTableGoblinAddTransit"
+                    tableGoblinAddTransitObject.dateTime = tableGoblinAddBasicObject.varDateTime
                 }
                 else if (currentIndex == 1)
                 {
@@ -54,6 +54,7 @@ Rectangle {
                     bar.rightStr = "+"
                     bar.rightColor = "red"
                     bar.barHandle = "handleTableGoblinAddBill"
+                    tableGoblinAddBillObject.dateTime = tableGoblinAddBasicObject.varDateTime
                 }
             }
 
