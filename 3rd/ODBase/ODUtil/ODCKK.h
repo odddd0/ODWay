@@ -18,6 +18,7 @@ public:
     ~ODCKK();
 
 public:
+    // ignore empty ckk
     bool appendData(const std::string &classify_, const std::string &kindFirst_, const std::string &kindSecond_);
 
 public:

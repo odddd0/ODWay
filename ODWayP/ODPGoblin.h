@@ -19,7 +19,13 @@ class ODPGoblin
 {
     struct OneGnome
     {
+        OneGnome();
+
         int _balance;
+        int _creditLimits;
+        int _billDates;
+        int _dueDay;
+        std::vector<int> _billList;
     };
     typedef std::shared_ptr<OneGnome> OneGnomePtr;
 

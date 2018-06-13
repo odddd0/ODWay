@@ -36,7 +36,6 @@ Rectangle {
                 // open TableGoblinAddGnome
                 bar.rightStr = ""
                 bar.openUrl(iiTableGoblinList, "TableGoblinAddGnome.qml")
-
             }
         }
     }
@@ -51,7 +50,7 @@ Rectangle {
         Rectangle {
             id: wrapper
             width: parent.width
-            height: 60
+            height: 80
             color: "transparent"
             Text {
                 id: wrapperText

@@ -91,6 +91,14 @@ public:
      * @return
      */
     static void DateJump(std::string &date_, const int &count_ = 1);
+
+    /**
+     * @brief CalBillList
+     * @param timestamp_
+     * @param billDates_
+     * @param index_
+     */
+    static bool CalBillList(const int &timestamp_, const int &billDates_, int &index_, std::string &dates_);
 };
 
 #endif // _ODTIMEUTIL_H_2642BAEBF76A480C611A75505D021741

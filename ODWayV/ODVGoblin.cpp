@@ -145,7 +145,7 @@ bool ODVGoblin::addGnome(const QString &name_, const int &CreditLimits_, const i
     {
         ODMGnomePtr tmpPtr = std::make_shared<ODMGnome>();
         tmpPtr->_name = name_.toStdString();
-        tmpPtr->_creditLimits = CreditLimits_;
+        tmpPtr->_creditLimits = CreditLimits_ * 100;
         tmpPtr->_billDates = BillDates_;
         tmpPtr->_dueDay = DueDay_;
 
