@@ -146,6 +146,9 @@ void ODPGoblin::GetGnomeList(StringList &list_)
     list_.clear();
     OneGnomePtr cur;
     std::string tmpStr;
+    int totalLastBill = 0;
+    int totalCurrentBill = 0;
+    int totalBalance = 0;
     std::for_each(_Impl->_expandData._goldFromList.cbegin(), _Impl->_expandData._goldFromList.cend(), [&](const std::string &x){
         cur = _Impl->_expandData._gnomeMap[x];
         tmpStr.clear();
@@ -154,6 +157,7 @@ void ODPGoblin::GetGnomeList(StringList &list_)
         // credit
         if (cur->_creditLimits)
         {
+            totalLastBill += cur->_billList[1];
             tmpStr += "LastBill:  " + std::to_string(cur->_billList[1]);
             if (cur->_billList[1])
             {
@@ -161,6 +165,7 @@ void ODPGoblin::GetGnomeList(StringList &list_)
             }
             tmpStr += "(" + std::to_string(cur->_billDates) + ")\n";
 
+            totalCurrentBill += cur->_billList[0];
             tmpStr += "CurrentBill:  " + std::to_string(cur->_billList[0]);
             if (cur->_billList[0])
             {
@@ -174,6 +179,7 @@ void ODPGoblin::GetGnomeList(StringList &list_)
         }
         else
         {
+            totalBalance += cur->_balance;
             tmpStr += "Balance:  " + std::to_string(cur->_balance);
             if (cur->_balance)
             {
@@ -184,6 +190,25 @@ void ODPGoblin::GetGnomeList(StringList &list_)
         tmpStr += "\n";
         list_.push_back(tmpStr);
     });
+    tmpStr = "Total\n";
+    tmpStr += "LastBill:  " + std::to_string(totalLastBill);
+    if (totalLastBill)
+    {
+        tmpStr.insert(tmpStr.end() - 2, '.');
+    }
+
+    tmpStr += "\nCurrentBill:  " + std::to_string(totalCurrentBill);
+    if (totalCurrentBill)
+    {
+        tmpStr.insert(tmpStr.end() - 2, '.');
+    }
+    tmpStr += "\nBalance:  " + std::to_string(totalBalance);
+    if (totalBalance)
+    {
+        tmpStr.insert(tmpStr.end() - 2, '.');
+    }
+    tmpStr += "\n";
+    list_.insert(list_.begin(), tmpStr);
 }
 
 ODPGoblin::ODPGoblin()
@@ -299,9 +324,24 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
             }
             if (gnome = _gnomeMap[cur->_goldFrom])
             {
-                gnome->_balance -= cur->_count;
+                if (gnome->_creditLimits)
+                {
+                    // credit withdraw
+                    if (ODTimeUtil::CalBillList(cur->_id, gnome->_billDates, tmpIndex, tmpStr) && tmpIndex >= 0)
+                    {
+                        while (gnome->_billList.size() <= tmpIndex)
+                        {
+                            gnome->_billList.push_back(0);
+                        }
+                        gnome->_billList[tmpIndex] += cur->_count;
+                        gnome->_balance -= cur->_count;
+                    }
+                }
+                else
+                {
+                    gnome->_balance -= cur->_count;
+                }
             }
-
         }
 
         tmpStr = "";
