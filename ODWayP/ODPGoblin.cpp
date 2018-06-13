@@ -89,30 +89,51 @@ void ODPGoblin::GetCoinList(StringList &list_)
 {
     list_.clear();
     std::string tmpStr;
-    std::for_each(_Impl->_expandData._coinList.cbegin(), _Impl->_expandData._coinList.cend(), [&](const OneGoblinCoinPtr &x){
-        tmpStr.clear();
+    std::for_each(_Impl->_expandData._dateList.cbegin(), _Impl->_expandData._dateList.cend(), [&](const std::string &x){
+        list_.push_back(x);
+        _Impl->_expandData._lastCoinNum.push_back(-1);
+        std::for_each(_Impl->_expandData._coinList[x].cbegin(), _Impl->_expandData._coinList[x].cend(), [&](const OneGoblinCoinPtr &y){
+            tmpStr.clear();
 
-        if (x->_classify.empty())
-        {
-            // transit
-            tmpStr = x->_goldFrom + " -> " + x->_goldTo + " (" + std::to_string(x->_count);
-            if (x->_count)
+            if (y->_classify.empty())
             {
-                tmpStr.insert(tmpStr.end() - 2, '.');
+                // transit
+                tmpStr = y->_goldFrom + " -> " + y->_goldTo + " (" + std::to_string(y->_count);
+                if (y->_count)
+                {
+                    tmpStr.insert(tmpStr.end() - 2, '.');
+                }
+                tmpStr += ")";
             }
-            tmpStr += ")";
-        }
-        else
-        {
-            tmpStr = x->_goldFrom + " (" + std::to_string(x->_count);
-            if (x->_count)
+            else
             {
-                tmpStr.insert(tmpStr.end() - 2, '.');
+                tmpStr = y->_goldFrom + " (" + std::to_string(y->_count);
+                if (y->_count)
+                {
+                    tmpStr.insert(tmpStr.end() - 2, '.');
+                }
+                tmpStr += "): " + y->_classify + "_" + y->_kindFirst + "_" + y->_kindSecond;
             }
-            tmpStr += "): " + x->_classify + "_" + x->_kindFirst + "_" + x->_kindSecond;
-        }
-        list_.push_back(tmpStr);
+            _Impl->_expandData._lastCoinNum.push_back(y->_id);
+            list_.push_back(tmpStr);
+        });
+        _Impl->_expandData._lastCoinNum.push_back(-1);
+        list_.push_back("");
     });
+}
+
+bool ODPGoblin::DelCoin(const int &index_)
+{
+    bool Result = false;
+    if (index_ >= 0 && index_ < _Impl->_expandData._lastCoinNum.size() && _Impl->_expandData._lastCoinNum[index_] >= 0)
+    {
+        Result = ODWayM::Instance()->DeleteModel("ODMGoblinCoin", _Impl->_expandData._lastCoinNum[index_]);
+        if (Result)
+        {
+            _Impl->ExpandData();
+        }
+    }
+    return Result;
 }
 
 void ODPGoblin::GetGoldFromList(StringList &list_)
@@ -188,6 +209,9 @@ void ODPGoblin::ExpandData::clear()
     _ckk.reset();
     _ckk = std::make_shared<ODCKK>();
     _gnomeMap.clear();
+    _coinList.clear();
+    _dateList.clear();
+    _lastCoinNum.clear();
 }
 
 bool ODPGoblin::ExpandData::appendGnome(const ODMBasePtr &ptr_)
@@ -280,9 +304,9 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
 
         }
 
+        tmpStr = "";
         // add to coinList
         tmpCoinPtr = std::make_shared<OneGoblinCoin>();
-        _coinList.push_back(tmpCoinPtr);
         if (cur->_state == ODMGoblinCoin::GoblinState::SimplePay)
         {
             tmpCoinPtr->_classify = cur->_classify;
@@ -296,6 +320,10 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
         tmpCoinPtr->_goldFrom = cur->_goldFrom;
         tmpCoinPtr->_count = cur->_count;
         tmpCoinPtr->_content = cur->_content;
+        tmpCoinPtr->_id = cur->_id;
+
+        ODVectorUtil::RefreshInsert<std::string>(_dateList, ODTimeUtil::Timestamp2String(cur->_id, "%y-%m-%d"));
+        _coinList[_dateList[0]].push_back(tmpCoinPtr);
     }
     return Result;
 }
@@ -312,6 +340,7 @@ ODPGoblin::OneGnome::OneGnome()
 
 ODPGoblin::OneGoblinCoin::OneGoblinCoin()
 {
+    _id = -1;
     _goldFrom = "";
     _goldTo = "";
 

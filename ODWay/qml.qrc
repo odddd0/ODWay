@@ -24,5 +24,7 @@
         <file>CKKPicker.qml</file>
         <file>TableGoblinAddGnome.qml</file>
         <file>RowSpinBox.qml</file>
+        <file>TableGoblinListCoin.qml</file>
+        <file>TableGoblinListGnome.qml</file>
     </qresource>
 </RCC>

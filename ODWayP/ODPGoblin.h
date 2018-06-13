@@ -32,6 +32,7 @@ class ODPGoblin
     struct OneGoblinCoin
     {
         OneGoblinCoin();
+        int _id;
         std::string _goldFrom;
         std::string _goldTo;
 
@@ -52,10 +53,12 @@ class ODPGoblin
         bool appendGnome(const ODMBasePtr &ptr_);
         bool appendCoin(const ODMBasePtr &ptr_);
 
-        std::vector<OneGoblinCoinPtr> _coinList;
+        std::map<std::string, std::vector<OneGoblinCoinPtr>> _coinList;
         StringList _goldFromList;
+        StringList _dateList;
         std::map<std::string, OneGnomePtr> _gnomeMap;
         CKKPtr _ckk;
+        IntList _lastCoinNum;
     };
 public:
     static ODPGoblin * Instance();
@@ -67,6 +70,7 @@ public:
 
     // get
     void GetCoinList(StringList &list_);
+    bool DelCoin(const int &index_);
 
 public:
     // Gnome

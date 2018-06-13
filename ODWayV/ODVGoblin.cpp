@@ -126,16 +126,27 @@ bool ODVGoblin::addTransit(
     return Result;
 }
 
+QStringList ODVGoblin::getCoinList()
+{
+    QStringList Result;
+    StringList tmpList;
+    ODPGoblin::Instance()->GetCoinList(tmpList);
+    std::for_each(tmpList.begin(), tmpList.end(), [&Result](std::string &x){
+        Result.push_back(QString::fromStdString(x));
+    });
+    return Result;
+}
+
+bool ODVGoblin::delCoin(const int &index_)
+{
+    return ODPGoblin::Instance()->DelCoin(index_);
+}
+
 QStringList ODVGoblin::getGnomeList()
 {
     QStringList Result;
     StringList tmpList;
     ODPGoblin::Instance()->GetGnomeList(tmpList);
-    std::for_each(tmpList.begin(), tmpList.end(), [&Result](std::string &x){
-        Result.push_back(QString::fromStdString(x));
-    });
-    Result.push_back("\n\n\n\n");
-    ODPGoblin::Instance()->GetCoinList(tmpList);
     std::for_each(tmpList.begin(), tmpList.end(), [&Result](std::string &x){
         Result.push_back(QString::fromStdString(x));
     });

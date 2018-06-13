@@ -1,124 +1,67 @@
 //====================================================================
 //  TableGoblinList.qml
-//  created 6.12.18
+//  created 6.13.18
 //  written by odddd0
 //
 //  https://github.com/odddd0/ODWay
 //====================================================================
 
-import QtQuick 2.9
+import QtQuick 2.0
+import QtQml.Models 2.1
+import QtQuick.Layouts 1.1
 
 Rectangle {
-    id: iiTableGoblinList
-    // 0: default; 1: durMode; 2: deleteMode
-    property bool selectMode: false
-    property int index1: 0
-    property int index2: 0
-    property var lastWrapper
-    gradient: Gradient {
-        GradientStop{ position: 0; color: "#EBEF70";}
-        GradientStop{ position: 1; color: "#E0EF37";}
+    function updateList(){
+        tableGoblinList.currentIndex = 0
     }
 
-    Component.onCompleted: {
-        bar.leftStr = "<"
-        bar.middleStr = "List"
-        bar.rightStr = ""
-        bar.rightColor = "black"
-        bar.barHandle = "handleTableGoblinList"
-    }
-
-    Connections{
-        target: bar
-        onRightBtnClicked:{
-            if (bar.barHandle == "handleTableGoblinList" && bar.rightStr == "Add")
-            {
-                // open TableGoblinAddGnome
-                bar.rightStr = ""
-                bar.openUrl(iiTableGoblinList, "TableGoblinAddGnome.qml")
-            }
-        }
-    }
-
-    function update() {
-        tableGoblinListView.model = ""
-        tableGoblinListView.model = odvGoblinList.getGnomeList()
-    }
-
-    Component {
-        id: tableGoblinListViewDelegate
-        Rectangle {
-            id: wrapper
-            width: parent.width
-            height: 122
-            color: "transparent"
-
-            Text {
-                id: wrapperText
-                width: parent.width
-                font.pixelSize: 20
-                text: modelData
-//                Rectangle {
-//                    anchors.fill: parent
-//                    border.color: "transparent"
-//                    antialiasing: true
-//                    radius: 4
-//                }
-            }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    tableGoblinListView.currentIndex = index
-                    if (wrapperText.text == "Add")
-                    {
-                        bar.rightStr = "Add"
-                    }
-                    else
-                    {
-                        bar.rightStr = ""
-                    }
-                }
-            }
-            // indent the item if it is the current item
-            states: [
-                State {
-                    name: "Current"
-                    when: wrapper.ListView.isCurrentItem
-                    PropertyChanges {
-                        target: wrapperText
-                        font.bold: true
-                        color: "black"
-                    }
-                },
-                State {
-                    name: "Normal"
-                    PropertyChanges {
-                        target: wrapperText
-                        font.bold: false
-                        color: "black"
-                    }
-                }
-            ]
-        }
-    }
-
-
-    ListView {
-        id: tableGoblinListView
+    ColumnLayout {
         anchors.fill: parent
-        anchors.topMargin: 65 + 5
-        anchors.bottomMargin: 55
-        anchors.leftMargin: 5
-        anchors.rightMargin: 5
 
-        focus: false
-        model: odvGoblinList.getGnomeList()
-        delegate: tableGoblinListViewDelegate
+        ListView {
+            id: tableGoblinList
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            snapMode: ListView.SnapOneItem
+            highlightRangeMode: ListView.StrictlyEnforceRange
+            highlightMoveDuration: 250
+            focus: false
+            orientation: ListView.Vertical
+            boundsBehavior: Flickable.StopAtBounds
+            onCurrentIndexChanged: {
+                if (currentIndex == 0)
+                {
+                    bar.leftStr = "<"
+                    bar.rightStr = ""
+                    bar.rightColor = "black"
+                    bar.middleStr = "Gnome"
+                    bar.barHandle = "handleTableGoblinListGnome"
+                    tableGoblinListGnomeObject.update()
+                }
+                else if (currentIndex == 1)
+                {
+                    bar.leftStr = "<"
+                    bar.rightStr = ""
+                    bar.rightColor = "black"
+                    bar.middleStr = "Coin"
+                    bar.barHandle = "handleTableGoblinListCoin"
+                    tableGoblinListCoinObject.update()
+                }
+            }
+
+            model: ObjectModel {
+                TableGoblinListGnome {
+                    id: tableGoblinListGnomeObject
+                    height: tableGoblinList.height
+                    width: tableGoblinList.width
+                }
+                TableGoblinListCoin {
+                    id: tableGoblinListCoinObject
+                    height: tableGoblinList.height
+                    width: tableGoblinList.width
+                }
+            }
+        }
     }
 
-    ListModel{
-        id: aaa
-        ListElement{name:"Add"}
-    }
 }
-

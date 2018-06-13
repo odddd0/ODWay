@@ -37,8 +37,8 @@ Rectangle {
                     bar.leftStr = "<"
                     bar.rightStr = ""
                     bar.rightColor = "black"
-                    bar.middleStr = "List"
-                    bar.barHandle = "handleTableGoblinList"
+                    bar.middleStr = "Gnome"
+                    bar.barHandle = "handleTableGoblinListGnome"
                     listView.update()
                 }
                 else if (currentIndex == 1)

@@ -53,6 +53,8 @@ public slots:
             const QString &goldTo_,
             const double &count_,
             const QString &content_);
+    QStringList getCoinList();
+    bool delCoin(const int &index_);
 
 public slots:
     // gnome
