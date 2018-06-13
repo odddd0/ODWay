@@ -9,7 +9,6 @@
 import QtQuick 2.9
 
 Rectangle {
-    property bool init_
 
     gradient: Gradient {
         GradientStop{ position: 0; color: "#A1EF54";}
@@ -33,53 +32,10 @@ Rectangle {
         anchors.leftMargin: 5
         anchors.rightMargin: 5
         spacing: 10
-        Component.onCompleted: {
-            init_ = true
-        }
 
         DateTimePicker{
             width: parent.width
             id: dateTime
-            Component.onCompleted: {
-                init_ = false
-            }
-        }
-        ClassifyPicker {
-            width: parent.width
-            height: 80
-            id: classify
-            classList: odvTimeList.classifyList
-            onClassChanged: {
-                if (!init_)
-                {
-                    odvTimeList.updateKindFirst(classify.classComboText)
-                    kindFirst.classList = odvTimeList.kindFirstList
-                    kindFirst.syncCombo()
-                    odvTimeList.updateKindSecond(classify.classComboText, kindFirst.classComboText)
-                    kindSecond.classList = odvTimeList.kindSecondList
-                    kindSecond.syncCombo()
-                }
-            }
-        }
-        ClassifyPicker {
-            width: parent.width
-            height: 80
-            id: kindFirst
-            classList: odvTimeList.kindFirstList
-            onClassChanged: {
-                if (!init_)
-                {
-                    odvTimeList.updateKindSecond(classify.classComboText, kindFirst.classComboText)
-                    kindSecond.classList = odvTimeList.kindSecondList
-                    kindSecond.syncCombo()
-                }
-            }
-        }
-        ClassifyPicker {
-            width: parent.width
-            height: 80
-            id: kindSecond
-            classList: odvTimeList.kindSecondList
         }
         Rectangle {
             width: parent.width

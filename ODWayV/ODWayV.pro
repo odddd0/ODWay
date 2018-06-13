@@ -25,13 +25,17 @@ SOURCES += \
         ODWayV.cpp \
     ODVTime.cpp \
     TreeModel.cpp \
-    TreeItem.cpp
+    TreeItem.cpp \
+    ODVGoblin.cpp \
+    ODVCKK.cpp
 
 HEADERS += \
         ODWayV.h \
     ODVTime.h \
     TreeModel.h \
-    TreeItem.h
+    TreeItem.h \
+    ODVGoblin.h \
+    ODVCKK.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

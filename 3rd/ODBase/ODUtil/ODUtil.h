@@ -9,6 +9,7 @@
 #ifndef _ODUTIL_H_8675677F07F21C219D0737A0628D123E
 #define _ODUTIL_H_8675677F07F21C219D0737A0628D123E
 
+#include "ODCKK.h"
 #include "ODTimeUtil.h"
 #include "ODVectorUtil.h"
 

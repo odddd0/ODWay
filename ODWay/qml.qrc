@@ -21,5 +21,6 @@
         <file>TableGoblinAddBasic.qml</file>
         <file>TableGoblinAddBill.qml</file>
         <file>TableGoblinAddTransit.qml</file>
+        <file>CKKPicker.qml</file>
     </qresource>
 </RCC>
