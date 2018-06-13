@@ -19,7 +19,7 @@ class ODPGoblin
 {
     struct OneGnome
     {
-
+        int _balance;
     };
     typedef std::shared_ptr<OneGnome> OneGnomePtr;
 
@@ -47,6 +47,7 @@ public:
 
     // get
     void GetGoldFromList(StringList &list_);
+    void GetGnomeList(StringList &list_);
 
 private:
     struct Impl;

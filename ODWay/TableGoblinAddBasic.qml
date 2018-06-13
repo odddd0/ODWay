@@ -59,11 +59,11 @@ Rectangle {
                 width: parent.width / 2 - 10
                 height: parent.height
                 model: odvGoblinList.getGoldFromList()
-            }
-            SpinBox {
+            }SpinBox {
                 id: count
                 width: parent.width / 2 - 10
                 height: parent.height
+                decimals: 2
                 minimumValue: 0
                 maximumValue: 2147483648
             }

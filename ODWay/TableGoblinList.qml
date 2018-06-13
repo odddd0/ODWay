@@ -41,9 +41,8 @@ Rectangle {
     }
 
     function updateCurList() {
-        //        tableTimeListView.model = ""
-        //        odvTimeList.updateList()
-        //        tableTimeListView.model = odvTimeList.curList
+        tableGoblinListView.model = ""
+        tableGoblinListView.model = odvGoblinList.getGnomeList()
     }
 
     Component {
@@ -51,13 +50,13 @@ Rectangle {
         Rectangle {
             id: wrapper
             width: parent.width
-            height: 30
+            height: 60
             color: "transparent"
             Text {
                 id: wrapperText
                 width: parent.width
                 font.pixelSize: 20
-                text: name
+                text: modelData
             }
             MouseArea {
                 anchors.fill: parent
@@ -108,7 +107,7 @@ Rectangle {
         anchors.rightMargin: 5
 
         focus: false
-        model: aaa
+        model: odvGoblinList.getGnomeList()
         delegate: tableGoblinListViewDelegate
     }
 

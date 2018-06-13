@@ -47,35 +47,50 @@ bool ODVGoblin::addSimplePay(
         const QString &classify_,
         const QString &kindFirst_,
         const QString &kindSecond_,
-        const int &count_,
+        const double &count_,
         const QString &content_)
 {
     bool Result = false;
-    ODMGoblinCoinPtr tmpPtr = std::make_shared<ODMGoblinCoin>();
-    tmpPtr->_goldFrom = goldFrom_.toStdString();
-    tmpPtr->_classify = classify_.toStdString();
-    tmpPtr->_kindFirst = kindFirst_.toStdString();
-    tmpPtr->_kindSecond = kindSecond_.toStdString();
-    tmpPtr->_count = count_;
-    tmpPtr->_content = content_.toStdString();
-    if (customTime_)
+    if (!goldFrom_.isEmpty() &&!classify_.isEmpty() &&!kindFirst_.isEmpty() &&!kindSecond_.isEmpty())
     {
-        struct tm tmpTm;
-        tmpTm.tm_year = year_ - 1900;
-        tmpTm.tm_mon = month_ - 1;
-        tmpTm.tm_mday = day_;
-        tmpTm.tm_hour = hour_;
-        tmpTm.tm_min = minute_;
-        tmpTm.tm_sec = second_;
-        tmpTm.tm_isdst = 0;
-        time_t lt = mktime(&tmpTm);
-        tmpPtr->_id = lt;
-    }
-    Result = ODPGoblin::Instance()->AddSimplePay(tmpPtr);
-    if (Result)
-    {
+        ODMGoblinCoinPtr tmpPtr = std::make_shared<ODMGoblinCoin>();
+        tmpPtr->_goldFrom = goldFrom_.toStdString();
+        tmpPtr->_classify = classify_.toStdString();
+        tmpPtr->_kindFirst = kindFirst_.toStdString();
+        tmpPtr->_kindSecond = kindSecond_.toStdString();
+        tmpPtr->_count = count_ * 100;
+        tmpPtr->_content = content_.toStdString();
+        if (customTime_)
+        {
+            struct tm tmpTm;
+            tmpTm.tm_year = year_ - 1900;
+            tmpTm.tm_mon = month_ - 1;
+            tmpTm.tm_mday = day_;
+            tmpTm.tm_hour = hour_;
+            tmpTm.tm_min = minute_;
+            tmpTm.tm_sec = second_;
+            tmpTm.tm_isdst = 0;
+            time_t lt = mktime(&tmpTm);
+            tmpPtr->_id = lt;
+        }
+        Result = ODPGoblin::Instance()->AddSimplePay(tmpPtr);
+        if (Result)
+        {
 
+        }
     }
+    return Result;
+}
+
+QStringList ODVGoblin::getGnomeList()
+{
+    QStringList Result;
+    StringList tmpList;
+    ODPGoblin::Instance()->GetGnomeList(tmpList);
+    std::for_each(tmpList.begin(), tmpList.end(), [&Result](std::string &x){
+        Result.push_back(QString::fromStdString(x));
+    });
+    Result.push_back("Add");
     return Result;
 }
 

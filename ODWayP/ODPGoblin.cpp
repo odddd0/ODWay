@@ -40,11 +40,18 @@ struct ODPGoblin::Impl
         tmpList.clear();
         ODWayM::Instance()->GetList("ODMGoblinCoin", tmpList);
         ODMGoblinCoinPtr tmpGoblinCoinPtr;
+        OneGnomePtr tmpOneGnomePtr;
         std::for_each(tmpList.begin(), tmpList.end(), [&](ODMBasePtr &x){
             tmpGoblinCoinPtr = std::static_pointer_cast<ODMGoblinCoin>(x);
 
             // CKK
             _expandData._ckk->appendData(tmpGoblinCoinPtr->_classify, tmpGoblinCoinPtr->_kindFirst, tmpGoblinCoinPtr->_kindSecond);
+
+            // Compute Gnome
+            if (tmpOneGnomePtr = _expandData._gnomeMap[tmpGoblinCoinPtr->_goldFrom])
+            {
+                tmpOneGnomePtr->_balance -= tmpGoblinCoinPtr->_count;
+            }
         });
     }
 
@@ -66,6 +73,13 @@ bool ODPGoblin::AddSimplePay(const ODMGoblinCoinPtr &ptr_)
 {
     bool Result = false;
     Result = ODWayM::Instance()->AddModel(ptr_);
+    if (Result)
+    {
+        if (_Impl->_expandData._gnomeMap[ptr_->_goldFrom])
+        {
+            _Impl->_expandData._gnomeMap[ptr_->_goldFrom]->_balance -= ptr_->_count;
+        }
+    }
     return Result;
 }
 
@@ -87,6 +101,27 @@ bool ODPGoblin::AddGnome(const ODMBasePtr &ptr_)
 void ODPGoblin::GetGoldFromList(StringList &list_)
 {
     list_ = _Impl->_expandData._goldFromList;
+}
+
+void ODPGoblin::GetGnomeList(StringList &list_)
+{
+    list_.clear();
+    OneGnomePtr cur;
+    std::string tmpStr;
+    std::for_each(_Impl->_expandData._goldFromList.cbegin(), _Impl->_expandData._goldFromList.cend(), [&](const std::string &x){
+        cur = _Impl->_expandData._gnomeMap[x];
+        tmpStr.clear();
+
+        tmpStr = x + "\n";
+        tmpStr += "Balance:  " + std::to_string(cur->_balance);
+        if (cur->_balance)
+        {
+            tmpStr.insert(tmpStr.end() - 2, '.');
+        }
+        tmpStr += "\n";
+
+        list_.push_back(tmpStr);
+    });
 }
 
 ODPGoblin::ODPGoblin()
@@ -111,4 +146,5 @@ void ODPGoblin::ExpandData::clear()
     _goldFromList.clear();
     _ckk.reset();
     _ckk = std::make_shared<ODCKK>();
+    _gnomeMap.clear();
 }

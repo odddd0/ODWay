@@ -39,11 +39,12 @@ public slots:
                       const QString &classify_,
                       const QString &kindFirst_,
                       const QString &kindSecond_,
-                      const int &count_,
+                      const double &count_,
                       const QString &content_);
 
 public slots:
     // gnome
+    QStringList getGnomeList();
     bool addGnome(const QString &name_, const int &CreditLimits_, const int &BillDates_, const int &DueDay_);
 
 private:
