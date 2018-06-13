@@ -85,6 +85,36 @@ void ODPGoblin::GetCKK(CKKPtr &ckk_)
     ckk_ = _Impl->_expandData._ckk;
 }
 
+void ODPGoblin::GetCoinList(StringList &list_)
+{
+    list_.clear();
+    std::string tmpStr;
+    std::for_each(_Impl->_expandData._coinList.cbegin(), _Impl->_expandData._coinList.cend(), [&](const OneGoblinCoinPtr &x){
+        tmpStr.clear();
+
+        if (x->_classify.empty())
+        {
+            // transit
+            tmpStr = x->_goldFrom + " -> " + x->_goldTo + " (" + std::to_string(x->_count);
+            if (x->_count)
+            {
+                tmpStr.insert(tmpStr.end() - 2, '.');
+            }
+            tmpStr += ")";
+        }
+        else
+        {
+            tmpStr = x->_goldFrom + " (" + std::to_string(x->_count);
+            if (x->_count)
+            {
+                tmpStr.insert(tmpStr.end() - 2, '.');
+            }
+            tmpStr += "): " + x->_classify + "_" + x->_kindFirst + "_" + x->_kindSecond;
+        }
+        list_.push_back(tmpStr);
+    });
+}
+
 void ODPGoblin::GetGoldFromList(StringList &list_)
 {
     list_ = _Impl->_expandData._goldFromList;
@@ -184,6 +214,7 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
 {
     bool Result = false;
     ODMGoblinCoinPtr cur = std::static_pointer_cast<ODMGoblinCoin>(ptr_);
+    OneGoblinCoinPtr tmpCoinPtr = NULL;
     int tmpIndex = -1;
     std::string tmpStr;
     ODPGoblin::OneGnomePtr gnome = NULL;
@@ -248,6 +279,23 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
             }
 
         }
+
+        // add to coinList
+        tmpCoinPtr = std::make_shared<OneGoblinCoin>();
+        _coinList.push_back(tmpCoinPtr);
+        if (cur->_state == ODMGoblinCoin::GoblinState::SimplePay)
+        {
+            tmpCoinPtr->_classify = cur->_classify;
+            tmpCoinPtr->_kindFirst = cur->_kindFirst;
+            tmpCoinPtr->_kindSecond = cur->_kindSecond;
+        }
+        else
+        {
+            tmpCoinPtr->_goldTo = cur->_classify;
+        }
+        tmpCoinPtr->_goldFrom = cur->_goldFrom;
+        tmpCoinPtr->_count = cur->_count;
+        tmpCoinPtr->_content = cur->_content;
     }
     return Result;
 }
@@ -260,4 +308,18 @@ ODPGoblin::OneGnome::OneGnome()
     _dueDay = 1;
     _billList.push_back(0);
     _billList.push_back(0);
+}
+
+ODPGoblin::OneGoblinCoin::OneGoblinCoin()
+{
+    _goldFrom = "";
+    _goldTo = "";
+
+    _classify = "";
+    _kindFirst = "";
+    _kindSecond = "";
+
+    _content = "";
+
+    _count = 0;
 }

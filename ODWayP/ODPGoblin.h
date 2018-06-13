@@ -29,6 +29,22 @@ class ODPGoblin
     };
     typedef std::shared_ptr<OneGnome> OneGnomePtr;
 
+    struct OneGoblinCoin
+    {
+        OneGoblinCoin();
+        std::string _goldFrom;
+        std::string _goldTo;
+
+        std::string _classify;
+        std::string _kindFirst;
+        std::string _kindSecond;
+
+        std::string _content;
+
+        int _count;
+    };
+    typedef std::shared_ptr<OneGoblinCoin> OneGoblinCoinPtr;
+
     struct ExpandData
     {
         ExpandData();
@@ -36,6 +52,7 @@ class ODPGoblin
         bool appendGnome(const ODMBasePtr &ptr_);
         bool appendCoin(const ODMBasePtr &ptr_);
 
+        std::vector<OneGoblinCoinPtr> _coinList;
         StringList _goldFromList;
         std::map<std::string, OneGnomePtr> _gnomeMap;
         CKKPtr _ckk;
@@ -47,6 +64,9 @@ public:
     // add
     bool AddGoblin(const ODMBasePtr &ptr_);
     void GetCKK(CKKPtr &ckk_);
+
+    // get
+    void GetCoinList(StringList &list_);
 
 public:
     // Gnome

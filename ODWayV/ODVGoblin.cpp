@@ -134,6 +134,11 @@ QStringList ODVGoblin::getGnomeList()
     std::for_each(tmpList.begin(), tmpList.end(), [&Result](std::string &x){
         Result.push_back(QString::fromStdString(x));
     });
+    Result.push_back("\n\n\n\n");
+    ODPGoblin::Instance()->GetCoinList(tmpList);
+    std::for_each(tmpList.begin(), tmpList.end(), [&Result](std::string &x){
+        Result.push_back(QString::fromStdString(x));
+    });
     Result.push_back("Add");
     return Result;
 }
