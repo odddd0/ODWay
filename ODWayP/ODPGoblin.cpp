@@ -43,6 +43,13 @@ ODPGoblin *ODPGoblin::Instance()
     return obj;
 }
 
+bool ODPGoblin::AddSimplePay(const ODMGoblinCoinPtr &ptr_)
+{
+    bool Result = false;
+    Result = ODWayM::Instance()->AddModel(ptr_);
+    return Result;
+}
+
 void ODPGoblin::GetCKK(CKKPtr &ckk_)
 {
     ckk_ = _Impl->_expandData._ckk;

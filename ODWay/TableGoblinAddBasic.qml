@@ -7,6 +7,7 @@
 //====================================================================
 
 import QtQuick 2.9
+import QtQuick.Controls 1.4
 
 Rectangle {
     gradient: Gradient {
@@ -20,6 +21,12 @@ Rectangle {
             if (bar.barHandle == "handleTableGoblinAddBasic")
             {
                 console.log("goblin add basic")
+                if (bar.rightStr == "+" &&
+                        odvGoblinList.addSimplePay(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second,
+                                                   dateTime.customTime, goldFrom.classText, ckk.classify, ckk.kindFirst, ckk.kindSecond, count.value, content.text))
+                {
+                    rootTableGoblin.currentIndex = 0
+                }
             }
         }
     }
@@ -33,27 +40,35 @@ Rectangle {
         spacing: 10
 
         DateTimePicker{
-            width: parent.width
             id: dateTime
+            width: parent.width
         }
         ClassifyPicker {
-            width: parent.width
-            height: 80
             id: goldFrom
+            width: parent.width
+            height: 60
         }
         CKKPicker {
+            id: ckk
             width: parent.width
-            height: 240
+            height: 180
             ckkList: odvGoblinList.getCKK()
+        }
+        SpinBox {
+            id: count
+            width: parent.width
+            height: 60
+            minimumValue: 0
+            maximumValue: 2147483648
         }
 
         Rectangle {
             width: parent.width
-            height: 80
+            height: 60
             border.color: "black"
             TextEdit {
-                anchors.fill: parent
                 id: content
+                anchors.fill: parent
             }
         }
     }

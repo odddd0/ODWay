@@ -32,6 +32,5 @@ public slots:
 private:
     CKKPtr _ckk;
 };
-Q_DECLARE_METATYPE(CKKPtr)
 
 #endif // _ODVCKK_H_963240FF4634998C509BD24ECCC8C303_

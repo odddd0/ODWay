@@ -18,6 +18,8 @@ ODMGoblinCoin::ODMGoblinCoin()
     , _classify("")
     , _kindFirst("")
     , _kindSecond("")
+    , _count(0)
+    , _content("")
 {
 }
 
@@ -29,8 +31,10 @@ ODMGoblinCoin::ODMGoblinCoin(const StringList &stringList)
     , _classify("")
     , _kindFirst("")
     , _kindSecond("")
+    , _count(0)
+    , _content("")
 {
-    if (stringList.size() == 7)
+    if (stringList.size() == 9)
     {
         _preId = _id = std::stoi(stringList[0]);
         _state = std::stoi(stringList[1]);
@@ -39,6 +43,8 @@ ODMGoblinCoin::ODMGoblinCoin(const StringList &stringList)
         _classify = stringList[4];
         _kindFirst = stringList[5];
         _kindSecond = stringList[6];
+        _count = std::stoi(stringList[7]);
+        _content = stringList[8];
     }
 }
 
@@ -53,7 +59,9 @@ void ODMGoblinCoin::GetSqlCreateTable(std::string &sql_)
                "'Bill' integer DEFAULT(0),"
                "'Classify' varchar(128),"
                "'KindFirst' varchar(128),"
-               "'KindSecond' varchar(128));";
+               "'KindSecond' varchar(128),"
+               "'Count' integer DEFAULT(0),"
+               "'Content' varchar(128));";
         _init = false;
     }
 }
@@ -81,6 +89,8 @@ void ODMGoblinCoin::GetSqlUpdate(std::string &sql_)
             "',Classify='" + _classify +
             "',KindFirst='" + _kindFirst +
             "',KindSecond='" + _kindSecond +
+            "',Count='" + std::to_string(_count) +
+            "',Content='" + _content +
             "' where Id='" + std::to_string(_preId) + "';";
 }
 
@@ -94,5 +104,7 @@ void ODMGoblinCoin::GetSqlInsert(std::string &sql_)
             std::to_string(_bill) + "','" +
             _classify + "','" +
             _kindFirst + "','" +
-            _kindSecond + "');";
+            _kindSecond + "','" +
+            std::to_string(_count) + "','" +
+            _content + "');";
 }

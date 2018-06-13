@@ -16,25 +16,31 @@
 class ODVGoblin : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QVariant varCkk READ varCkk WRITE setVarCkk NOTIFY varCkkChanged)
+
 public:
     explicit ODVGoblin(QObject *parent = nullptr);
 
 public:
-    QVariant varCkk() const;
 
 signals:
-    void varCkkChanged(QVariant varCkk);
 
 public slots:
-    void setVarCkk(QVariant varCkk);
     QVariant getCKK();
-
-public slots:
-    void updateGoblin();
+    bool addSimplePay(const int &year_,
+                      const int &month_,
+                      const int &day_,
+                      const int &hour_,
+                      const int &minute_,
+                      const int &second_,
+                      const bool &customTime_,
+                      const QString &goldFrom_,
+                      const QString &classify_,
+                      const QString &kindFirst_,
+                      const QString &kindSecond_,
+                      const int &count_,
+                      const QString &content_);
 
 private:
-    QVariant m_varCkk;
 };
 
 #endif // _ODVGOBLIN_H_7E454649C08C0A706DA13FA21129A632_

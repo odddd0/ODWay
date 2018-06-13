@@ -30,6 +30,7 @@ public:
 
 public:
     // add
+    bool AddSimplePay(const ODMGoblinCoinPtr &ptr_);
     void GetCKK(CKKPtr &ckk_);
 
 private:

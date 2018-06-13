@@ -34,6 +34,8 @@ public:
     std::string _classify;
     std::string _kindFirst;
     std::string _kindSecond;
+    int _count;
+    std::string _content;
 
 private:
     static bool _init;

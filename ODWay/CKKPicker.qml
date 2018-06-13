@@ -13,6 +13,9 @@ import ODVCKK 1.0
 Rectangle {
     property var ckkList
     property int basicSpacing: 10
+    property alias classify: ckkClassify.classText
+    property alias kindFirst: ckkKindFirst.classText
+    property alias kindSecond: ckkKindSecond.classText
     color: "transparent"
 
     VCKK { id: vckk }
