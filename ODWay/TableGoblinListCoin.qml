@@ -36,6 +36,14 @@ Rectangle {
             {
                 tableGoblinList.currentIndex = 0
             }
+            else if (bar.barHandle == "handleTableGoblinListCoin" && bar.rightStr == "Revoke")
+            {
+                if (odvGoblinList.revokeCoin(tableGoblinListView.currentIndex))
+                {
+                    bar.rightStr = "Gnome"
+                    bar.rightColor = "black"
+                }
+            }
         }
     }
 
@@ -69,6 +77,12 @@ Rectangle {
                     tableGoblinListView.currentIndex = index
                     wrapperText.color = "red"
                     bar.rightStr = "Del"
+                    bar.rightColor = "red"
+                }
+                onDoubleClicked: {
+                    tableGoblinListView.currentIndex = index
+                    wrapperText.color = "red"
+                    bar.rightStr = "Revoke"
                     bar.rightColor = "red"
                 }
             }

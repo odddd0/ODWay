@@ -25,6 +25,7 @@ public:
 public:
     // only append
     void GetList(const std::string &type_, ODMBaseList &list);
+    void GetPtr(const std::string &type_, const int &id_, ODMBasePtr &ptr_);
 
 public:
     bool DeleteModel(const std::string &type_, const int &id_);

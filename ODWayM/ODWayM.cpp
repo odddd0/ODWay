@@ -100,6 +100,21 @@ void ODWayM::GetList(const std::string &type_, ODMBaseList &list)
     });
 }
 
+void ODWayM::GetPtr(const std::string &type_, const int &id_, ODMBasePtr &ptr_)
+{
+    auto pos = std::find_if(_Impl->_DBList.begin(), _Impl->_DBList.end(), [&](ODMBasePtr &x){
+        return x->_type == type_ && x->_id == id_;
+    });
+    if (pos != _Impl->_DBList.end())
+    {
+        ptr_ = *pos;
+    }
+    else
+    {
+        ptr_ = NULL;
+    }
+}
+
 bool ODWayM::DeleteModel(const std::string &type_, const int &id_)
 {
     bool Result = false;

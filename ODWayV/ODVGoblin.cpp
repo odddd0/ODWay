@@ -37,8 +37,7 @@ QStringList ODVGoblin::getGoldFromList()
     return Result;
 }
 
-bool ODVGoblin::addSimplePay(
-        const int &year_,
+bool ODVGoblin::addSimplePay(const int &year_,
         const int &month_,
         const int &day_,
         const int &hour_,
@@ -60,7 +59,7 @@ bool ODVGoblin::addSimplePay(
         tmpPtr->_classify = classify_.toStdString();
         tmpPtr->_kindFirst = kindFirst_.toStdString();
         tmpPtr->_kindSecond = kindSecond_.toStdString();
-        tmpPtr->_count = count_ * 100;
+        tmpPtr->_count = std::stoi(std::to_string(count_ * 100));
         tmpPtr->_content = content_.toStdString();
         if (customTime_)
         {
@@ -84,8 +83,7 @@ bool ODVGoblin::addSimplePay(
     return Result;
 }
 
-bool ODVGoblin::addTransit(
-        const int &year_,
+bool ODVGoblin::addTransit(const int &year_,
         const int &month_,
         const int &day_,
         const int &hour_,
@@ -105,8 +103,8 @@ bool ODVGoblin::addTransit(
         tmpPtr->_state = ODMGoblinCoin::GoblinState::NormalTransit;
         tmpPtr->_goldFrom = goldFrom_.toStdString();
         tmpPtr->_classify = goldTo_.toStdString();
-        tmpPtr->_count = count_ * 100;
-        tmpPtr->_kindSecond = std::to_string(static_cast<int>(tips_ * 100));
+        tmpPtr->_count = std::stoi(std::to_string(count_ * 100));
+        tmpPtr->_kindSecond = std::to_string(std::stoi(std::to_string(tips_ * 100)));
         tmpPtr->_content = content_.toStdString();
         if (customTime_)
         {
@@ -144,6 +142,11 @@ QStringList ODVGoblin::getCoinList()
 bool ODVGoblin::delCoin(const int &index_)
 {
     return ODPGoblin::Instance()->DelCoin(index_);
+}
+
+bool ODVGoblin::revokeCoin(const int &index_)
+{
+    return ODPGoblin::Instance()->RevokeCoin(index_);
 }
 
 QString ODVGoblin::getCurGnomeStr(const QString &defaultStr)

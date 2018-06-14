@@ -66,6 +66,7 @@ bool ODPGoblin::AddGoblin(const ODMBasePtr &ptr_)
     }
     if (Result)
     {
+        Result = false;
         if (ODWayM::Instance()->AddModel(ptr_))
         {
             if (ptr_->_type == "ODMGoblinCoin")
@@ -120,7 +121,12 @@ void ODPGoblin::GetCoinList(StringList &list_, const std::string &goldType_)
             {
                 if (y->_goldFrom == goldType_ || goldType_.empty())
                 {
-                    tmpStr = y->_goldFrom + " (" + std::to_string(y->_count);
+                    // revoke
+                    if (y->_state != 0)
+                    {
+                        tmpStr += "xx: ";
+                    }
+                    tmpStr += y->_goldFrom + " (" + std::to_string(y->_count);
                     if (y->_count)
                     {
                         tmpStr.insert(tmpStr.end() - 2, '.');
@@ -157,6 +163,26 @@ bool ODPGoblin::DelCoin(const int &index_)
         if (Result)
         {
             _Impl->ExpandData();
+        }
+    }
+    return Result;
+}
+
+bool ODPGoblin::RevokeCoin(const int &index_)
+{
+    bool Result = false;
+    if (index_ >= 0 && index_ < _Impl->_expandData._lastCoinNum.size() && _Impl->_expandData._lastCoinNum[index_] >= 0)
+    {
+        ODMBasePtr tmpPtr;
+        ODWayM::Instance()->GetPtr("ODMGoblinCoin", _Impl->_expandData._lastCoinNum[index_], tmpPtr);
+        if (tmpPtr)
+        {
+            std::static_pointer_cast<ODMGoblinCoin>(tmpPtr)->_state = ODMGoblinCoin::GoblinState::PayRevoke;
+            Result = ODWayM::Instance()->UpdateModel(tmpPtr);
+            if (Result)
+            {
+                _Impl->ExpandData();
+            }
         }
     }
     return Result;
@@ -476,10 +502,16 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                 gnome->_balance -= cur->_count + tmpInt;
             }
         }
+        // revoke
+        else if (cur->_state == ODMGoblinCoin::GoblinState::PayRevoke)
+        {
+            // do nothing
+        }
 
         // add to coinList
         tmpCoinPtr = std::make_shared<OneGoblinCoin>();
-        if (cur->_state == ODMGoblinCoin::GoblinState::SimplePay)
+        if (cur->_state == ODMGoblinCoin::GoblinState::SimplePay ||
+                cur->_state == ODMGoblinCoin::GoblinState::PayRevoke)
         {
             tmpCoinPtr->_classify = cur->_classify;
             tmpCoinPtr->_kindFirst = cur->_kindFirst;
@@ -493,6 +525,7 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                 tmpCoinPtr->_tips = std::stoi(cur->_kindSecond);
             }
         }
+        tmpCoinPtr->_state = static_cast<int>(cur->_state);
         tmpCoinPtr->_goldFrom = cur->_goldFrom;
         tmpCoinPtr->_count = cur->_count;
         tmpCoinPtr->_content = cur->_content;
@@ -526,6 +559,8 @@ ODPGoblin::OneGoblinCoin::OneGoblinCoin()
     _kindSecond = "";
 
     _content = "";
+
+    _state = 0;
 
     _tips = 0;
     _count = 0;

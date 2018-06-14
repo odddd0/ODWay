@@ -44,6 +44,8 @@ class ODPGoblin
 
         std::string _content;
 
+        int _state;
+
         int _tips;
         int _count;
     };
@@ -77,6 +79,7 @@ public:
     // get
     void GetCoinList(StringList &list_, const std::string &goldType_ = "");
     bool DelCoin(const int &index_);
+    bool RevokeCoin(const int &index_);
 
 public:
     // Gnome

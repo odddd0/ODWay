@@ -56,6 +56,7 @@ public slots:
             const QString &content_);
     QStringList getCoinList();
     bool delCoin(const int &index_);
+    bool revokeCoin(const int &index_);
     QString getCurGnomeStr(const QString &defaultStr = "");
 
 public slots:
