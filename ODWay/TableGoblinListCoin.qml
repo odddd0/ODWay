@@ -28,11 +28,11 @@ Rectangle {
                 if (odvGoblinList.delCoin(tableGoblinListView.currentIndex))
                 {
                     update()
-                    bar.rightStr = ""
+                    bar.rightStr = "Gnome"
                     bar.rightColor = "black"
                 }
             }
-            if (bar.barHandle == "handleTableGoblinListCoin" && bar.rightStr == "Gnome")
+            else if (bar.barHandle == "handleTableGoblinListCoin" && bar.rightStr == "Gnome")
             {
                 tableGoblinList.currentIndex = 0
             }

@@ -37,14 +37,14 @@ Rectangle {
                 bar.rightStr = ""
                 bar.openUrl(iiTableGoblinListGnome, "TableGoblinAddGnome.qml")
             }
-            if (bar.barHandle == "handleTableGoblinListGnome" && bar.rightStr == "Up")
+            else if (bar.barHandle == "handleTableGoblinListGnome" && bar.rightStr == "Up")
             {
                 // open TableGoblinAddGnome
-                bar.rightStr = ""
+                bar.rightStr = "Coin"
                 odvGoblinList.upGnome(tableGoblinListView.currentIndex)
                 iiTableGoblinListGnome.update()
             }
-            if (bar.barHandle == "handleTableGoblinListGnome" && bar.rightStr == "Coin")
+            else if (bar.barHandle == "handleTableGoblinListGnome" && bar.rightStr == "Coin")
             {
                 // open TableGoblinAddGnome
                 tableGoblinList.currentIndex = 1
@@ -74,6 +74,18 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
+                    tableGoblinListView.currentIndex = index
+                    odvGoblinList.setGnomeIndex(index)
+                    if (wrapperText.text == "Add")
+                    {
+                        bar.rightStr = "Add"
+                    }
+                    else
+                    {
+                        bar.rightStr = "Coin"
+                    }
+                }
+                onDoubleClicked: {
                     tableGoblinListView.currentIndex = index
                     odvGoblinList.setGnomeIndex(index)
                     if (wrapperText.text == "Add")

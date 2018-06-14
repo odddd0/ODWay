@@ -43,7 +43,7 @@ Rectangle {
                 else if (currentIndex == 1)
                 {
                     bar.leftStr = "<"
-                    bar.rightStr = ""
+                    bar.rightStr = "Gnome"
                     bar.rightColor = "black"
                     bar.middleStr = odvGoblinList.getCurGnomeStr("Coin")
                     bar.barHandle = "handleTableGoblinListCoin"
