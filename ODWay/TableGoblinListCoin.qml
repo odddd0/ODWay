@@ -28,7 +28,7 @@ Rectangle {
                 if (odvGoblinList.delCoin(tableGoblinListView.currentIndex))
                 {
                     update()
-                    bar.rightStr = "Gnome"
+                    bar.rightStr = ""
                 }
             }
             if (bar.barHandle == "handleTableGoblinListCoin" && bar.rightStr == "Gnome")

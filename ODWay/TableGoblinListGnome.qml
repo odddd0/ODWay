@@ -34,13 +34,13 @@ Rectangle {
             if (bar.barHandle == "handleTableGoblinListGnome" && bar.rightStr == "Add")
             {
                 // open TableGoblinAddGnome
-                bar.rightStr = "Coin"
+                bar.rightStr = ""
                 bar.openUrl(iiTableGoblinListGnome, "TableGoblinAddGnome.qml")
             }
             if (bar.barHandle == "handleTableGoblinListGnome" && bar.rightStr == "Up")
             {
                 // open TableGoblinAddGnome
-                bar.rightStr = "Coin"
+                bar.rightStr = ""
                 odvGoblinList.upGnome(tableGoblinListView.currentIndex)
                 iiTableGoblinListGnome.update()
             }
