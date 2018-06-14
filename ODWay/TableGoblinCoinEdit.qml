@@ -79,6 +79,7 @@ Rectangle {
             onCheckedChanged: {
                 dateTime.boxVisiable = checked
                 revokeSpinBox.boxVisiable = checked
+                fastSecondButton.visible = checked
             }
         }
 
@@ -98,6 +99,42 @@ Rectangle {
 
             preText: "Revoke: "
             boxVisiable: false
+        }
+
+        Rectangle {
+            id: fastSecondButton
+            width: parent.width
+            height: 80
+            color: "transparent"
+            visible: false
+            Rectangle {
+                width: 100
+                height: parent.height
+                anchors.right: parent.right
+                MouseArea {
+                    hoverEnabled: true
+                    anchors.fill: parent
+                    width: 38
+                    height: 31
+                    anchors.verticalCenterOffset: -1
+                    onDoubleClicked: {
+                        revokeSpinBox.value = vvGoblinList.getEditCoinStrCount()
+                        console.log(vvGoblinList.getEditCoinStrCount())
+                    }
+                    Rectangle {
+                        anchors.fill: parent
+                        opacity: parent.pressed ? 1 : 0
+                        Behavior on opacity { NumberAnimation{ duration: 100 }}
+                        gradient: Gradient {
+                            GradientStop { position: 0 ; color: "#22000000" }
+                            GradientStop { position: 0.2 ; color: "#11000000" }
+                        }
+                        border.color: "darkgray"
+                        antialiasing: true
+                        radius: 4
+                    }
+                }
+            }
         }
     }
 }

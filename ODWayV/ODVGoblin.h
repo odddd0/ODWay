@@ -72,6 +72,7 @@ public slots:
     int getEditCoinStrHour();
     int getEditCoinStrMinute();
     int getEditCoinStrSecond();
+    double getEditCoinStrCount();
     double getEditCoinStrCountSecond();
 
 public slots:
@@ -91,6 +92,7 @@ private:
     int _hour;
     int _minute;
     int _second;
+    int _count;
     int _countSecond;
 };
 

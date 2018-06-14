@@ -172,7 +172,7 @@ QString ODVGoblin::getCurGnomeStr(const QString &defaultStr)
 void ODVGoblin::updateEditCoin()
 {
     ODPGoblin::Instance()->GetEditCoinText(
-                _editCoinStr, _revoke, _year, _month, _day, _hour, _minute, _second, _countSecond);
+                _editCoinStr, _revoke, _year, _month, _day, _hour, _minute, _second, _count, _countSecond);
 }
 
 QString ODVGoblin::getEditCoinStrText()
@@ -213,6 +213,16 @@ int ODVGoblin::getEditCoinStrMinute()
 int ODVGoblin::getEditCoinStrSecond()
 {
     return _second;
+}
+
+double ODVGoblin::getEditCoinStrCount()
+{
+    std::string tmpStr = std::to_string(_count);
+    if (_count)
+    {
+        tmpStr.insert(tmpStr.end() - 2, '.');
+    }
+    return std::stod(tmpStr);
 }
 
 double ODVGoblin::getEditCoinStrCountSecond()

@@ -216,7 +216,7 @@ bool ODPGoblin::SetEditCoin(const int &index_)
     return Result;
 }
 
-bool ODPGoblin::GetEditCoinText(std::string &str_, bool &revoke_, int &year_, int &month_, int &day_, int &hour_, int &minute_, int &second_, int &countSecond_)
+bool ODPGoblin::GetEditCoinText(std::string &str_, bool &revoke_, int &year_, int &month_, int &day_, int &hour_, int &minute_, int &second_, int &count_, int &countSecond_)
 {
     bool Result = false;
     revoke_ = false;
@@ -265,6 +265,7 @@ bool ODPGoblin::GetEditCoinText(std::string &str_, bool &revoke_, int &year_, in
                 minute_ = tmpTm->tm_min;
                 second_ = tmpTm->tm_sec;
             }
+            count_ = cur->_count;
         }
     }
     return Result;
@@ -560,10 +561,17 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
 
         // Compute Gnome
         // Pay
-        if (cur->_state == ODMGoblinCoin::GoblinState::SimplePay)
+        if (cur->_state == ODMGoblinCoin::GoblinState::SimplePay ||
+                cur->_state == ODMGoblinCoin::GoblinState::PayRevoke)
         {
             if (gnome = _gnomeMap[cur->_goldFrom])
             {
+                tmpInt = cur->_count;
+                // revoke
+                if (cur->_state == ODMGoblinCoin::GoblinState::PayRevoke)
+                {
+                    tmpInt -= cur->_countSecond;
+                }
                 // CreditPay
                 if (gnome->_creditLimits)
                 {
@@ -573,10 +581,10 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                         {
                             gnome->_billList.push_back(0);
                         }
-                        gnome->_billList[tmpIndex] += cur->_count;
+                        gnome->_billList[tmpIndex] += tmpInt;
                     }
                 }
-                gnome->_balance -= cur->_count;
+                gnome->_balance -= tmpInt;
             }
         }
         // NormalTransit
@@ -620,11 +628,6 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                 }
                 gnome->_balance -= cur->_count + tmpInt;
             }
-        }
-        // revoke
-        else if (cur->_state == ODMGoblinCoin::GoblinState::PayRevoke)
-        {
-            // do nothing
         }
 
         // add to coinList
