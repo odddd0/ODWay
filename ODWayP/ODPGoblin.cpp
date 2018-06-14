@@ -58,6 +58,7 @@ bool ODPGoblin::AddGoblin(const ODMBasePtr &ptr_)
         // gnome name exist?
         ODMGnomePtr tmpPtr = std::static_pointer_cast<ODMGnome>(ptr_);
         auto pos = std::find(_Impl->_expandData._goldFromList.begin(), _Impl->_expandData._goldFromList.end(), tmpPtr->_name);
+        tmpPtr->_id = _Impl->_expandData._goldFromList.size();
         if (pos != _Impl->_expandData._goldFromList.end())
         {
             Result = false;
@@ -142,6 +143,25 @@ bool ODPGoblin::DelCoin(const int &index_)
     return Result;
 }
 
+bool ODPGoblin::UpGnome(const int &index_)
+{
+    bool Result = false;
+    if (index_ > 0 && index_ < _Impl->_expandData._lastGnomeNum.size())
+    {
+        int tmpId = _Impl->_expandData._lastGnomeNum[index_];
+        if (tmpId)
+        {
+            std::string upStr = _Impl->_expandData._goldFromList[tmpId];
+            std::string downStr = _Impl->_expandData._goldFromList[tmpId - 1];
+            _Impl->_expandData._goldFromList.erase(_Impl->_expandData._goldFromList.begin() + tmpId);
+            _Impl->_expandData._goldFromList.insert(_Impl->_expandData._goldFromList.begin() + tmpId - 1, upStr);
+
+            Result = _Impl->_expandData.chgGnome(upStr, downStr);
+        }
+    }
+    return Result;
+}
+
 void ODPGoblin::GetGoldFromList(StringList &list_)
 {
     list_ = _Impl->_expandData._goldFromList;
@@ -150,6 +170,8 @@ void ODPGoblin::GetGoldFromList(StringList &list_)
 void ODPGoblin::GetGnomeList(StringList &list_)
 {
     list_.clear();
+    _Impl->_expandData._lastGnomeNum.clear();
+    _Impl->_expandData._lastGnomeNum.push_back(-1);
     OneGnomePtr cur;
     std::string tmpStr;
     int totalLastBill = 0;
@@ -163,7 +185,10 @@ void ODPGoblin::GetGnomeList(StringList &list_)
         // credit
         if (cur->_creditLimits)
         {
-            totalLastBill += cur->_billList[1];
+            if (x != "History")
+            {
+                totalLastBill += cur->_billList[1];
+            }
             tmpStr += "LastBill:  " + std::to_string(cur->_billList[1]);
             if (cur->_billList[1])
             {
@@ -171,7 +196,10 @@ void ODPGoblin::GetGnomeList(StringList &list_)
             }
             tmpStr += "(" + std::to_string(cur->_billDates) + ")\n";
 
-            totalCurrentBill += cur->_billList[0];
+            if (x != "History")
+            {
+                totalCurrentBill += cur->_billList[0];
+            }
             tmpStr += "CurrentBill:  " + std::to_string(cur->_billList[0]);
             if (cur->_billList[0])
             {
@@ -185,7 +213,10 @@ void ODPGoblin::GetGnomeList(StringList &list_)
         }
         else
         {
-            totalBalance += cur->_balance;
+            if (x != "History")
+            {
+                totalBalance += cur->_balance;
+            }
             tmpStr += "Balance:  " + std::to_string(cur->_balance);
             if (cur->_balance)
             {
@@ -195,6 +226,7 @@ void ODPGoblin::GetGnomeList(StringList &list_)
 
         tmpStr += "\n";
         list_.push_back(tmpStr);
+        _Impl->_expandData._lastGnomeNum.push_back(cur->_id);
     });
     tmpStr = "Total\n";
     tmpStr += "LastBill:  " + std::to_string(totalLastBill);
@@ -243,6 +275,7 @@ void ODPGoblin::ExpandData::clear()
     _coinList.clear();
     _dateList.clear();
     _lastCoinNum.clear();
+    _lastGnomeNum.clear();
 }
 
 bool ODPGoblin::ExpandData::appendGnome(const ODMBasePtr &ptr_)
@@ -253,13 +286,58 @@ bool ODPGoblin::ExpandData::appendGnome(const ODMBasePtr &ptr_)
     {
         Result = true;
         // Gnome
-        if (ODVectorUtil::RefreshInsert<std::string>(_goldFromList, cur->_name))
+        if (_goldFromList.end() == std::find(_goldFromList.begin(), _goldFromList.end(), cur->_name))
         {
             // new gnome
+            _goldFromList.push_back(cur->_name);
             _gnomeMap[cur->_name] = std::make_shared<ODPGoblin::OneGnome>();
             _gnomeMap[cur->_name]->_creditLimits = cur->_creditLimits;
             _gnomeMap[cur->_name]->_billDates = cur->_billDates;
             _gnomeMap[cur->_name]->_dueDay = cur->_dueDay;
+            _gnomeMap[cur->_name]->_id = cur->_id;
+        }
+    }
+    return Result;
+}
+
+bool ODPGoblin::ExpandData::chgGnome(const std::string &name1_, const std::string &name2_)
+{
+    bool Result = false;
+    OneGnomePtr tmpPtr1 = _gnomeMap[name1_];
+    OneGnomePtr tmpPtr2 = _gnomeMap[name2_];
+    if (tmpPtr1 && tmpPtr2)
+    {
+        ODMBaseList tmpList;
+        ODMGnomePtr gnomePtr1 = std::make_shared<ODMGnome>();
+        ODMGnomePtr gnomePtr2 = std::make_shared<ODMGnome>();
+        tmpList.push_back(gnomePtr1);
+        tmpList.push_back(gnomePtr2);
+
+        gnomePtr1->_preId = tmpPtr1->_id;
+        gnomePtr1->_id = (tmpPtr1->_id + 122) * 12200;
+        gnomePtr1->_name = name1_;
+        gnomePtr1->_creditLimits = tmpPtr1->_creditLimits;
+        gnomePtr1->_billDates = tmpPtr1->_billDates;
+        gnomePtr1->_dueDay = tmpPtr1->_dueDay;
+
+        gnomePtr2->_preId = tmpPtr2->_id;
+        gnomePtr2->_id = (tmpPtr2->_id + 122) * 12200;
+        gnomePtr2->_name = name2_;
+        gnomePtr2->_creditLimits = tmpPtr2->_creditLimits;
+        gnomePtr2->_billDates = tmpPtr2->_billDates;
+        gnomePtr2->_dueDay = tmpPtr2->_dueDay;
+
+        if (ODWayM::Instance()->UpdateModel(tmpList))
+        {
+            gnomePtr1->_preId = (tmpPtr1->_id + 122) * 12200;
+            gnomePtr1->_id = tmpPtr2->_id;
+            gnomePtr2->_preId = (tmpPtr2->_id + 122) * 12200;
+            gnomePtr2->_id = tmpPtr1->_id;
+
+
+            tmpPtr1->_id = gnomePtr1->_id;
+            tmpPtr2->_id = gnomePtr2->_id;
+            Result = ODWayM::Instance()->UpdateModel(tmpList);
         }
     }
     return Result;
@@ -372,6 +450,7 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
 
 ODPGoblin::OneGnome::OneGnome()
 {
+    _id = 0;
     _balance = 0;
     _creditLimits = 0;
     _billDates = 1;

@@ -21,6 +21,8 @@ class ODPGoblin
     {
         OneGnome();
 
+        int _id;
+
         int _balance;
         int _creditLimits;
         int _billDates;
@@ -52,6 +54,7 @@ class ODPGoblin
         ExpandData();
         void clear();
         bool appendGnome(const ODMBasePtr &ptr_);
+        bool chgGnome(const std::string &name1_, const std::string &name2_);
         bool appendCoin(const ODMBasePtr &ptr_);
 
         std::map<std::string, std::vector<OneGoblinCoinPtr>> _coinList;
@@ -60,6 +63,7 @@ class ODPGoblin
         std::map<std::string, OneGnomePtr> _gnomeMap;
         CKKPtr _ckk;
         IntList _lastCoinNum;
+        IntList _lastGnomeNum;
     };
 public:
     static ODPGoblin * Instance();
@@ -76,6 +80,7 @@ public:
 public:
     // Gnome
     // get
+    bool UpGnome(const int &index_);
     void GetGoldFromList(StringList &list_);
     void GetGnomeList(StringList &list_);
 

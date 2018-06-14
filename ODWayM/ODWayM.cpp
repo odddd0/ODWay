@@ -16,6 +16,31 @@
 
 struct ODWayM::Impl
 {
+    bool UpdateImpl(const ODMBaseList &list_)
+    {
+        bool Result = false;
+        if (ODDBHandle::Instance()->Update(list_))
+        {
+            Result = true;
+
+            std::for_each(list_.cbegin(), list_.cend(), [&](const ODMBasePtr &x){
+                auto pos = std::find_if(_DBList.cbegin(), _DBList.cend(), [&](const ODMBasePtr &y){
+                    return x->_id == y->_id && x->_type == y->_type;
+                });
+                if (pos != _DBList.end())
+                {
+                    _DBList.erase(pos);
+                    _DBList.push_back(x);
+                }
+            });
+
+            std::sort(_DBList.begin(), _DBList.end(), [](ODMBasePtr x, ODMBasePtr y){
+                return x->_id < y->_id;
+            });
+        }
+        return Result;
+    }
+
     ODMBaseList _DBList;
 };
 
@@ -107,4 +132,16 @@ bool ODWayM::DeleteModel(const std::string &type_, const int &id_)
         }
     }
     return Result;
+}
+
+bool ODWayM::UpdateModel(const ODMBasePtr &ptr_)
+{
+    ODMBaseList tmpList;
+    tmpList.push_back(ptr_);
+    return _Impl->UpdateImpl(tmpList);
+}
+
+bool ODWayM::UpdateModel(const ODMBaseList &list_)
+{
+    return _Impl->UpdateImpl(list_);
 }

@@ -29,6 +29,10 @@ public:
 public:
     bool DeleteModel(const std::string &type_, const int &id_);
 
+public:
+    bool UpdateModel(const ODMBasePtr &ptr_);
+    bool UpdateModel(const ODMBaseList &list_);
+
 private:
     struct Impl;
     Impl *_Impl;

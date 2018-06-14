@@ -175,3 +175,8 @@ bool ODVGoblin::addGnome(const QString &name_, const int &CreditLimits_, const i
     }
     return Result;
 }
+
+bool ODVGoblin::upGnome(const int &index_)
+{
+    return ODPGoblin::Instance()->UpGnome(index_);
+}

@@ -37,6 +37,13 @@ Rectangle {
                 bar.rightStr = ""
                 bar.openUrl(iiTableGoblinListGnome, "TableGoblinAddGnome.qml")
             }
+            if (bar.barHandle == "handleTableGoblinListGnome" && bar.rightStr == "Up")
+            {
+                // open TableGoblinAddGnome
+                bar.rightStr = ""
+                odvGoblinList.upGnome(tableGoblinListView.currentIndex)
+                iiTableGoblinListGnome.update()
+            }
         }
     }
 
@@ -66,6 +73,10 @@ Rectangle {
                     if (wrapperText.text == "Add")
                     {
                         bar.rightStr = "Add"
+                    }
+                    else if (index != 0 && index != 1)
+                    {
+                        bar.rightStr = "Up"
                     }
                     else
                     {
