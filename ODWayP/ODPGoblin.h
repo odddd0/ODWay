@@ -64,6 +64,7 @@ class ODPGoblin
         CKKPtr _ckk;
         IntList _lastCoinNum;
         IntList _lastGnomeNum;
+        std::string _totalDescription;
     };
 public:
     static ODPGoblin * Instance();
@@ -84,6 +85,10 @@ public:
     void GetGoldFromList(StringList &list_);
     void GetGnomeList(StringList &list_);
     void GetGnomeNameByIndex(const int &index_, std::string &name_);
+
+public:
+    //
+    void GetTotalDescription(std::string &str_);
 
 private:
     struct Impl;

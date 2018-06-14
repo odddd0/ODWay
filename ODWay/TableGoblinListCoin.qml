@@ -29,6 +29,7 @@ Rectangle {
                 {
                     update()
                     bar.rightStr = ""
+                    bar.rightColor = "black"
                 }
             }
             if (bar.barHandle == "handleTableGoblinListCoin" && bar.rightStr == "Gnome")

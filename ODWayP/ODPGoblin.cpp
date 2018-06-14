@@ -248,22 +248,35 @@ void ODPGoblin::GetGnomeList(StringList &list_)
         _Impl->_expandData._lastGnomeNum.push_back(cur->_id);
     });
     tmpStr = "Total\n";
-    tmpStr += "LastBill:  " + std::to_string(totalLastBill);
+    std::string tmpIntStr = "";
+    _Impl->_expandData._totalDescription.clear();
+    tmpStr += "LastBill:  ";
+    tmpIntStr = std::to_string(totalLastBill);
     if (totalLastBill)
     {
-        tmpStr.insert(tmpStr.end() - 2, '.');
+        tmpIntStr.insert(tmpIntStr.end() - 2, '.');
     }
+    tmpStr += tmpIntStr;
+    _Impl->_expandData._totalDescription += tmpIntStr + " / ";
 
-    tmpStr += "\nCurrentBill:  " + std::to_string(totalCurrentBill);
+    tmpStr += "\nCurrentBill:  ";
+    tmpIntStr = std::to_string(totalCurrentBill);
     if (totalCurrentBill)
     {
-        tmpStr.insert(tmpStr.end() - 2, '.');
+        tmpIntStr.insert(tmpIntStr.end() - 2, '.');
     }
-    tmpStr += "\nBalance:  " + std::to_string(totalBalance);
+    tmpStr += tmpIntStr;
+    _Impl->_expandData._totalDescription += tmpIntStr + " / ";
+
+    tmpStr += "\nBalance:  ";
+    tmpIntStr = std::to_string(totalBalance);
     if (totalBalance)
     {
-        tmpStr.insert(tmpStr.end() - 2, '.');
+        tmpIntStr.insert(tmpIntStr.end() - 2, '.');
     }
+    tmpStr += tmpIntStr;
+    _Impl->_expandData._totalDescription += tmpIntStr;
+
     tmpStr += "\n";
     list_.insert(list_.begin(), tmpStr);
 }
@@ -279,6 +292,16 @@ void ODPGoblin::GetGnomeNameByIndex(const int &index_, std::string &name_)
             name_ = _Impl->_expandData._goldFromList[tmpId];
         }
     }
+}
+
+void ODPGoblin::GetTotalDescription(std::string &str_)
+{
+    if (_Impl->_expandData._totalDescription.empty())
+    {
+        StringList tmpList;
+        GetGnomeList(tmpList);
+    }
+    str_ = _Impl->_expandData._totalDescription;
 }
 
 ODPGoblin::ODPGoblin()
@@ -308,6 +331,7 @@ void ODPGoblin::ExpandData::clear()
     _dateList.clear();
     _lastCoinNum.clear();
     _lastGnomeNum.clear();
+    _totalDescription.clear();
 }
 
 bool ODPGoblin::ExpandData::appendGnome(const ODMBasePtr &ptr_)
