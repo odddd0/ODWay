@@ -28,8 +28,12 @@ Rectangle {
                 if (odvGoblinList.delCoin(tableGoblinListView.currentIndex))
                 {
                     update()
-                    bar.rightStr = ""
+                    bar.rightStr = "Gnome"
                 }
+            }
+            if (bar.barHandle == "handleTableGoblinListCoin" && bar.rightStr == "Gnome")
+            {
+                tableGoblinList.currentIndex = 0
             }
         }
     }
@@ -57,7 +61,7 @@ Rectangle {
                 onClicked: {
                     tableGoblinListView.currentIndex = index
                     wrapperText.color = "black"
-                    bar.rightStr = ""
+                    bar.rightStr = "Gnome"
                 }
                 onPressAndHold: {
                     tableGoblinListView.currentIndex = index

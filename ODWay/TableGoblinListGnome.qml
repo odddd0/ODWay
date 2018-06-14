@@ -34,15 +34,20 @@ Rectangle {
             if (bar.barHandle == "handleTableGoblinListGnome" && bar.rightStr == "Add")
             {
                 // open TableGoblinAddGnome
-                bar.rightStr = ""
+                bar.rightStr = "Coin"
                 bar.openUrl(iiTableGoblinListGnome, "TableGoblinAddGnome.qml")
             }
             if (bar.barHandle == "handleTableGoblinListGnome" && bar.rightStr == "Up")
             {
                 // open TableGoblinAddGnome
-                bar.rightStr = ""
+                bar.rightStr = "Coin"
                 odvGoblinList.upGnome(tableGoblinListView.currentIndex)
                 iiTableGoblinListGnome.update()
+            }
+            if (bar.barHandle == "handleTableGoblinListGnome" && bar.rightStr == "Coin")
+            {
+                // open TableGoblinAddGnome
+                tableGoblinList.currentIndex = 1
             }
         }
     }
@@ -81,7 +86,7 @@ Rectangle {
                     }
                     else
                     {
-                        bar.rightStr = ""
+                        bar.rightStr = "Coin"
                     }
                 }
             }
