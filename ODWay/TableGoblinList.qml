@@ -45,7 +45,7 @@ Rectangle {
                     bar.leftStr = "<"
                     bar.rightStr = ""
                     bar.rightColor = "black"
-                    bar.middleStr = "Coin"
+                    bar.middleStr = odvGoblinList.getCurGnomeStr("Coin")
                     bar.barHandle = "handleTableGoblinListCoin"
                     tableGoblinListCoinObject.update()
                 }

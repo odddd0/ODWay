@@ -274,7 +274,7 @@ void ODPGoblin::GetGnomeNameByIndex(const int &index_, std::string &name_)
     if (index_ > 0 && index_ < _Impl->_expandData._lastGnomeNum.size())
     {
         int tmpId = _Impl->_expandData._lastGnomeNum[index_];
-        if (tmpId)
+        if (tmpId >= 0)
         {
             name_ = _Impl->_expandData._goldFromList[tmpId];
         }

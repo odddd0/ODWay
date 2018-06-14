@@ -146,6 +146,16 @@ bool ODVGoblin::delCoin(const int &index_)
     return ODPGoblin::Instance()->DelCoin(index_);
 }
 
+QString ODVGoblin::getCurGnomeStr(const QString &defaultStr)
+{
+    QString Result = defaultStr;
+    if (!_curGnome.empty())
+    {
+        Result = QString::fromStdString(_curGnome);
+    }
+    return Result;
+}
+
 QStringList ODVGoblin::getGnomeList()
 {
     QStringList Result;
