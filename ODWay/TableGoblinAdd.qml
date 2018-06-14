@@ -55,6 +55,11 @@ Rectangle {
                     bar.rightColor = "red"
                     bar.barHandle = "handleTableGoblinAddBill"
                     tableGoblinAddBillObject.dateTime = tableGoblinAddBasicObject.varDateTime
+                    tableGoblinAddBillObject.classify = tableGoblinAddBasicObject.varClassify
+                    tableGoblinAddBillObject.kindFirst = tableGoblinAddBasicObject.varKindFirst
+                    tableGoblinAddBillObject.kindSecond = tableGoblinAddBasicObject.varKindSecond
+                    tableGoblinAddBillObject.goldFrom = tableGoblinAddBasicObject.varGoldFrom
+                    tableGoblinAddBillObject.goldCount = tableGoblinAddBasicObject.varCount
                 }
             }
 

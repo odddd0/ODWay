@@ -20,7 +20,8 @@ struct ODMGoblinCoin : public ODMBase
     {
         SimplePay = 0,
         NormalTransit = 1,
-        PayRevoke = 2
+        PayRevoke = 2 ,
+        InstallPay = 3
     };
 public:
     ODMGoblinCoin();

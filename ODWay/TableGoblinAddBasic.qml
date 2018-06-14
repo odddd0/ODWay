@@ -11,6 +11,12 @@ import QtQuick.Controls 1.4
 
 Rectangle {
     property alias varDateTime: dateTime
+    property alias varClassify: ckk.classify
+    property alias varKindFirst: ckk.kindFirst
+    property alias varKindSecond: ckk.kindSecond
+    property alias varGoldFrom: goldFrom.currentText
+    property alias varCount: count.value
+
     gradient: Gradient {
         GradientStop{ position: 0; color: "#A1EF54";}
         GradientStop{ position: 1; color: "#89EF37";}

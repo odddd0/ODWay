@@ -54,8 +54,26 @@ public slots:
             const double &count_,
             const double &tips_,
             const QString &content_);
+    bool addBill(
+            const int &year_,
+            const int &month_,
+            const int &day_,
+            const int &hour_,
+            const int &minute_,
+            const int &second_,
+            const bool &customTime_,
+            const QString &goldFrom_,
+            const QString &classify_,
+            const QString &kindFirst_,
+            const QString &kindSecond_,
+            const double &count_,
+            const int &billMonth_,
+            const double &totalCount_,
+            const QString &content_);
+
     QStringList getCoinList();
     bool delCoin(const int &index_);
+    bool delCoin();
     bool revokeCoin(const int &index_);
     bool setEditCoin(const int &index_);
     bool saveEditCoin(const bool &revoke_, const int &year_, const int &month_, const int &day_, const int &hour_, const int &minute_, const int &second_, const double &countSecond_);

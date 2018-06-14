@@ -86,7 +86,7 @@ Rectangle {
                         bar.rightStr = "Coin"
                     }
                 }
-                onPressAndHold: {
+                onDoubleClicked: {
                     tableGoblinListView.currentIndex = index
                     odvGoblinList.setGnomeIndex(index)
                     if (wrapperText.text != "Add" && index != 0 && index != 1)

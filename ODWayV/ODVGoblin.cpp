@@ -128,6 +128,58 @@ bool ODVGoblin::addTransit(const int &year_,
     return Result;
 }
 
+bool ODVGoblin::addBill(
+        const int &year_,
+        const int &month_,
+        const int &day_,
+        const int &hour_,
+        const int &minute_,
+        const int &second_,
+        const bool &customTime_,
+        const QString &goldFrom_,
+        const QString &classify_,
+        const QString &kindFirst_,
+        const QString &kindSecond_,
+        const double &count_,
+        const int &billMonth_,
+        const double &totalCount_,
+        const QString &content_)
+{
+    bool Result = false;
+    if (!goldFrom_.isEmpty() &&!classify_.isEmpty() &&!kindFirst_.isEmpty() &&!kindSecond_.isEmpty())
+    {
+        ODMGoblinCoinPtr tmpPtr = std::make_shared<ODMGoblinCoin>();
+        tmpPtr->_state = ODMGoblinCoin::GoblinState::InstallPay;
+        tmpPtr->_goldFrom = goldFrom_.toStdString();
+        tmpPtr->_classify = classify_.toStdString();
+        tmpPtr->_kindFirst = kindFirst_.toStdString();
+        tmpPtr->_kindSecond = kindSecond_.toStdString();
+        tmpPtr->_count = std::stoi(std::to_string(count_ * 100));
+        tmpPtr->_countSecond = std::stoi(std::to_string(totalCount_ * 100));
+        tmpPtr->_bill = billMonth_;
+        tmpPtr->_content = content_.toStdString();
+        if (customTime_)
+        {
+            struct tm tmpTm;
+            tmpTm.tm_year = year_ - 1900;
+            tmpTm.tm_mon = month_ - 1;
+            tmpTm.tm_mday = day_;
+            tmpTm.tm_hour = hour_;
+            tmpTm.tm_min = minute_;
+            tmpTm.tm_sec = second_;
+            tmpTm.tm_isdst = 0;
+            time_t lt = mktime(&tmpTm);
+            tmpPtr->_id = lt;
+        }
+        Result = ODPGoblin::Instance()->AddGoblin(tmpPtr);
+        if (Result)
+        {
+
+        }
+    }
+    return Result;
+}
+
 QStringList ODVGoblin::getCoinList()
 {
     QStringList Result;
@@ -142,6 +194,11 @@ QStringList ODVGoblin::getCoinList()
 bool ODVGoblin::delCoin(const int &index_)
 {
     return ODPGoblin::Instance()->DelCoin(index_);
+}
+
+bool ODVGoblin::delCoin()
+{
+    return ODPGoblin::Instance()->DelEditCoin();
 }
 
 bool ODVGoblin::revokeCoin(const int &index_)

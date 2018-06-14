@@ -37,6 +37,14 @@ Rectangle {
                     bar.back()
                 }
             }
+            else if (bar.barHandle == "handleTableGoblinCoinEdit" && bar.rightStr == "Del")
+            {
+                // save coin edit
+                if (vvGoblinList.delCoin())
+                {
+                    bar.back()
+                }
+            }
         }
     }
 
@@ -117,10 +125,21 @@ Rectangle {
                     width: 38
                     height: 31
                     anchors.verticalCenterOffset: -1
+                    onClicked: {
+                        bar.rightStr = "Save"
+                        bar.rightColor = "red"
+                    }
                     onDoubleClicked: {
+                        bar.rightStr = "Save"
+                        bar.rightColor = "red"
                         revokeSpinBox.value = vvGoblinList.getEditCoinStrCount()
                         console.log(vvGoblinList.getEditCoinStrCount())
                     }
+                    onPressAndHold: {
+                        bar.rightStr = "Del"
+                        bar.rightColor = "red"
+                    }
+
                     Rectangle {
                         anchors.fill: parent
                         opacity: parent.pressed ? 1 : 0

@@ -10,6 +10,11 @@ import QtQuick 2.9
 
 Rectangle {
     property var dateTime
+    property string classify
+    property string kindFirst
+    property string kindSecond
+    property string goldFrom
+    property double goldCount
 
     gradient: Gradient {
         GradientStop{ position: 0; color: "#A1EF54";}
@@ -21,7 +26,19 @@ Rectangle {
         onRightBtnClicked:{
             if (bar.barHandle == "handleTableGoblinAddBill")
             {
-                console.log("goblin add bill")
+                if (bar.rightStr == "+" &&
+                        odvGoblinList.addBill(
+                            dateTime.year, dateTime.month, dateTime.day,
+                            dateTime.hour, dateTime.minute, dateTime.second, dateTime.customTime,
+                            goldFrom, classify, kindFirst, kindSecond, goldCount,
+                            monthSpinBox.value, actualTotalSpinBox.value, content.text))
+                {
+                    count.value = 0
+                    content.text = ""
+                    monthSpinBox.clear()
+                    actualTotalSpinBox.clear()
+                    rootTableGoblin.currentIndex = 0
+                }
             }
         }
     }
@@ -34,17 +51,31 @@ Rectangle {
         anchors.rightMargin: 5
         spacing: 10
 
-        DateTimePicker{
+        RowSpinBox {
+            id: monthSpinBox
             width: parent.width
-            id: dateTime
+            height: 60
+
+            preText: "Month: "
         }
+
+        RowSpinBox {
+            id: actualTotalSpinBox
+            width: parent.width
+            height: 60
+
+            boxDecimals: 2
+
+            preText: "ActualTotal: "
+        }
+
         Rectangle {
             width: parent.width
             height: 80
             border.color: "black"
             TextEdit {
-                anchors.fill: parent
                 id: content
+                anchors.fill: parent
             }
         }
     }

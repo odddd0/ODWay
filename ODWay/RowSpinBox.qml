@@ -19,6 +19,11 @@ Rectangle {
 
     visible: boxVisiable
 
+    function clear()
+    {
+        spinBox.value = 0
+    }
+
     Row {
         anchors.fill: parent
         spacing: 10
