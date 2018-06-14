@@ -63,6 +63,7 @@ Rectangle {
                     tableGoblinListView.currentIndex = index
                     wrapperText.color = "black"
                     bar.rightStr = "Gnome"
+                    bar.rightColor = "black"
                 }
                 onPressAndHold: {
                     tableGoblinListView.currentIndex = index

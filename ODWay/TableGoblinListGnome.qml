@@ -76,6 +76,7 @@ Rectangle {
                 onClicked: {
                     tableGoblinListView.currentIndex = index
                     odvGoblinList.setGnomeIndex(index)
+                    bar.rightColor = "black"
                     if (wrapperText.text == "Add")
                     {
                         bar.rightStr = "Add"
@@ -85,20 +86,18 @@ Rectangle {
                         bar.rightStr = "Coin"
                     }
                 }
-                onDoubleClicked: {
+                onPressAndHold: {
                     tableGoblinListView.currentIndex = index
                     odvGoblinList.setGnomeIndex(index)
-                    if (wrapperText.text == "Add")
-                    {
-                        bar.rightStr = "Add"
-                    }
-                    else if (index != 0 && index != 1)
+                    if (wrapperText.text != "Add" && index != 0 && index != 1)
                     {
                         bar.rightStr = "Up"
+                        bar.rightColor = "red"
                     }
                     else
                     {
                         bar.rightStr = "Coin"
+                        bar.rightColor = "balck"
                     }
                 }
             }
