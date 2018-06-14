@@ -62,8 +62,10 @@ public slots:
     QStringList getGnomeList();
     bool addGnome(const QString &name_, const int &CreditLimits_, const int &BillDates_, const int &DueDay_);
     bool upGnome(const int &index_);
+    void setGnomeIndex(const int &index_);
 
 private:
+    std::string _curGnome;
 };
 
 #endif // _ODVGOBLIN_H_7E454649C08C0A706DA13FA21129A632_

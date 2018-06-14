@@ -70,6 +70,7 @@ Rectangle {
                 anchors.fill: parent
                 onClicked: {
                     tableGoblinListView.currentIndex = index
+                    odvGoblinList.setGnomeIndex(index)
                     if (wrapperText.text == "Add")
                     {
                         bar.rightStr = "Add"

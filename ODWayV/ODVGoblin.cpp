@@ -13,7 +13,9 @@
 
 Q_DECLARE_METATYPE(CKKPtr);
 
-ODVGoblin::ODVGoblin(QObject *parent) : QObject(parent)
+ODVGoblin::ODVGoblin(QObject *parent)
+    : QObject(parent)
+    , _curGnome("")
 {
 }
 
@@ -132,7 +134,7 @@ QStringList ODVGoblin::getCoinList()
 {
     QStringList Result;
     StringList tmpList;
-    ODPGoblin::Instance()->GetCoinList(tmpList);
+    ODPGoblin::Instance()->GetCoinList(tmpList, _curGnome);
     std::for_each(tmpList.begin(), tmpList.end(), [&Result](std::string &x){
         Result.push_back(QString::fromStdString(x));
     });
@@ -179,4 +181,9 @@ bool ODVGoblin::addGnome(const QString &name_, const int &CreditLimits_, const i
 bool ODVGoblin::upGnome(const int &index_)
 {
     return ODPGoblin::Instance()->UpGnome(index_);
+}
+
+void ODVGoblin::setGnomeIndex(const int &index_)
+{
+    ODPGoblin::Instance()->GetGnomeNameByIndex(index_, _curGnome);
 }

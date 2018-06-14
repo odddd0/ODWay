@@ -74,7 +74,7 @@ public:
     void GetCKK(CKKPtr &ckk_);
 
     // get
-    void GetCoinList(StringList &list_);
+    void GetCoinList(StringList &list_, const std::string &goldType_ = "");
     bool DelCoin(const int &index_);
 
 public:
@@ -83,6 +83,7 @@ public:
     bool UpGnome(const int &index_);
     void GetGoldFromList(StringList &list_);
     void GetGnomeList(StringList &list_);
+    void GetGnomeNameByIndex(const int &index_, std::string &name_);
 
 private:
     struct Impl;

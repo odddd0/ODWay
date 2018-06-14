@@ -86,46 +86,65 @@ void ODPGoblin::GetCKK(CKKPtr &ckk_)
     ckk_ = _Impl->_expandData._ckk;
 }
 
-void ODPGoblin::GetCoinList(StringList &list_)
+void ODPGoblin::GetCoinList(StringList &list_, const std::string &goldType_)
 {
     list_.clear();
     _Impl->_expandData._lastCoinNum.clear();
     std::string tmpStr;
+    bool dayIn = false;
     std::for_each(_Impl->_expandData._dateList.cbegin(), _Impl->_expandData._dateList.cend(), [&](const std::string &x){
         list_.push_back(x);
         _Impl->_expandData._lastCoinNum.push_back(-1);
+        dayIn = false;
         std::for_each(_Impl->_expandData._coinList[x].cbegin(), _Impl->_expandData._coinList[x].cend(), [&](const OneGoblinCoinPtr &y){
             tmpStr.clear();
-
             if (y->_classify.empty())
             {
                 // transit
-                tmpStr = y->_goldFrom + " -> " + y->_goldTo + " (" + std::to_string(y->_count);
-                if (y->_count)
+                if (y->_goldFrom == goldType_ || y->_goldTo == goldType_ || goldType_.empty())
                 {
-                    tmpStr.insert(tmpStr.end() - 2, '.');
-                }
-                tmpStr += ")";
-                if (y->_tips)
-                {
-                    tmpStr += " Tips: " + std::to_string(y->_tips);
-                    tmpStr.insert(tmpStr.end() - 2, '.');
+                    tmpStr = y->_goldFrom + " -> " + y->_goldTo + " (" + std::to_string(y->_count);
+                    if (y->_count)
+                    {
+                        tmpStr.insert(tmpStr.end() - 2, '.');
+                    }
+                    tmpStr += ")";
+                    if (y->_tips)
+                    {
+                        tmpStr += " Tips: " + std::to_string(y->_tips);
+                        tmpStr.insert(tmpStr.end() - 2, '.');
+                    }
                 }
             }
             else
             {
-                tmpStr = y->_goldFrom + " (" + std::to_string(y->_count);
-                if (y->_count)
+                if (y->_goldFrom == goldType_ || goldType_.empty())
                 {
-                    tmpStr.insert(tmpStr.end() - 2, '.');
+                    tmpStr = y->_goldFrom + " (" + std::to_string(y->_count);
+                    if (y->_count)
+                    {
+                        tmpStr.insert(tmpStr.end() - 2, '.');
+                    }
+                    tmpStr += "): " + y->_classify + "_" + y->_kindFirst + "_" + y->_kindSecond;
                 }
-                tmpStr += "): " + y->_classify + "_" + y->_kindFirst + "_" + y->_kindSecond;
             }
-            _Impl->_expandData._lastCoinNum.push_back(y->_id);
-            list_.push_back(tmpStr);
+            if (!tmpStr.empty())
+            {
+                dayIn = true;
+                _Impl->_expandData._lastCoinNum.push_back(y->_id);
+                list_.push_back(tmpStr);
+            }
         });
-        _Impl->_expandData._lastCoinNum.push_back(-1);
-        list_.push_back("");
+        if (!dayIn)
+        {
+            _Impl->_expandData._lastCoinNum.erase(_Impl->_expandData._lastCoinNum.end() - 1);
+            list_.erase(list_.end() - 1);
+        }
+        else
+        {
+            _Impl->_expandData._lastCoinNum.push_back(-1);
+            list_.push_back("");
+        }
     });
 }
 
@@ -247,6 +266,19 @@ void ODPGoblin::GetGnomeList(StringList &list_)
     }
     tmpStr += "\n";
     list_.insert(list_.begin(), tmpStr);
+}
+
+void ODPGoblin::GetGnomeNameByIndex(const int &index_, std::string &name_)
+{
+    name_.clear();
+    if (index_ > 0 && index_ < _Impl->_expandData._lastGnomeNum.size())
+    {
+        int tmpId = _Impl->_expandData._lastGnomeNum[index_];
+        if (tmpId)
+        {
+            name_ = _Impl->_expandData._goldFromList[tmpId];
+        }
+    }
 }
 
 ODPGoblin::ODPGoblin()
