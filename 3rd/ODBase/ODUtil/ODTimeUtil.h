@@ -98,7 +98,7 @@ public:
      * @param billDates_
      * @param index_
      */
-    static bool CalBillList(const int &timestamp_, const int &billDates_, int &index_, std::string &dates_);
+    static bool CalcuteBillList(const int &timestamp_, const int &billDates_, int &index_);
 };
 
 #endif // _ODTIMEUTIL_H_2642BAEBF76A480C611A75505D021741
