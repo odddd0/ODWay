@@ -92,11 +92,15 @@ void ODPGoblin::GetCoinList(StringList &list_, const std::string &goldType_)
     list_.clear();
     _Impl->_expandData._lastCoinNum.clear();
     std::string tmpStr;
+    int daySumCount = 0;
+    int dayTmpIndex = 0;
     bool dayIn = false;
     std::for_each(_Impl->_expandData._dateList.cbegin(), _Impl->_expandData._dateList.cend(), [&](const std::string &x){
         list_.push_back(x);
         _Impl->_expandData._lastCoinNum.push_back(-1);
         dayIn = false;
+        dayTmpIndex = list_.size() - 1;
+        daySumCount = 0;
         std::for_each(_Impl->_expandData._coinList[x].cbegin(), _Impl->_expandData._coinList[x].cend(), [&](const OneGoblinCoinPtr &y){
             tmpStr.clear();
             if (y->_classify.empty())
@@ -126,6 +130,10 @@ void ODPGoblin::GetCoinList(StringList &list_, const std::string &goldType_)
                     {
                         tmpStr += "xx: ";
                     }
+                    else
+                    {
+                        daySumCount += y->_count;
+                    }
                     tmpStr += y->_goldFrom + " (" + std::to_string(y->_count);
                     if (y->_count)
                     {
@@ -150,6 +158,14 @@ void ODPGoblin::GetCoinList(StringList &list_, const std::string &goldType_)
         {
             _Impl->_expandData._lastCoinNum.push_back(-1);
             list_.push_back("");
+            tmpStr = list_[dayTmpIndex];
+            tmpStr += " (" + std::to_string(daySumCount);
+            if (daySumCount)
+            {
+                tmpStr.insert(tmpStr.end() - 2, '.');
+            }
+            tmpStr += ")";
+            list_[dayTmpIndex] = tmpStr;
         }
     });
 }
@@ -179,6 +195,107 @@ bool ODPGoblin::RevokeCoin(const int &index_)
         {
             std::static_pointer_cast<ODMGoblinCoin>(tmpPtr)->_state = ODMGoblinCoin::GoblinState::PayRevoke;
             Result = ODWayM::Instance()->UpdateModel(tmpPtr);
+            if (Result)
+            {
+                _Impl->ExpandData();
+            }
+        }
+    }
+    return Result;
+}
+
+bool ODPGoblin::SetEditCoin(const int &index_)
+{
+    bool Result = false;
+    if (index_ >= 0 && index_ < _Impl->_expandData._lastCoinNum.size() && _Impl->_expandData._lastCoinNum[index_] >= 0)
+    {
+        _Impl->_expandData._editCoinId = _Impl->_expandData._lastCoinNum[index_];
+        _Impl->_expandData._editCoinPtr = NULL;
+        Result = true;
+    }
+    return Result;
+}
+
+bool ODPGoblin::GetEditCoinText(std::string &str_, bool &revoke_, int &year_, int &month_, int &day_, int &hour_, int &minute_, int &second_, int &countSecond_)
+{
+    bool Result = false;
+    revoke_ = false;
+    countSecond_ = 0;
+    if (_Impl->_expandData._editCoinId >= 0)
+    {
+        ODMBasePtr tmpPtr;
+        ODWayM::Instance()->GetPtr("ODMGoblinCoin", _Impl->_expandData._editCoinId, tmpPtr);
+        if (tmpPtr)
+        {
+            Result = true;
+            _Impl->_expandData._editCoinPtr = tmpPtr;
+            ODMGoblinCoinPtr cur = std::static_pointer_cast<ODMGoblinCoin>(tmpPtr);
+            str_ = ODTimeUtil::Timestamp2String(cur->_id, "%y%m%d_%H%M%S") + "\n";
+            str_ += std::to_string(cur->_count);
+            if (cur->_count)
+            {
+                str_.insert(str_.end() - 2, '.');
+            }
+            str_ += "\n";
+            if (cur->_state == ODMGoblinCoin::GoblinState::NormalTransit)
+            {
+                str_ += cur->_goldFrom + " -> " + cur->_classify;
+            }
+            else
+            {
+                str_ += cur->_goldFrom + ": " + cur->_classify + "_" + cur->_kindFirst + "_" + cur->_kindSecond;
+                revoke_ = cur->_state == ODMGoblinCoin::GoblinState::PayRevoke;
+
+                time_t curTime = 0;
+                time(&curTime);
+
+                if (revoke_)
+                {
+                    countSecond_ = cur->_countSecond;
+                    curTime = cur->_revokeId;
+                }
+
+                struct tm *tmpTm;
+                tmpTm = localtime(&curTime);
+
+                year_ = tmpTm->tm_year + 1900;
+                month_ = tmpTm->tm_mon + 1;
+                day_ = tmpTm->tm_mday;
+                hour_ = tmpTm->tm_hour;
+                minute_ = tmpTm->tm_min;
+                second_ = tmpTm->tm_sec;
+            }
+        }
+    }
+    return Result;
+}
+
+bool ODPGoblin::SaveEditCoin(const bool &revoke_, const int &year_, const int &month_, const int &day_, const int &hour_, const int &minute_, const int &second_, const int &countSecond_)
+{
+    bool Result = false;
+    ODMGoblinCoinPtr cur = std::static_pointer_cast<ODMGoblinCoin>(_Impl->_expandData._editCoinPtr);
+    if (cur)
+    {
+        if (cur->_state != ODMGoblinCoin::GoblinState::NormalTransit)
+        {
+            cur->_state = ODMGoblinCoin::GoblinState::SimplePay;
+            if (revoke_)
+            {
+                cur->_state = ODMGoblinCoin::GoblinState::PayRevoke;
+                cur->_countSecond = countSecond_;
+
+                struct tm tmpTm;
+                tmpTm.tm_year = year_ - 1900;
+                tmpTm.tm_mon = month_ - 1;
+                tmpTm.tm_mday = day_;
+                tmpTm.tm_hour = hour_;
+                tmpTm.tm_min = minute_;
+                tmpTm.tm_sec = second_;
+                tmpTm.tm_isdst = 0;
+                time_t lt = mktime(&tmpTm);
+                cur->_revokeId = lt;
+            }
+            Result = ODWayM::Instance()->UpdateModel(cur);
             if (Result)
             {
                 _Impl->ExpandData();
@@ -358,6 +475,8 @@ void ODPGoblin::ExpandData::clear()
     _lastCoinNum.clear();
     _lastGnomeNum.clear();
     _totalDescription.clear();
+    _editCoinId = -1;
+    _editCoinPtr = NULL;
 }
 
 bool ODPGoblin::ExpandData::appendGnome(const ODMBasePtr &ptr_)

@@ -38,18 +38,18 @@ QStringList ODVGoblin::getGoldFromList()
 }
 
 bool ODVGoblin::addSimplePay(const int &year_,
-        const int &month_,
-        const int &day_,
-        const int &hour_,
-        const int &minute_,
-        const int &second_,
-        const bool &customTime_,
-        const QString &goldFrom_,
-        const QString &classify_,
-        const QString &kindFirst_,
-        const QString &kindSecond_,
-        const double &count_,
-        const QString &content_)
+                             const int &month_,
+                             const int &day_,
+                             const int &hour_,
+                             const int &minute_,
+                             const int &second_,
+                             const bool &customTime_,
+                             const QString &goldFrom_,
+                             const QString &classify_,
+                             const QString &kindFirst_,
+                             const QString &kindSecond_,
+                             const double &count_,
+                             const QString &content_)
 {
     bool Result = false;
     if (!goldFrom_.isEmpty() &&!classify_.isEmpty() &&!kindFirst_.isEmpty() &&!kindSecond_.isEmpty())
@@ -84,17 +84,17 @@ bool ODVGoblin::addSimplePay(const int &year_,
 }
 
 bool ODVGoblin::addTransit(const int &year_,
-        const int &month_,
-        const int &day_,
-        const int &hour_,
-        const int &minute_,
-        const int &second_,
-        const bool &customTime_,
-        const QString &goldFrom_,
-        const QString &goldTo_,
-        const double &count_,
-        const double &tips_,
-        const QString &content_)
+                           const int &month_,
+                           const int &day_,
+                           const int &hour_,
+                           const int &minute_,
+                           const int &second_,
+                           const bool &customTime_,
+                           const QString &goldFrom_,
+                           const QString &goldTo_,
+                           const double &count_,
+                           const double &tips_,
+                           const QString &content_)
 {
     bool Result = false;
     if (!goldFrom_.isEmpty() &&!goldTo_.isEmpty())
@@ -149,6 +149,16 @@ bool ODVGoblin::revokeCoin(const int &index_)
     return ODPGoblin::Instance()->RevokeCoin(index_);
 }
 
+bool ODVGoblin::setEditCoin(const int &index_)
+{
+    return ODPGoblin::Instance()->SetEditCoin(index_);
+}
+
+bool ODVGoblin::saveEditCoin(const bool &revoke_, const int &year_, const int &month_, const int &day_, const int &hour_, const int &minute_, const int &second_, const double &countSecond_)
+{
+    return ODPGoblin::Instance()->SaveEditCoin(revoke_, year_, month_, day_, hour_, minute_, second_, std::stoi(std::to_string(countSecond_ * 100)));
+}
+
 QString ODVGoblin::getCurGnomeStr(const QString &defaultStr)
 {
     QString Result = defaultStr;
@@ -157,6 +167,62 @@ QString ODVGoblin::getCurGnomeStr(const QString &defaultStr)
         Result = QString::fromStdString(_curGnome);
     }
     return Result;
+}
+
+void ODVGoblin::updateEditCoin()
+{
+    ODPGoblin::Instance()->GetEditCoinText(
+                _editCoinStr, _revoke, _year, _month, _day, _hour, _minute, _second, _countSecond);
+}
+
+QString ODVGoblin::getEditCoinStrText()
+{
+    return QString::fromStdString(_editCoinStr);
+}
+
+bool ODVGoblin::getEditCoinStrRevoke()
+{
+    return _revoke;
+}
+
+int ODVGoblin::getEditCoinStrYear()
+{
+    return _year;
+}
+
+int ODVGoblin::getEditCoinStrMonth()
+{
+    return _month;
+}
+
+int ODVGoblin::getEditCoinStrDay()
+{
+    return _day;
+}
+
+int ODVGoblin::getEditCoinStrHour()
+{
+    return _hour;
+}
+
+int ODVGoblin::getEditCoinStrMinute()
+{
+    return _minute;
+}
+
+int ODVGoblin::getEditCoinStrSecond()
+{
+    return _second;
+}
+
+double ODVGoblin::getEditCoinStrCountSecond()
+{
+    std::string tmpStr = std::to_string(_countSecond);
+    if (_countSecond)
+    {
+        tmpStr.insert(tmpStr.end() - 2, '.');
+    }
+    return std::stod(tmpStr);
 }
 
 QStringList ODVGoblin::getGnomeList()

@@ -41,6 +41,8 @@ public:
     std::string _kindFirst;
     std::string _kindSecond;
     int _count;
+    int _countSecond;
+    int _revokeId;
     std::string _content;
 
 private:

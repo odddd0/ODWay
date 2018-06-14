@@ -10,6 +10,7 @@ import QtQuick 2.9
 import QtQuick.Controls 1.4
 
 Column {
+    property bool boxVisiable: true
     property bool dateEnable
     property alias year: spinBoxYear.value
     property alias month: spinBoxMonth.value
@@ -18,6 +19,14 @@ Column {
     property alias minute: spinBoxMinute.value
     property alias second: spinBoxSecond.value
     property alias customTime: checkBox.checkedState
+
+    property bool isCustom: false
+    property int setYear
+    property int setMonth
+    property int setDay
+    property int setHour
+    property int setMinute
+    property int setSecond
     Component.onCompleted: {
         var d = new Date()
         spinBoxYear.value = d.getFullYear()
@@ -26,7 +35,19 @@ Column {
         spinBoxHour.value = d.getHours()
         spinBoxMinute.value = d.getMinutes()
         spinBoxSecond.value = d.getSeconds()
+
+        if (isCustom)
+        {
+            spinBoxYear.value = setYear
+            spinBoxMonth.value = setMonth
+            spinBoxDay.value = setDay
+            spinBoxHour.value = setHour
+            spinBoxMinute.value = setMinute
+            spinBoxSecond.value = setSecond
+        }
     }
+
+    visible: boxVisiable
 
     Row {
         width: parent.width

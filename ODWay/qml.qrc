@@ -26,5 +26,6 @@
         <file>RowSpinBox.qml</file>
         <file>TableGoblinListCoin.qml</file>
         <file>TableGoblinListGnome.qml</file>
+        <file>TableGoblinCoinEdit.qml</file>
     </qresource>
 </RCC>

@@ -36,12 +36,13 @@ Rectangle {
             {
                 tableGoblinList.currentIndex = 0
             }
-            else if (bar.barHandle == "handleTableGoblinListCoin" && bar.rightStr == "Revoke")
+            else if (bar.barHandle == "handleTableGoblinListCoin" && bar.rightStr == "Edit")
             {
-                if (odvGoblinList.revokeCoin(tableGoblinListView.currentIndex))
+                if (odvGoblinList.setEditCoin(tableGoblinListView.currentIndex))
                 {
-                    bar.rightStr = "Gnome"
+                    bar.rightStr = ""
                     bar.rightColor = "black"
+                    bar.openUrl(iiTableGoblinListCoin, "TableGoblinCoinEdit.qml")
                 }
             }
         }
@@ -73,16 +74,10 @@ Rectangle {
                     bar.rightStr = "Gnome"
                     bar.rightColor = "black"
                 }
-                onPressAndHold: {
-                    tableGoblinListView.currentIndex = index
-                    wrapperText.color = "red"
-                    bar.rightStr = "Del"
-                    bar.rightColor = "red"
-                }
                 onDoubleClicked: {
                     tableGoblinListView.currentIndex = index
                     wrapperText.color = "red"
-                    bar.rightStr = "Revoke"
+                    bar.rightStr = "Edit"
                     bar.rightColor = "red"
                 }
             }

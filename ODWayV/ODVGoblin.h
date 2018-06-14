@@ -57,7 +57,22 @@ public slots:
     QStringList getCoinList();
     bool delCoin(const int &index_);
     bool revokeCoin(const int &index_);
+    bool setEditCoin(const int &index_);
+    bool saveEditCoin(const bool &revoke_, const int &year_, const int &month_, const int &day_, const int &hour_, const int &minute_, const int &second_, const double &countSecond_);
     QString getCurGnomeStr(const QString &defaultStr = "");
+
+public slots:
+    // editCoinStr
+    void updateEditCoin();
+    QString getEditCoinStrText();
+    bool getEditCoinStrRevoke();
+    int getEditCoinStrYear();
+    int getEditCoinStrMonth();
+    int getEditCoinStrDay();
+    int getEditCoinStrHour();
+    int getEditCoinStrMinute();
+    int getEditCoinStrSecond();
+    double getEditCoinStrCountSecond();
 
 public slots:
     // gnome
@@ -68,6 +83,15 @@ public slots:
 
 private:
     std::string _curGnome;
+    std::string _editCoinStr;
+    bool _revoke;
+    int _year;
+    int _month;
+    int _day;
+    int _hour;
+    int _minute;
+    int _second;
+    int _countSecond;
 };
 
 #endif // _ODVGOBLIN_H_7E454649C08C0A706DA13FA21129A632_

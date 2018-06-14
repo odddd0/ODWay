@@ -19,6 +19,8 @@ ODMGoblinCoin::ODMGoblinCoin()
     , _kindFirst("")
     , _kindSecond("")
     , _count(0)
+    , _countSecond(0)
+    , _revokeId(0)
     , _content("")
 {
 }
@@ -32,9 +34,11 @@ ODMGoblinCoin::ODMGoblinCoin(const StringList &stringList)
     , _kindFirst("")
     , _kindSecond("")
     , _count(0)
+    , _countSecond(0)
+    , _revokeId(0)
     , _content("")
 {
-    if (stringList.size() == 9)
+    if (stringList.size() == 11)
     {
         _preId = _id = std::stoi(stringList[0]);
         _state = static_cast<ODMGoblinCoin::GoblinState>(std::stoi(stringList[1]));
@@ -44,7 +48,9 @@ ODMGoblinCoin::ODMGoblinCoin(const StringList &stringList)
         _kindFirst = stringList[5];
         _kindSecond = stringList[6];
         _count = std::stoi(stringList[7]);
-        _content = stringList[8];
+        _countSecond = std::stoi(stringList[8]);
+        _revokeId = std::stoi(stringList[9]);
+        _content = stringList[10];
     }
 }
 
@@ -61,6 +67,8 @@ void ODMGoblinCoin::GetSqlCreateTable(std::string &sql_)
                "'KindFirst' varchar(128),"
                "'KindSecond' varchar(128),"
                "'Count' integer DEFAULT(0),"
+               "'CountSecond' integer DEFAULT(0),"
+               "'RevokeID' integer DEFAULT(0),"
                "'Content' varchar(128));";
         _init = false;
     }
@@ -90,6 +98,8 @@ void ODMGoblinCoin::GetSqlUpdate(std::string &sql_)
             "',KindFirst='" + _kindFirst +
             "',KindSecond='" + _kindSecond +
             "',Count='" + std::to_string(_count) +
+            "',CountSecond='" + std::to_string(_countSecond) +
+            "',RevokeID='" + std::to_string(_revokeId) +
             "',Content='" + _content +
             "' where Id='" + std::to_string(_preId) + "';";
 }
@@ -106,5 +116,7 @@ void ODMGoblinCoin::GetSqlInsert(std::string &sql_)
             _kindFirst + "','" +
             _kindSecond + "','" +
             std::to_string(_count) + "','" +
+            std::to_string(_countSecond) + "','" +
+            std::to_string(_revokeId) + "','" +
             _content + "');";
 }
