@@ -42,6 +42,7 @@ class ODPGoblin
 
         std::string _content;
 
+        int _tips;
         int _count;
     };
     typedef std::shared_ptr<OneGoblinCoin> OneGoblinCoinPtr;

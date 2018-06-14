@@ -11,8 +11,10 @@ import QtQml.Models 2.1
 import QtQuick.Layouts 1.1
 
 Rectangle {
-    function updateList(){
+    function update(){
         tableGoblinList.currentIndex = 0
+        tableGoblinListGnomeObject.update()
+        tableGoblinListCoinObject.update()
     }
 
     ColumnLayout {

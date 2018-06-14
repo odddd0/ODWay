@@ -88,6 +88,7 @@ void ODPGoblin::GetCKK(CKKPtr &ckk_)
 void ODPGoblin::GetCoinList(StringList &list_)
 {
     list_.clear();
+    _Impl->_expandData._lastCoinNum.clear();
     std::string tmpStr;
     std::for_each(_Impl->_expandData._dateList.cbegin(), _Impl->_expandData._dateList.cend(), [&](const std::string &x){
         list_.push_back(x);
@@ -104,6 +105,11 @@ void ODPGoblin::GetCoinList(StringList &list_)
                     tmpStr.insert(tmpStr.end() - 2, '.');
                 }
                 tmpStr += ")";
+                if (y->_tips)
+                {
+                    tmpStr += " Tips: " + std::to_string(y->_tips);
+                    tmpStr.insert(tmpStr.end() - 2, '.');
+                }
             }
             else
             {
@@ -265,6 +271,7 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
     ODMGoblinCoinPtr cur = std::static_pointer_cast<ODMGoblinCoin>(ptr_);
     OneGoblinCoinPtr tmpCoinPtr = NULL;
     int tmpIndex = -1;
+    int tmpInt = 0;
     std::string tmpStr;
     ODPGoblin::OneGnomePtr gnome = NULL;
     if (cur)
@@ -288,7 +295,7 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                         {
                             gnome->_billList.push_back(0);
                         }
-                        gnome->_billList[tmpIndex] += cur->_count;
+                        gnome->_billList[tmpIndex] = gnome->_billList[tmpIndex] + cur->_count;
                         gnome->_balance -= cur->_count;
                     }
                 }
@@ -302,6 +309,7 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
         // NormalTransit
         else if (cur->_state == ODMGoblinCoin::GoblinState::NormalTransit)
         {
+            // gold to
             if (gnome = _gnomeMap[cur->_classify])
             {
                 if (gnome->_creditLimits)
@@ -313,7 +321,7 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                         {
                             gnome->_billList.push_back(0);
                         }
-                        gnome->_billList[tmpIndex + 1] -= cur->_count;
+                        gnome->_billList[tmpIndex + 1] = gnome->_billList[tmpIndex + 1] - cur->_count;
                         gnome->_balance += cur->_count;
                     }
                 }
@@ -322,8 +330,13 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                     gnome->_balance += cur->_count;
                 }
             }
+            // gold from
             if (gnome = _gnomeMap[cur->_goldFrom])
             {
+                if (!cur->_kindSecond.empty())
+                {
+                    tmpInt = std::stoi(cur->_kindSecond);
+                }
                 if (gnome->_creditLimits)
                 {
                     // credit withdraw
@@ -333,13 +346,13 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                         {
                             gnome->_billList.push_back(0);
                         }
-                        gnome->_billList[tmpIndex] += cur->_count;
-                        gnome->_balance -= cur->_count;
+                        gnome->_billList[tmpIndex] = gnome->_billList[tmpIndex] + cur->_count + tmpInt;
+                        gnome->_balance -= cur->_count + tmpInt;
                     }
                 }
                 else
                 {
-                    gnome->_balance -= cur->_count;
+                    gnome->_balance -= cur->_count + tmpInt;
                 }
             }
         }
@@ -356,6 +369,10 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
         else
         {
             tmpCoinPtr->_goldTo = cur->_classify;
+            if (!cur->_kindSecond.empty())
+            {
+                tmpCoinPtr->_tips = std::stoi(cur->_kindSecond);
+            }
         }
         tmpCoinPtr->_goldFrom = cur->_goldFrom;
         tmpCoinPtr->_count = cur->_count;
@@ -390,5 +407,6 @@ ODPGoblin::OneGoblinCoin::OneGoblinCoin()
 
     _content = "";
 
+    _tips = 0;
     _count = 0;
 }

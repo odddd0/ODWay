@@ -26,6 +26,8 @@ Rectangle {
                         odvGoblinList.addSimplePay(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second,
                                                    dateTime.customTime, goldFrom.currentText, ckk.classify, ckk.kindFirst, ckk.kindSecond, count.value, content.text))
                 {
+                    count.value = 0
+                    content.text = ""
                     rootTableGoblin.currentIndex = 0
                 }
             }

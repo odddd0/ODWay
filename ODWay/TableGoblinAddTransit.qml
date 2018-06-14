@@ -25,8 +25,11 @@ Rectangle {
                 console.log("goblin add transit")
                 if (bar.rightStr == "+" &&
                         odvGoblinList.addTransit(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second,
-                                                   dateTime.customTime, goldFrom.currentText, goldTo.currentText, count.value, content.text))
+                                                 dateTime.customTime, goldFrom.currentText, goldTo.currentText, count.value, tips.value, content.text))
                 {
+                    tips.value = 0
+                    count.value = 0
+                    content.text = ""
                     rootTableGoblin.currentIndex = 0
                 }
             }
@@ -67,13 +70,50 @@ Rectangle {
                 model: odvGoblinList.getGoldFromList()
             }
         }
-        SpinBox {
-            id: count
+        Row {
             width: parent.width
-            height: 60
-            decimals: 2
-            minimumValue: 0
-            maximumValue: 2147483648
+            height: 80
+            spacing: 10
+
+            Column {
+                width: parent.width / 2 - 10
+                height: parent.height
+                Text {
+                    width: parent.width
+                    height: 20
+
+                    text: "Tips:"
+                }
+                SpinBox {
+                    id: tips
+                    width: parent.width
+                    height: 60
+
+                    decimals: 2
+                    minimumValue: 0
+                    maximumValue: 2147483648
+                }
+            }
+            Column {
+                width: parent.width / 2 - 10
+                height: parent.height
+
+                Text {
+                    width: parent.width
+                    height: 20
+
+                    text: "Count:"
+                }
+                SpinBox {
+                    id: count
+                    width: parent.width
+                    height: 60
+
+                    decimals: 2
+                    minimumValue: 0
+                    maximumValue: 2147483648
+                }
+            }
         }
         Rectangle {
             width: parent.width

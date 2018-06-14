@@ -93,6 +93,7 @@ bool ODVGoblin::addTransit(
         const QString &goldFrom_,
         const QString &goldTo_,
         const double &count_,
+        const double &tips_,
         const QString &content_)
 {
     bool Result = false;
@@ -103,6 +104,7 @@ bool ODVGoblin::addTransit(
         tmpPtr->_goldFrom = goldFrom_.toStdString();
         tmpPtr->_classify = goldTo_.toStdString();
         tmpPtr->_count = count_ * 100;
+        tmpPtr->_kindSecond = std::to_string(static_cast<int>(tips_ * 100));
         tmpPtr->_content = content_.toStdString();
         if (customTime_)
         {

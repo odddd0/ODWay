@@ -52,6 +52,7 @@ public slots:
             const QString &goldFrom_,
             const QString &goldTo_,
             const double &count_,
+            const double &tips_,
             const QString &content_);
     QStringList getCoinList();
     bool delCoin(const int &index_);
