@@ -33,7 +33,8 @@ Rectangle {
                             goldFrom, classify, kindFirst, kindSecond, goldCount,
                             monthSpinBox.value, actualTotalSpinBox.value, content.text))
                 {
-                    count.value = 0
+                    console.log("addBil success")
+                    actualTotalSpinBox.value = 0
                     content.text = ""
                     monthSpinBox.clear()
                     actualTotalSpinBox.clear()

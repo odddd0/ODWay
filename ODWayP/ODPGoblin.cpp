@@ -241,6 +241,7 @@ bool ODPGoblin::GetEditCoinText(std::string &str_, bool &revoke_, int &year_, in
     bool Result = false;
     revoke_ = false;
     countSecond_ = 0;
+    int tmpIndex = 0;
     if (_Impl->_expandData._editCoinId >= 0)
     {
         ODMBasePtr tmpPtr;
@@ -250,42 +251,79 @@ bool ODPGoblin::GetEditCoinText(std::string &str_, bool &revoke_, int &year_, in
             Result = true;
             _Impl->_expandData._editCoinPtr = tmpPtr;
             ODMGoblinCoinPtr cur = std::static_pointer_cast<ODMGoblinCoin>(tmpPtr);
-            str_ = ODTimeUtil::Timestamp2String(cur->_id, "%y%m%d_%H%M%S") + "\n";
-            str_ += std::to_string(cur->_count);
-            if (cur->_count)
+            if (cur->_state == ODMGoblinCoin::GoblinState::InstallPay)
             {
-                str_.insert(str_.end() - 2, '.');
-            }
-            str_ += "\n";
-            if (cur->_state == ODMGoblinCoin::GoblinState::NormalTransit)
-            {
-                str_ += cur->_goldFrom + " -> " + cur->_classify;
+                // install pay edit coin
+                if (cur->_revokeId)
+                {
+                    // earily payback
+                }
+                else
+                {
+                    // normal
+                }
+                str_ = ODTimeUtil::Timestamp2String(cur->_id, "%y%m%d_%H%M%S") + "\n";
+                str_ += std::to_string(cur->_countSecond);
+                if (cur->_countSecond)
+                {
+                    str_.insert(str_.end() - 2, '.');
+                }
+                str_ += "\nFuture: ";
+                if (_Impl->_expandData._gnomeMap[cur->_goldFrom])
+                {
+                    ODTimeUtil::CalcuteBillList(cur->_id, _Impl->_expandData._gnomeMap[cur->_goldFrom]->_billDates, tmpIndex);
+                }
+                str_ += std::to_string(cur->_bill - tmpIndex - 1) + " x " + std::to_string(cur->_countSecond / cur->_bill);
+                if (cur->_countSecond / cur->_bill)
+                {
+                    str_.insert(str_.end() - 2, '.');
+                }
+                str_ += " = " + std::to_string((cur->_countSecond / cur->_bill) * (cur->_bill - tmpIndex - 1));
+                if (true)
+                {
+                    str_.insert(str_.end() - 2, '.');
+                }
             }
             else
             {
-                str_ += cur->_goldFrom + ": " + cur->_classify + "_" + cur->_kindFirst + "_" + cur->_kindSecond;
-                revoke_ = cur->_state == ODMGoblinCoin::GoblinState::PayRevoke;
-
-                time_t curTime = 0;
-                time(&curTime);
-
-                if (revoke_)
+                // other type coin
+                str_ = ODTimeUtil::Timestamp2String(cur->_id, "%y%m%d_%H%M%S") + "\n";
+                str_ += std::to_string(cur->_count);
+                if (cur->_count)
                 {
-                    countSecond_ = cur->_countSecond;
-                    curTime = cur->_revokeId;
+                    str_.insert(str_.end() - 2, '.');
                 }
+                str_ += "\n";
+                if (cur->_state == ODMGoblinCoin::GoblinState::NormalTransit)
+                {
+                    str_ += cur->_goldFrom + " -> " + cur->_classify;
+                }
+                else
+                {
+                    str_ += cur->_goldFrom + ": " + cur->_classify + "_" + cur->_kindFirst + "_" + cur->_kindSecond;
+                    revoke_ = cur->_state == ODMGoblinCoin::GoblinState::PayRevoke;
 
-                struct tm *tmpTm;
-                tmpTm = localtime(&curTime);
+                    time_t curTime = 0;
+                    time(&curTime);
 
-                year_ = tmpTm->tm_year + 1900;
-                month_ = tmpTm->tm_mon + 1;
-                day_ = tmpTm->tm_mday;
-                hour_ = tmpTm->tm_hour;
-                minute_ = tmpTm->tm_min;
-                second_ = tmpTm->tm_sec;
+                    if (revoke_)
+                    {
+                        countSecond_ = cur->_countSecond;
+                        curTime = cur->_revokeId;
+                    }
+
+                    struct tm *tmpTm;
+                    tmpTm = localtime(&curTime);
+
+                    year_ = tmpTm->tm_year + 1900;
+                    month_ = tmpTm->tm_mon + 1;
+                    day_ = tmpTm->tm_mday;
+                    hour_ = tmpTm->tm_hour;
+                    minute_ = tmpTm->tm_min;
+                    second_ = tmpTm->tm_sec;
+                }
+                count_ = cur->_count;
             }
-            count_ = cur->_count;
         }
     }
     return Result;
