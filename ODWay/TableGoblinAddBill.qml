@@ -7,6 +7,7 @@
 //====================================================================
 
 import QtQuick 2.9
+import QtQuick.Controls 1.4
 
 Rectangle {
     property var dateTime
@@ -31,7 +32,8 @@ Rectangle {
                             dateTime.year, dateTime.month, dateTime.day,
                             dateTime.hour, dateTime.minute, dateTime.second, dateTime.customTime,
                             goldFrom, classify, kindFirst, kindSecond, goldCount,
-                            monthSpinBox.value, firstMonthSpinBox.value, othersMonthSpinBox.value, content.text))
+                            monthSpinBox.value, firstMonthSpinBox.value, othersMonthSpinBox.value, content.text,
+                            billSplitCheckBox.checkedState))
                 {
                     console.log("addBil success")
                     content.text = ""
@@ -87,6 +89,19 @@ Rectangle {
             TextEdit {
                 id: content
                 anchors.fill: parent
+            }
+        }
+        Row {
+            width: parent.width
+            height: 80
+
+            Text {
+                text: "billSplit: "
+            }
+            CheckBox {
+                id: billSplitCheckBox
+
+                checked: false
             }
         }
     }

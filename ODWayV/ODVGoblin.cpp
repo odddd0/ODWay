@@ -144,13 +144,21 @@ bool ODVGoblin::addBill(
         const int &billMonth_,
         const double &firstMonthCount_,
         const double &othersMonthCount_,
-        const QString &content_)
+        const QString &content_,
+        const bool &isBillSplit_)
 {
     bool Result = false;
     if (!goldFrom_.isEmpty() &&!classify_.isEmpty() &&!kindFirst_.isEmpty() &&!kindSecond_.isEmpty())
     {
         ODMGoblinCoinPtr tmpPtr = std::make_shared<ODMGoblinCoin>();
-        tmpPtr->_state = ODMGoblinCoin::GoblinState::InstallPay;
+        if (isBillSplit_)
+        {
+            tmpPtr->_state = ODMGoblinCoin::GoblinState::InstallBillSplit;
+        }
+        else
+        {
+            tmpPtr->_state = ODMGoblinCoin::GoblinState::InstallPay;
+        }
         tmpPtr->_goldFrom = goldFrom_.toStdString();
         tmpPtr->_classify = classify_.toStdString();
         tmpPtr->_kindFirst = kindFirst_.toStdString();

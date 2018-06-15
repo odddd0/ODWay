@@ -70,7 +70,8 @@ public slots:
             const int &billMonth_,
             const double &firstMonthCount_,
             const double &othersMonthCount_,
-            const QString &content_);
+            const QString &content_,
+            const bool &isBillSplit_);
 
     QStringList getCoinList();
     bool delCoin(const int &index_);
