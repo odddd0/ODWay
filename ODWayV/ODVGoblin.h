@@ -93,7 +93,8 @@ public slots:
             const int &minute_,
             const int &second_,
             const double &countSecond_,
-            const QString &class_);
+            const QString &class_,
+            const int &offset);
     QString getCurGnomeStr(const QString &defaultStr = "");
 
 public slots:

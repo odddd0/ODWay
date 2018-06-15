@@ -255,9 +255,10 @@ bool ODVGoblin::saveEditCoin(
         const int &minute_,
         const int &second_,
         const double &countSecond_,
-        const QString &class_)
+        const QString &class_,
+        const int &offset)
 {
-    return ODPGoblin::Instance()->SaveEditCoin(revoke_, year_, month_, day_, hour_, minute_, second_, std::stoi(std::to_string(countSecond_ * 100)), class_.toStdString());
+    return ODPGoblin::Instance()->SaveEditCoin(revoke_, year_, month_, day_, hour_, minute_, second_, std::stoi(std::to_string(countSecond_ * 100)), class_.toStdString(), offset);
 }
 
 QString ODVGoblin::getCurGnomeStr(const QString &defaultStr)

@@ -32,7 +32,9 @@ Rectangle {
                             dateTime.hour,
                             dateTime.minute,
                             dateTime.second,
-                            revokeSpinBox.value))
+                            revokeSpinBox.value,
+                            rebackGoldFrom.currentText,
+                            offsetSpinBox.value))
                 {
                     bar.back()
                 }
@@ -88,6 +90,8 @@ Rectangle {
                 dateTime.boxVisiable = checked
                 revokeSpinBox.boxVisiable = checked
                 fastSecondButton.visible = checked
+                rebackGoldFrom.visible = checked
+                offsetSpinBox.visible = checked
             }
         }
 
@@ -155,5 +159,33 @@ Rectangle {
                 }
             }
         }
+        Row{
+            width: parent.width
+            height: 60
+            spacing: 10
+
+            SpinBox {
+                id: offsetSpinBox
+                width: parent.width / 2 - 10
+                height: 60
+                visible: false
+
+//                anchors.left: parent.left
+//                anchors.leftMargin: 10
+            }
+
+            ComboBox {
+                id: rebackGoldFrom
+                width: parent.width / 2 - 10
+                height: 60
+                visible: false
+
+//                anchors.right: parent.right
+//                anchors.rightMargin: 10
+
+                model: vvGoblinList.getGoldFromList()
+            }
+        }
+
     }
 }
