@@ -876,16 +876,13 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                         {
                             if (tmpEndIndex != -1)
                             {
-                                tmpIndex = gnome->_futureBillList[tmpEndIndex];
-                                gnome->_futureBillList[tmpEndIndex] = gnome->_billList[tmpFirstIndex];
-                                gnome->_billList[tmpFirstIndex] = tmpIndex;
+                                gnome->_futureBillList[tmpEndIndex] -= cur->_countSecond - cur->_revokeId;
                             }
                             else
                             {
-                                tmpEndIndex = gnome->_billList[tmpIndex];
-                                gnome->_billList[tmpIndex] = gnome->_billList[tmpFirstIndex];
-                                gnome->_billList[tmpFirstIndex] = tmpEndIndex;
+                                gnome->_billList[tmpIndex + 1] -= cur->_countSecond - cur->_revokeId;
                             }
+                            gnome->_billList[tmpFirstIndex] -= cur->_revokeId - cur->_countSecond;
                         }
                     }
                 }
