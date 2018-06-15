@@ -33,7 +33,7 @@ Rectangle {
                             dateTime.hour, dateTime.minute, dateTime.second, dateTime.customTime,
                             goldFrom, classify, kindFirst, kindSecond, goldCount,
                             monthSpinBox.value, firstMonthSpinBox.value, othersMonthSpinBox.value, content.text,
-                            billSplitCheckBox.checkedState))
+                            billSplitCheckBox.checkedState, withdrawCheckbox.checkedState, withDrawGoldTo.currentText))
                 {
                     console.log("addBil success")
                     content.text = ""
@@ -102,6 +102,38 @@ Rectangle {
                 id: billSplitCheckBox
 
                 checked: false
+                onCheckedChanged: {
+                    if (checkedState)
+                    {
+                        withdrawCheckbox.checked = false
+                    }
+                }
+            }
+        }
+        Row {
+            width: parent.width
+            height: 80
+
+            Text {
+                text: "InstallWithdraw: "
+            }
+            CheckBox {
+                id: withdrawCheckbox
+
+                checked: false
+
+                onCheckedChanged: {
+                    if (checkedState)
+                    {
+                        billSplitCheckBox.checked = false
+                    }
+                }
+            }
+            ComboBox {
+                id: withDrawGoldTo
+                width: parent.width / 2 - 10
+                height: parent.height
+                model: odvGoblinList.getGoldFromList()
             }
         }
     }

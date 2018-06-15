@@ -83,18 +83,21 @@ bool ODVGoblin::addSimplePay(const int &year_,
     return Result;
 }
 
-bool ODVGoblin::addTransit(const int &year_,
-                           const int &month_,
-                           const int &day_,
-                           const int &hour_,
-                           const int &minute_,
-                           const int &second_,
-                           const bool &customTime_,
-                           const QString &goldFrom_,
-                           const QString &goldTo_,
-                           const double &count_,
-                           const double &tips_,
-                           const QString &content_)
+bool ODVGoblin::addTransit(
+        const int &year_,
+        const int &month_,
+        const int &day_,
+        const int &hour_,
+        const int &minute_,
+        const int &second_,
+        const bool &customTime_,
+        const QString &goldFrom_,
+        const QString &goldTo_,
+        const double &count_,
+        const double &tips_,
+        const QString &content_,
+        const int &offsetBill_,
+        const double &lessCount_)
 {
     bool Result = false;
     if (!goldFrom_.isEmpty() &&!goldTo_.isEmpty())
@@ -104,8 +107,10 @@ bool ODVGoblin::addTransit(const int &year_,
         tmpPtr->_goldFrom = goldFrom_.toStdString();
         tmpPtr->_classify = goldTo_.toStdString();
         tmpPtr->_count = std::stoi(std::to_string(count_ * 100));
+        tmpPtr->_countSecond = std::stoi(std::to_string(lessCount_ * 100));
         tmpPtr->_kindSecond = std::to_string(std::stoi(std::to_string(tips_ * 100)));
         tmpPtr->_content = content_.toStdString();
+        tmpPtr->_bill = offsetBill_;
         if (customTime_)
         {
             struct tm tmpTm;
@@ -145,7 +150,9 @@ bool ODVGoblin::addBill(
         const double &firstMonthCount_,
         const double &othersMonthCount_,
         const QString &content_,
-        const bool &isBillSplit_)
+        const bool &isBillSplit_,
+        const bool &withDraw_,
+        const QString &withDrawGoldTo_)
 {
     bool Result = false;
     if (!goldFrom_.isEmpty() &&!classify_.isEmpty() &&!kindFirst_.isEmpty() &&!kindSecond_.isEmpty())
@@ -155,14 +162,27 @@ bool ODVGoblin::addBill(
         {
             tmpPtr->_state = ODMGoblinCoin::GoblinState::InstallBillSplit;
         }
+        else if (withDraw_)
+        {
+            tmpPtr->_state = ODMGoblinCoin::GoblinState::InstallWithdraw;
+        }
         else
         {
             tmpPtr->_state = ODMGoblinCoin::GoblinState::InstallPay;
         }
+
+        if (withDraw_)
+        {
+            tmpPtr->_classify = withDrawGoldTo_.toStdString();
+        }
+        else
+        {
+            tmpPtr->_classify = classify_.toStdString();
+            tmpPtr->_kindFirst = kindFirst_.toStdString();
+            tmpPtr->_kindSecond = kindSecond_.toStdString();
+        }
+
         tmpPtr->_goldFrom = goldFrom_.toStdString();
-        tmpPtr->_classify = classify_.toStdString();
-        tmpPtr->_kindFirst = kindFirst_.toStdString();
-        tmpPtr->_kindSecond = kindSecond_.toStdString();
         tmpPtr->_count = std::stoi(std::to_string(count_ * 100));
         tmpPtr->_countSecond = std::stoi(std::to_string(othersMonthCount_ * 100));
         tmpPtr->_revokeId = std::stoi(std::to_string(firstMonthCount_ * 100));

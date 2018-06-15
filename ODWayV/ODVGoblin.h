@@ -28,19 +28,20 @@ public slots:
     // add
     QVariant getCKK();
     QStringList getGoldFromList();
-    bool addSimplePay(const int &year_,
-                      const int &month_,
-                      const int &day_,
-                      const int &hour_,
-                      const int &minute_,
-                      const int &second_,
-                      const bool &customTime_,
-                      const QString &goldFrom_,
-                      const QString &classify_,
-                      const QString &kindFirst_,
-                      const QString &kindSecond_,
-                      const double &count_,
-                      const QString &content_);
+    bool addSimplePay(
+            const int &year_,
+            const int &month_,
+            const int &day_,
+            const int &hour_,
+            const int &minute_,
+            const int &second_,
+            const bool &customTime_,
+            const QString &goldFrom_,
+            const QString &classify_,
+            const QString &kindFirst_,
+            const QString &kindSecond_,
+            const double &count_,
+            const QString &content_);
     bool addTransit(
             const int &year_,
             const int &month_,
@@ -53,7 +54,9 @@ public slots:
             const QString &goldTo_,
             const double &count_,
             const double &tips_,
-            const QString &content_);
+            const QString &content_,
+            const int &offsetBill_,
+            const double &lessCount);
     bool addBill(
             const int &year_,
             const int &month_,
@@ -71,7 +74,9 @@ public slots:
             const double &firstMonthCount_,
             const double &othersMonthCount_,
             const QString &content_,
-            const bool &isBillSplit_);
+            const bool &isBillSplit_,
+            const bool &withDraw_,
+            const QString &withDrawGoldTo_);
 
     QStringList getCoinList();
     bool delCoin(const int &index_);

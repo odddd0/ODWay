@@ -261,7 +261,8 @@ bool ODPGoblin::GetEditCoinText(std::string &str_, bool &revoke_, int &year_, in
             _Impl->_expandData._editCoinPtr = tmpPtr;
             ODMGoblinCoinPtr cur = std::static_pointer_cast<ODMGoblinCoin>(tmpPtr);
             if (cur->_state == ODMGoblinCoin::GoblinState::InstallPay ||
-                    cur->_state == ODMGoblinCoin::GoblinState::InstallBillSplit)
+                    cur->_state == ODMGoblinCoin::GoblinState::InstallBillSplit ||
+                    cur->_state == ODMGoblinCoin::GoblinState::InstallWithdraw)
             {
                 // install pay edit coin
                 if (cur->_revokeId)
@@ -687,7 +688,8 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
             }
         }
         // Installment pay
-        else if (cur->_state == ODMGoblinCoin::GoblinState::InstallPay)
+        else if (cur->_state == ODMGoblinCoin::GoblinState::InstallPay ||
+                 cur->_state == ODMGoblinCoin::GoblinState::InstallWithdraw)
         {
             if (gnome = _gnomeMap[cur->_goldFrom])
             {
@@ -712,6 +714,12 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                     }
                 }
                 gnome->_balance -= tmpInt;
+
+                // Install Withdraw
+                if (cur->_state == ODMGoblinCoin::GoblinState::InstallWithdraw && _gnomeMap[cur->_classify])
+                {
+                    _gnomeMap[cur->_classify]->_balance += cur->_count;
+                }
             }
         }
         // bill split
@@ -755,14 +763,18 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                     // repay credit
                     if (ODTimeUtil::CalcuteBillList(cur->_id, gnome->_billDates, tmpIndex))
                     {
-                        while (gnome->_billList.size() <= tmpIndex + 1)
+                        while (gnome->_billList.size() <= tmpIndex + 1 ||
+                               gnome->_billList.size() <= tmpIndex + 1 + cur->_bill)
                         {
                             gnome->_billList.push_back(0);
                         }
-                        gnome->_billList[tmpIndex + 1] = gnome->_billList[tmpIndex + 1] - cur->_count;
+                        if (cur->_bill >= -1)
+                        {
+                            gnome->_billList[tmpIndex + 1 + cur->_bill] -= cur->_count + cur->_countSecond;
+                        }
                     }
                 }
-                gnome->_balance += cur->_count;
+                gnome->_balance += cur->_count + cur->_countSecond;
             }
             // gold from
             if (gnome = _gnomeMap[cur->_goldFrom])

@@ -22,7 +22,8 @@ struct ODMGoblinCoin : public ODMBase
         NormalTransit = 1,
         PayRevoke = 2 ,
         InstallPay = 3 ,
-        InstallBillSplit = 4
+        InstallBillSplit = 4 ,
+        InstallWithdraw = 5
     };
 public:
     ODMGoblinCoin();

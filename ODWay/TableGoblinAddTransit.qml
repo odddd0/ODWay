@@ -25,7 +25,8 @@ Rectangle {
                 console.log("goblin add transit")
                 if (bar.rightStr == "+" &&
                         odvGoblinList.addTransit(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second,
-                                                 dateTime.customTime, goldFrom.currentText, goldTo.currentText, count.value, tips.value, content.text))
+                                                 dateTime.customTime, goldFrom.currentText, goldTo.currentText, count.value, tips.value, content.text,
+                                                 offsetCount.value, lessCount.value))
                 {
                     tips.value = 0
                     count.value = 0
@@ -122,6 +123,50 @@ Rectangle {
             TextEdit {
                 id: content
                 anchors.fill: parent
+            }
+        }
+        Row {
+            width: parent.width
+            height: 80
+            spacing: 10
+
+            Column {
+                width: parent.width / 2 - 10
+                height: parent.height
+                Text {
+                    width: parent.width
+                    height: 20
+
+                    text: "Offset:"
+                }
+                SpinBox {
+                    id: offsetCount
+                    width: parent.width
+                    height: 60
+
+                    minimumValue: -100000
+                    maximumValue: 100000
+                }
+            }
+            Column {
+                width: parent.width / 2 - 10
+                height: parent.height
+
+                Text {
+                    width: parent.width
+                    height: 20
+
+                    text: "Less:"
+                }
+                SpinBox {
+                    id: lessCount
+                    width: parent.width
+                    height: 60
+
+                    decimals: 2
+                    minimumValue: 0
+                    maximumValue: 2147483648
+                }
             }
         }
     }
