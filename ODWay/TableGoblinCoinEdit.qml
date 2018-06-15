@@ -36,6 +36,7 @@ Rectangle {
                             rebackGoldFrom.currentText,
                             offsetSpinBox.value))
                 {
+                    console.log("save success")
                     bar.back()
                 }
             }
@@ -44,6 +45,7 @@ Rectangle {
                 // save coin edit
                 if (vvGoblinList.delCoin())
                 {
+                    console.log("del success")
                     bar.back()
                 }
             }

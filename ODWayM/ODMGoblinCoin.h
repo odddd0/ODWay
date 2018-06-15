@@ -26,7 +26,8 @@ struct ODMGoblinCoin : public ODMBase
         InstallWithdraw = 5,
         PrePaybackInstall = 6,
         InstallPayReverse = 7,
-        PrePaybackInstallReverse = 8
+        PrePaybackInstallReverse = 8,
+        InstallWithdrawReverse = 9,
 
 //        // pay or transit
 //        isNull = 0,

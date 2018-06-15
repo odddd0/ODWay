@@ -165,15 +165,25 @@ bool ODVGoblin::addBill(
         }
         else if (withDraw_)
         {
-            tmpPtr->_state = ODMGoblinCoin::GoblinState::InstallWithdraw;
-        }
-        else if (isReverse_)
-        {
-            tmpPtr->_state = ODMGoblinCoin::GoblinState::InstallPayReverse;
+            if (isReverse_)
+            {
+                tmpPtr->_state = ODMGoblinCoin::GoblinState::InstallWithdrawReverse;
+            }
+            else
+            {
+                tmpPtr->_state = ODMGoblinCoin::GoblinState::InstallWithdraw;
+            }
         }
         else
         {
-            tmpPtr->_state = ODMGoblinCoin::GoblinState::InstallPay;
+            if (isReverse_)
+            {
+                tmpPtr->_state = ODMGoblinCoin::GoblinState::InstallPayReverse;
+            }
+            else
+            {
+                tmpPtr->_state = ODMGoblinCoin::GoblinState::InstallPay;
+            }
         }
 
         if (withDraw_)

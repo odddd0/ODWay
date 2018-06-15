@@ -182,7 +182,10 @@ void ODPGoblin::GetCoinList(StringList &list_, const std::string &goldType_)
         }
     });
     // todo
+//    StringList tmpList;
     GetGnomeBillList(list_, goldType_);
+//    tmpList.push_back("");
+//    list_.insert(list_.begin(), tmpList.begin(), tmpList.end());
 }
 
 bool ODPGoblin::DelCoin(const int &index_)
@@ -264,7 +267,8 @@ bool ODPGoblin::GetEditCoinText(std::string &str_, bool &revoke_, int &year_, in
             if (cur->_state == ODMGoblinCoin::GoblinState::InstallPay ||
                     cur->_state == ODMGoblinCoin::GoblinState::InstallBillSplit ||
                     cur->_state == ODMGoblinCoin::GoblinState::InstallWithdraw ||
-                    cur->_state == ODMGoblinCoin::GoblinState::InstallPayReverse)
+                    cur->_state == ODMGoblinCoin::GoblinState::InstallPayReverse ||
+                    cur->_state == ODMGoblinCoin::GoblinState::InstallWithdrawReverse)
             {
                 // install pay edit coin
                 if (cur->_revokeId)
@@ -412,7 +416,9 @@ bool ODPGoblin::SaveEditCoin(
                 newCur->_count = countSecond_;
                 newCur->_bill = remainMonth_;
 
-                if (cur->_state == ODMGoblinCoin::GoblinState::InstallPay)
+                if (cur->_state == ODMGoblinCoin::GoblinState::InstallPay ||
+                        cur->_state == ODMGoblinCoin::GoblinState::InstallWithdraw ||
+                        cur->_state == ODMGoblinCoin::GoblinState::InstallBillSplit)
                 {
                     newCur->_state = ODMGoblinCoin::GoblinState::PrePaybackInstall;
                     if (newCur->_bill != cur->_bill)
@@ -427,8 +433,10 @@ bool ODPGoblin::SaveEditCoin(
 
                 // calculate offset
                 int tmpIndex = -1;
+                int tmpNewIndex = -1;
                 ODTimeUtil::CalcuteBillList(cur->_id, gnome->_billDates, tmpIndex);
-                newCur->_content = std::to_string(tmpIndex - cur->_bill + remainMonth_);
+                ODTimeUtil::CalcuteBillList(newCur->_id, gnome->_billDates, tmpNewIndex);
+                newCur->_content = std::to_string(tmpIndex - cur->_bill + remainMonth_ - tmpNewIndex);
 
                 Result = ODWayM::Instance()->AddModel(newCur);
                 if (Result)
@@ -588,7 +596,7 @@ void ODPGoblin::GetGnomeBillList(StringList &list_, const std::string &gnome_)
 
     if (cur && cur->_creditLimits)
     {
-        std::for_each(cur->_futureBillList.cbegin(), cur->_futureBillList.cend(), [&tmpList, &tmpStr, &curTm](const int &x){
+        std::for_each(cur->_futureBillList.cbegin(), cur->_futureBillList.cend(), [&tmpList, &tmpStr, &curTm, &tmpInt](const int &x){
             curTm.tm_mon++;
             mktime(&curTm);
             tmpStr = std::to_string(curTm.tm_year - 100) + "-" + std::to_string(curTm.tm_mon + 1) + ": ";
@@ -596,11 +604,21 @@ void ODPGoblin::GetGnomeBillList(StringList &list_, const std::string &gnome_)
             if (x)
             {
                 tmpStr.insert(tmpStr.end() - 2, '.');
+                tmpInt = 0;
+            }
+            else
+            {
+                tmpInt++;
             }
             tmpList.insert(tmpList.begin(), tmpStr);
         });
+        if (tmpInt)
+        {
+            tmpList.erase(tmpList.begin(), tmpList.begin() + tmpInt - 1);
+        }
         time(&curTime);
         curTm = *localtime(&curTime);
+        tmpInt = 0;
         std::for_each(cur->_billList.cbegin(), cur->_billList.cend(), [&tmpList, &tmpStr, &curTm, &tmpInt](const int &x){
             tmpStr = std::to_string(curTm.tm_year - 100) + "-" + std::to_string(curTm.tm_mon + 1) + ": ";
             tmpStr += std::to_string(x);
@@ -784,7 +802,8 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                  cur->_state == ODMGoblinCoin::GoblinState::InstallBillSplit ||
                  cur->_state == ODMGoblinCoin::GoblinState::InstallPayReverse ||
                  cur->_state == ODMGoblinCoin::GoblinState::PrePaybackInstall ||
-                 cur->_state == ODMGoblinCoin::GoblinState::PrePaybackInstallReverse)
+                 cur->_state == ODMGoblinCoin::GoblinState::PrePaybackInstallReverse ||
+                 cur->_state == ODMGoblinCoin::GoblinState::InstallWithdrawReverse)
         {
             if (cur->_state == ODMGoblinCoin::GoblinState::InstallPay ||
                     cur->_state == ODMGoblinCoin::GoblinState::InstallWithdraw ||
@@ -852,7 +871,8 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
 
                         // reverse
                         if (cur->_state == ODMGoblinCoin::GoblinState::InstallPayReverse ||
-                                cur->_state == ODMGoblinCoin::GoblinState::PrePaybackInstallReverse)
+                                cur->_state == ODMGoblinCoin::GoblinState::PrePaybackInstallReverse ||
+                                cur->_state == ODMGoblinCoin::GoblinState::InstallWithdrawReverse)
                         {
                             if (tmpEndIndex != -1)
                             {
