@@ -95,6 +95,9 @@ public:
     void GetGnomeList(StringList &list_);
     void GetGnomeNameByIndex(const int &index_, std::string &name_);
 
+    // todo not clear
+    void GetGnomeBillList(StringList &list_, const std::string &gnome_);
+
 public:
     //
     void GetTotalDescription(std::string &str_);

@@ -180,6 +180,8 @@ void ODPGoblin::GetCoinList(StringList &list_, const std::string &goldType_)
             list_[dayTmpIndex] = tmpStr;
         }
     });
+    // todo
+    GetGnomeBillList(list_, goldType_);
 }
 
 bool ODPGoblin::DelCoin(const int &index_)
@@ -509,6 +511,32 @@ void ODPGoblin::GetGnomeNameByIndex(const int &index_, std::string &name_)
     }
 }
 
+void ODPGoblin::GetGnomeBillList(StringList &list_, const std::string &gnome_)
+{
+    OneGnomePtr cur = _Impl->_expandData._gnomeMap[gnome_];
+    std::string tmpStr = "";
+
+    struct tm curTm;
+    time_t curTime;
+    time(&curTime);
+    curTm = *localtime(&curTime);
+
+    if (cur && cur->_creditLimits)
+    {
+        std::for_each(cur->_billList.cbegin(), cur->_billList.cend(), [&list_, &tmpStr, &curTm](const int &x){
+            tmpStr = std::to_string(curTm.tm_year - 100) + "-" + std::to_string(curTm.tm_mon + 1) + ": ";
+            tmpStr += std::to_string(x);
+            if (x)
+            {
+                tmpStr.insert(tmpStr.end() - 2, '.');
+            }
+            list_.push_back(tmpStr);
+            curTm.tm_mon--;
+            mktime(&curTm);
+        });
+    }
+}
+
 void ODPGoblin::GetTotalDescription(std::string &str_)
 {
     if (_Impl->_expandData._totalDescription.empty())
@@ -677,7 +705,7 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                         }
                         gnome->_billList[tmpIndex] += cur->_revokeId;
                         --tmpIndex;
-                        for (; tmpIndex >= 0; --tmpIndex)
+                        for (int i = 1; tmpIndex >= 0 && i < cur->_bill; --tmpIndex, ++i)
                         {
                             gnome->_billList[tmpIndex] += cur->_countSecond;
                         }
@@ -706,14 +734,14 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                         gnome->_billList[tmpIndex + 1] -= cur->_count;
                         gnome->_billList[tmpIndex] += cur->_revokeId;
                         --tmpIndex;
-                        for (; tmpIndex >= 0; --tmpIndex)
+                        for (int i = 1; tmpIndex >= 0 && i < cur->_bill; --tmpIndex, ++i)
                         {
                             gnome->_billList[tmpIndex] += cur->_countSecond;
                         }
                     }
                 }
                 // todo
-//                gnome->_balance -= tmpInt;
+                //                gnome->_balance -= tmpInt;
             }
         }
         // NormalTransit
