@@ -28,6 +28,7 @@ class ODPGoblin
         int _billDates;
         int _dueDay;
         std::vector<int> _billList;
+        std::vector<int> _futureBillList;
     };
     typedef std::shared_ptr<OneGnome> OneGnomePtr;
 

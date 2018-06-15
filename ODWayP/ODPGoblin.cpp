@@ -652,6 +652,7 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
     OneGoblinCoinPtr tmpCoinPtr = NULL;
     int tmpIndex = -1;
     int tmpInt = 0;
+
     ODPGoblin::OneGnomePtr gnome = NULL;
     if (cur)
     {
@@ -689,41 +690,8 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
         }
         // Installment pay
         else if (cur->_state == ODMGoblinCoin::GoblinState::InstallPay ||
-                 cur->_state == ODMGoblinCoin::GoblinState::InstallWithdraw)
-        {
-            if (gnome = _gnomeMap[cur->_goldFrom])
-            {
-                // CreditPay
-                if (gnome->_creditLimits)
-                {
-                    // total pay     // revokeId is first month, countSecond are others
-                    tmpInt = cur->_countSecond * (cur->_bill - 1) + cur->_revokeId;
-
-                    if (ODTimeUtil::CalcuteBillList(cur->_id, gnome->_billDates, tmpIndex))
-                    {
-                        while (gnome->_billList.size() <= tmpIndex)
-                        {
-                            gnome->_billList.push_back(0);
-                        }
-                        gnome->_billList[tmpIndex] += cur->_revokeId;
-                        --tmpIndex;
-                        for (int i = 1; tmpIndex >= 0 && i < cur->_bill; --tmpIndex, ++i)
-                        {
-                            gnome->_billList[tmpIndex] += cur->_countSecond;
-                        }
-                    }
-                }
-                gnome->_balance -= tmpInt;
-
-                // Install Withdraw
-                if (cur->_state == ODMGoblinCoin::GoblinState::InstallWithdraw && _gnomeMap[cur->_classify])
-                {
-                    _gnomeMap[cur->_classify]->_balance += cur->_count;
-                }
-            }
-        }
-        // bill split
-        else if (cur->_state == ODMGoblinCoin::GoblinState::InstallBillSplit)
+                 cur->_state == ODMGoblinCoin::GoblinState::InstallWithdraw ||
+                 cur->_state == ODMGoblinCoin::GoblinState::InstallBillSplit)
         {
             if (gnome = _gnomeMap[cur->_goldFrom])
             {
@@ -739,17 +707,35 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                         {
                             gnome->_billList.push_back(0);
                         }
-                        gnome->_billList[tmpIndex + 1] -= cur->_count;
+
+                        if (cur->_state == ODMGoblinCoin::GoblinState::InstallBillSplit)
+                        {
+                            gnome->_billList[tmpIndex + 1] -= cur->_count;
+                        }
+
+                        // generate first bill
                         gnome->_billList[tmpIndex] += cur->_revokeId;
                         --tmpIndex;
-                        for (int i = 1; tmpIndex >= 0 && i < cur->_bill; --tmpIndex, ++i)
+
+                        // generate others bill list
+                        int i = 1;
+                        for (; tmpIndex >= 0 && i < cur->_bill; --tmpIndex, ++i)
                         {
                             gnome->_billList[tmpIndex] += cur->_countSecond;
                         }
                     }
                 }
-                // todo
-                //                gnome->_balance -= tmpInt;
+
+                // Install Withdraw
+                if (cur->_state == ODMGoblinCoin::GoblinState::InstallWithdraw && _gnomeMap[cur->_classify])
+                {
+                    _gnomeMap[cur->_classify]->_balance += cur->_count;
+                }
+
+                if (cur->_state != ODMGoblinCoin::GoblinState::InstallBillSplit)
+                {
+                    gnome->_balance -= tmpInt;
+                }
             }
         }
         // NormalTransit
@@ -763,12 +749,18 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                     // repay credit
                     if (ODTimeUtil::CalcuteBillList(cur->_id, gnome->_billDates, tmpIndex))
                     {
-                        while (gnome->_billList.size() <= tmpIndex + 1 ||
-                               gnome->_billList.size() <= tmpIndex + 1 + cur->_bill)
+                        while (gnome->_billList.size() <= tmpIndex + 1)
                         {
                             gnome->_billList.push_back(0);
                         }
-                        if (cur->_bill >= -1)
+                        if (tmpIndex + 1 + cur->_bill > 0)
+                        {
+                            while (gnome->_billList.size() <= tmpIndex + 1 + cur->_bill)
+                            {
+                                gnome->_billList.push_back(0);
+                            }
+                        }
+                        if (tmpIndex + 1 + cur->_bill >= 0)
                         {
                             gnome->_billList[tmpIndex + 1 + cur->_bill] -= cur->_count + cur->_countSecond;
                         }
