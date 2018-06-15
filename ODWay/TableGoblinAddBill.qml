@@ -31,13 +31,13 @@ Rectangle {
                             dateTime.year, dateTime.month, dateTime.day,
                             dateTime.hour, dateTime.minute, dateTime.second, dateTime.customTime,
                             goldFrom, classify, kindFirst, kindSecond, goldCount,
-                            monthSpinBox.value, actualTotalSpinBox.value, content.text))
+                            monthSpinBox.value, firstMonthSpinBox.value, othersMonthSpinBox.value, content.text))
                 {
                     console.log("addBil success")
-                    actualTotalSpinBox.value = 0
                     content.text = ""
                     monthSpinBox.clear()
-                    actualTotalSpinBox.clear()
+                    firstMonthSpinBox.clear()
+                    othersMonthSpinBox.clear()
                     rootTableGoblin.currentIndex = 0
                 }
             }
@@ -61,13 +61,23 @@ Rectangle {
         }
 
         RowSpinBox {
-            id: actualTotalSpinBox
+            id: firstMonthSpinBox
             width: parent.width
             height: 60
 
             boxDecimals: 2
 
-            preText: "ActualTotal: "
+            preText: "FirstMonth: "
+        }
+
+        RowSpinBox {
+            id: othersMonthSpinBox
+            width: parent.width
+            height: 60
+
+            boxDecimals: 2
+
+            preText: "OthersMonth: "
         }
 
         Rectangle {

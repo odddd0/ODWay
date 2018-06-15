@@ -273,12 +273,12 @@ bool ODPGoblin::GetEditCoinText(std::string &str_, bool &revoke_, int &year_, in
                 {
                     ODTimeUtil::CalcuteBillList(cur->_id, _Impl->_expandData._gnomeMap[cur->_goldFrom]->_billDates, tmpIndex);
                 }
-                str_ += std::to_string(cur->_bill - tmpIndex - 1) + " x " + std::to_string(cur->_countSecond / cur->_bill);
+                str_ += std::to_string(cur->_bill - tmpIndex - 1) + " x " + std::to_string(cur->_countSecond);
                 if (cur->_countSecond / cur->_bill)
                 {
                     str_.insert(str_.end() - 2, '.');
                 }
-                str_ += " = " + std::to_string((cur->_countSecond / cur->_bill) * (cur->_bill - tmpIndex - 1));
+                str_ += " = " + std::to_string((cur->_countSecond) * (cur->_bill - tmpIndex - 1));
                 if (true)
                 {
                     str_.insert(str_.end() - 2, '.');
@@ -653,8 +653,8 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                 // CreditPay
                 if (gnome->_creditLimits)
                 {
-                    // per month
-                    tmpInt = cur->_countSecond / cur->_bill;
+                    // total pay     // revokeId is first month, countSecond are others
+                    tmpInt = cur->_countSecond * (cur->_bill - 1) + cur->_revokeId;
 
                     if (ODTimeUtil::CalcuteBillList(cur->_id, gnome->_billDates, tmpIndex))
                     {
@@ -662,13 +662,15 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                         {
                             gnome->_billList.push_back(0);
                         }
+                        gnome->_billList[tmpIndex] += cur->_revokeId;
+                        --tmpIndex;
                         for (; tmpIndex >= 0; --tmpIndex)
                         {
-                            gnome->_billList[tmpIndex] += tmpInt;
+                            gnome->_billList[tmpIndex] += cur->_countSecond;
                         }
                     }
                 }
-                gnome->_balance -= cur->_countSecond;
+                gnome->_balance -= tmpInt;
             }
         }
         // NormalTransit

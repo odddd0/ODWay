@@ -68,7 +68,8 @@ public slots:
             const QString &kindSecond_,
             const double &count_,
             const int &billMonth_,
-            const double &totalCount_,
+            const double &firstMonthCount_,
+            const double &othersMonthCount_,
             const QString &content_);
 
     QStringList getCoinList();

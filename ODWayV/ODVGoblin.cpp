@@ -142,7 +142,8 @@ bool ODVGoblin::addBill(
         const QString &kindSecond_,
         const double &count_,
         const int &billMonth_,
-        const double &totalCount_,
+        const double &firstMonthCount_,
+        const double &othersMonthCount_,
         const QString &content_)
 {
     bool Result = false;
@@ -155,7 +156,8 @@ bool ODVGoblin::addBill(
         tmpPtr->_kindFirst = kindFirst_.toStdString();
         tmpPtr->_kindSecond = kindSecond_.toStdString();
         tmpPtr->_count = std::stoi(std::to_string(count_ * 100));
-        tmpPtr->_countSecond = std::stoi(std::to_string(totalCount_ * 100));
+        tmpPtr->_countSecond = std::stoi(std::to_string(othersMonthCount_ * 100));
+        tmpPtr->_revokeId = std::stoi(std::to_string(firstMonthCount_ * 100));
         tmpPtr->_bill = billMonth_;
         tmpPtr->_content = content_.toStdString();
         if (customTime_)
