@@ -33,12 +33,13 @@ Rectangle {
                             dateTime.hour, dateTime.minute, dateTime.second, dateTime.customTime,
                             goldFrom, classify, kindFirst, kindSecond, goldCount,
                             monthSpinBox.value, firstMonthSpinBox.value, othersMonthSpinBox.value, content.text,
-                            billSplitCheckBox.checkedState, withdrawCheckbox.checkedState, withDrawGoldTo.currentText))
+                            billSplitCheckBox.checkedState, withdrawCheckbox.checkedState, reverseCheckBox.checkedState,
+                            withDrawGoldTo.currentText))
                 {
                     console.log("addBil success")
                     content.text = ""
                     monthSpinBox.clear()
-                    firstMonthSpinBox.clear()
+                    firstMonthSpinBox.value = 0
                     othersMonthSpinBox.clear()
                     rootTableGoblin.currentIndex = 0
                 }
@@ -62,14 +63,44 @@ Rectangle {
             preText: "Month: "
         }
 
-        RowSpinBox {
-            id: firstMonthSpinBox
+        Rectangle {
             width: parent.width
             height: 60
 
-            boxDecimals: 2
+            Text {
+                id: firstMonthText
+                text: "FirstMonth"
+            }
+            CheckBox {
+                id: reverseCheckBox
+                width: 40
+                height: parent.height
+                anchors.right: firstMonthSpinBox.left
 
-            preText: "FirstMonth: "
+                checked: false
+                onCheckedChanged: {
+                    if (checked)
+                    {
+                        firstMonthText.text = "EndMonth"
+                    }
+                    else
+                    {
+                        firstMonthText.text = "FirstMonth"
+                    }
+                }
+            }
+            SpinBox {
+                id: firstMonthSpinBox
+                width: parent.width / 2 - 10
+                height: parent.height
+                anchors.right: parent.right
+                anchors.rightMargin: 10
+
+                minimumValue: 0
+                maximumValue: 100000000
+
+                decimals: 2
+            }
         }
 
         RowSpinBox {

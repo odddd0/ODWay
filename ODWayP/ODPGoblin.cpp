@@ -131,7 +131,8 @@ void ODPGoblin::GetCoinList(StringList &list_, const std::string &goldType_)
                     {
                         tmpStr += "-revokex-: ";
                     }
-                    else if (y->_state == static_cast<int>(ODMGoblinCoin::GoblinState::InstallPay))
+                    else if (y->_state == static_cast<int>(ODMGoblinCoin::GoblinState::InstallPay) ||
+                             y->_state == static_cast<int>(ODMGoblinCoin::GoblinState::InstallPayReverse))
                     {
                         // instasll pay
                         tmpStr += "-install-: ";
@@ -262,7 +263,8 @@ bool ODPGoblin::GetEditCoinText(std::string &str_, bool &revoke_, int &year_, in
             ODMGoblinCoinPtr cur = std::static_pointer_cast<ODMGoblinCoin>(tmpPtr);
             if (cur->_state == ODMGoblinCoin::GoblinState::InstallPay ||
                     cur->_state == ODMGoblinCoin::GoblinState::InstallBillSplit ||
-                    cur->_state == ODMGoblinCoin::GoblinState::InstallWithdraw)
+                    cur->_state == ODMGoblinCoin::GoblinState::InstallWithdraw ||
+                    cur->_state == ODMGoblinCoin::GoblinState::InstallPayReverse)
             {
                 // install pay edit coin
                 if (cur->_revokeId)
@@ -284,15 +286,22 @@ bool ODPGoblin::GetEditCoinText(std::string &str_, bool &revoke_, int &year_, in
                 {
                     ODTimeUtil::CalcuteBillList(cur->_id, _Impl->_expandData._gnomeMap[cur->_goldFrom]->_billDates, tmpIndex);
                 }
-                str_ += std::to_string(cur->_bill - tmpIndex - 1) + " x " + std::to_string(cur->_countSecond);
-                if (cur->_countSecond / cur->_bill)
+                if (cur->_bill - tmpIndex - 1 > 0)
                 {
-                    str_.insert(str_.end() - 2, '.');
+                    str_ += std::to_string(cur->_bill - tmpIndex - 1) + " x " + std::to_string(cur->_countSecond);
+                    if (cur->_countSecond / cur->_bill)
+                    {
+                        str_.insert(str_.end() - 2, '.');
+                    }
+                    str_ += " = " + std::to_string((cur->_countSecond) * (cur->_bill - tmpIndex - 1));
+                    if (true)
+                    {
+                        str_.insert(str_.end() - 2, '.');
+                    }
                 }
-                str_ += " = " + std::to_string((cur->_countSecond) * (cur->_bill - tmpIndex - 1));
-                if (true)
+                else
                 {
-                    str_.insert(str_.end() - 2, '.');
+                    str_ += " End";
                 }
                 str_ += "\nTotal: " + std::to_string((cur->_countSecond * (cur->_bill - 1)) + cur->_revokeId);
                 if (true)
@@ -345,29 +354,29 @@ bool ODPGoblin::GetEditCoinText(std::string &str_, bool &revoke_, int &year_, in
     return Result;
 }
 
-bool ODPGoblin::SaveEditCoin(const bool &revoke_, const int &year_, const int &month_, const int &day_, const int &hour_, const int &minute_, const int &second_, const int &countSecond_)
+bool ODPGoblin::SaveEditCoin(const bool &revoke_, const int &year_, const int &month_, const int &day_, const int &hour_, const int &minute_, const int &second_, const int &countSecond_, const std::string &class_)
 {
     bool Result = false;
     ODMGoblinCoinPtr cur = std::static_pointer_cast<ODMGoblinCoin>(_Impl->_expandData._editCoinPtr);
     if (cur)
     {
-        if (cur->_state != ODMGoblinCoin::GoblinState::NormalTransit)
+        struct tm tmpTm;
+        tmpTm.tm_year = year_ - 1900;
+        tmpTm.tm_mon = month_ - 1;
+        tmpTm.tm_mday = day_;
+        tmpTm.tm_hour = hour_;
+        tmpTm.tm_min = minute_;
+        tmpTm.tm_sec = second_;
+        tmpTm.tm_isdst = 0;
+        time_t lt = mktime(&tmpTm);
+
+        if (cur->_state == ODMGoblinCoin::GoblinState::SimplePay)
         {
             cur->_state = ODMGoblinCoin::GoblinState::SimplePay;
             if (revoke_)
             {
                 cur->_state = ODMGoblinCoin::GoblinState::PayRevoke;
                 cur->_countSecond = countSecond_;
-
-                struct tm tmpTm;
-                tmpTm.tm_year = year_ - 1900;
-                tmpTm.tm_mon = month_ - 1;
-                tmpTm.tm_mday = day_;
-                tmpTm.tm_hour = hour_;
-                tmpTm.tm_min = minute_;
-                tmpTm.tm_sec = second_;
-                tmpTm.tm_isdst = 0;
-                time_t lt = mktime(&tmpTm);
                 cur->_revokeId = lt;
             }
             Result = ODWayM::Instance()->UpdateModel(cur);
@@ -375,6 +384,35 @@ bool ODPGoblin::SaveEditCoin(const bool &revoke_, const int &year_, const int &m
             {
                 _Impl->ExpandData();
             }
+        }
+        else if (cur->_state == ODMGoblinCoin::GoblinState::InstallBillSplit ||
+                 cur->_state == ODMGoblinCoin::GoblinState::InstallPay ||
+                 cur->_state == ODMGoblinCoin::GoblinState::InstallWithdraw)
+        {
+//            ODPGoblin::OneGnomePtr gnome = _Impl->_expandData._gnomeMap[cur->_goldFrom];
+//            if (gnome && gnome->_creditLimits)
+//            {
+//                ODMGoblinCoinPtr newCur = std::make_shared<ODMGoblinCoin>();
+//                newCur->_id = lt;
+//                newCur->_state = ODMGoblinCoin::GoblinState::PrePaybackInstall;
+//                newCur->_goldFrom = class_;
+//                newCur->_classify = cur->_goldFrom;
+//                newCur->_count = cur->_count;
+//                newCur->_countSecond = cur->_countSecond;
+//                newCur->_revokeId = cur->_revokeId;
+
+//                newCur->_bill = ?;
+
+//                if (ODTimeUtil::CalcuteBillList(cur->_id, gnome->_billDates, tmpIndex))
+//                {
+//                    while (gnome->_billList.size() <= tmpIndex)
+//                    {
+//                        gnome->_billList.push_back(0);
+//                    }
+//                    gnome->_billList[tmpIndex] += tmpInt;
+//                }
+
+//            }
         }
     }
     return Result;
@@ -678,6 +716,8 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
     OneGoblinCoinPtr tmpCoinPtr = NULL;
     int tmpIndex = -1;
     int tmpInt = 0;
+    int tmpFirstIndex = -1;
+    int tmpEndIndex = -1;
 
     ODPGoblin::OneGnomePtr gnome = NULL;
     if (cur)
@@ -717,7 +757,8 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
         // Installment pay
         else if (cur->_state == ODMGoblinCoin::GoblinState::InstallPay ||
                  cur->_state == ODMGoblinCoin::GoblinState::InstallWithdraw ||
-                 cur->_state == ODMGoblinCoin::GoblinState::InstallBillSplit)
+                 cur->_state == ODMGoblinCoin::GoblinState::InstallBillSplit ||
+                 cur->_state == ODMGoblinCoin::GoblinState::InstallPayReverse)
         {
             if (gnome = _gnomeMap[cur->_goldFrom])
             {
@@ -741,6 +782,7 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
 
                         // generate first bill
                         gnome->_billList[tmpIndex] += cur->_revokeId;
+                        tmpFirstIndex = tmpIndex;
                         --tmpIndex;
 
                         // generate others bill list
@@ -758,6 +800,22 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                                 gnome->_futureBillList.push_back(0);
                             }
                             gnome->_futureBillList[j] += cur->_countSecond;
+                            tmpEndIndex = j;
+                        }
+                        if (cur->_state == ODMGoblinCoin::GoblinState::InstallPayReverse)
+                        {
+                            if (tmpEndIndex != -1)
+                            {
+                                tmpIndex = gnome->_futureBillList[tmpEndIndex];
+                                gnome->_futureBillList[tmpEndIndex] = gnome->_billList[tmpFirstIndex];
+                                gnome->_billList[tmpFirstIndex] = tmpIndex;
+                            }
+                            else
+                            {
+                                tmpEndIndex = gnome->_billList[tmpIndex];
+                                gnome->_billList[tmpIndex] = gnome->_billList[tmpFirstIndex];
+                                gnome->_billList[tmpFirstIndex] = tmpEndIndex;
+                            }
                         }
                     }
                 }
@@ -836,7 +894,8 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
         if (cur->_state == ODMGoblinCoin::GoblinState::SimplePay ||
                 cur->_state == ODMGoblinCoin::GoblinState::PayRevoke ||
                 cur->_state == ODMGoblinCoin::GoblinState::InstallPay ||
-                cur->_state == ODMGoblinCoin::GoblinState::InstallBillSplit)
+                cur->_state == ODMGoblinCoin::GoblinState::InstallBillSplit ||
+                cur->_state == ODMGoblinCoin::GoblinState::InstallPayReverse)
         {
             tmpCoinPtr->_classify = cur->_classify;
             tmpCoinPtr->_kindFirst = cur->_kindFirst;

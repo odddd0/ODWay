@@ -152,6 +152,7 @@ bool ODVGoblin::addBill(
         const QString &content_,
         const bool &isBillSplit_,
         const bool &withDraw_,
+        const bool &isReverse_,
         const QString &withDrawGoldTo_)
 {
     bool Result = false;
@@ -165,6 +166,10 @@ bool ODVGoblin::addBill(
         else if (withDraw_)
         {
             tmpPtr->_state = ODMGoblinCoin::GoblinState::InstallWithdraw;
+        }
+        else if (isReverse_)
+        {
+            tmpPtr->_state = ODMGoblinCoin::GoblinState::InstallPayReverse;
         }
         else
         {
@@ -241,9 +246,18 @@ bool ODVGoblin::setEditCoin(const int &index_)
     return ODPGoblin::Instance()->SetEditCoin(index_);
 }
 
-bool ODVGoblin::saveEditCoin(const bool &revoke_, const int &year_, const int &month_, const int &day_, const int &hour_, const int &minute_, const int &second_, const double &countSecond_)
+bool ODVGoblin::saveEditCoin(
+        const bool &revoke_,
+        const int &year_,
+        const int &month_,
+        const int &day_,
+        const int &hour_,
+        const int &minute_,
+        const int &second_,
+        const double &countSecond_,
+        const QString &class_)
 {
-    return ODPGoblin::Instance()->SaveEditCoin(revoke_, year_, month_, day_, hour_, minute_, second_, std::stoi(std::to_string(countSecond_ * 100)));
+    return ODPGoblin::Instance()->SaveEditCoin(revoke_, year_, month_, day_, hour_, minute_, second_, std::stoi(std::to_string(countSecond_ * 100)), class_.toStdString());
 }
 
 QString ODVGoblin::getCurGnomeStr(const QString &defaultStr)

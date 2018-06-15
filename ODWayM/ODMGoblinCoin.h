@@ -20,10 +20,29 @@ struct ODMGoblinCoin : public ODMBase
     {
         SimplePay = 0,
         NormalTransit = 1,
-        PayRevoke = 2 ,
-        InstallPay = 3 ,
-        InstallBillSplit = 4 ,
-        InstallWithdraw = 5
+        PayRevoke = 2,
+        InstallPay = 3,
+        InstallBillSplit = 4,
+        InstallWithdraw = 5,
+        PrePaybackInstall = 6,
+        InstallPayReverse = 7
+
+//        // pay or transit
+//        isNull = 0,
+//        isPay = 1 << 0,
+//        isInstall = 1 << 1,
+//        isStage = 1 << 2,
+//        isReverse = 1 << 3,
+//        isRevoke = 1 << 4
+
+//        // NormalTransit            00000
+//        // InstallWithdraw          00010
+//        // PrePaybackInstall        00110
+//        // SimplePay                00001
+//        // PayRevoke                10001
+//        // InstallPay               00011
+//        // InstallPayReverse        01011
+//        // InstallBillSplit         00111
     };
 public:
     ODMGoblinCoin();

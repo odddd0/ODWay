@@ -76,6 +76,7 @@ public slots:
             const QString &content_,
             const bool &isBillSplit_,
             const bool &withDraw_,
+            const bool &isReverse_,
             const QString &withDrawGoldTo_);
 
     QStringList getCoinList();
@@ -83,7 +84,16 @@ public slots:
     bool delCoin();
     bool revokeCoin(const int &index_);
     bool setEditCoin(const int &index_);
-    bool saveEditCoin(const bool &revoke_, const int &year_, const int &month_, const int &day_, const int &hour_, const int &minute_, const int &second_, const double &countSecond_);
+    bool saveEditCoin(
+            const bool &revoke_,
+            const int &year_,
+            const int &month_,
+            const int &day_,
+            const int &hour_,
+            const int &minute_,
+            const int &second_,
+            const double &countSecond_,
+            const QString &class_);
     QString getCurGnomeStr(const QString &defaultStr = "");
 
 public slots:

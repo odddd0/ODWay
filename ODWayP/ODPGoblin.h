@@ -86,7 +86,7 @@ public:
     bool SetEditCoin(const int &index_);
     bool DelEditCoin();
     bool GetEditCoinText(std::string &str_, bool &revoke_, int &year_, int &month_, int &day_, int &hour_, int &minute_, int &second_, int &count_, int &countSecond_);
-    bool SaveEditCoin(const bool &revoke_, const int &year_, const int &month_, const int &day_, const int &hour_, const int &minute_, const int &second_, const int &countSecond_);
+    bool SaveEditCoin(const bool &revoke_, const int &year_, const int &month_, const int &day_, const int &hour_, const int &minute_, const int &second_, const int &countSecond_, const std::string &class_);
 
 public:
     // Gnome
