@@ -514,6 +514,7 @@ void ODPGoblin::GetGnomeNameByIndex(const int &index_, std::string &name_)
 
 void ODPGoblin::GetGnomeBillList(StringList &list_, const std::string &gnome_)
 {
+    StringList tmpList;
     OneGnomePtr cur = _Impl->_expandData._gnomeMap[gnome_];
     std::string tmpStr = "";
 
@@ -522,19 +523,44 @@ void ODPGoblin::GetGnomeBillList(StringList &list_, const std::string &gnome_)
     time(&curTime);
     curTm = *localtime(&curTime);
 
+    int tmpInt = 0;
+
     if (cur && cur->_creditLimits)
     {
-        std::for_each(cur->_billList.cbegin(), cur->_billList.cend(), [&list_, &tmpStr, &curTm](const int &x){
+        std::for_each(cur->_futureBillList.cbegin(), cur->_futureBillList.cend(), [&tmpList, &tmpStr, &curTm](const int &x){
+            curTm.tm_mon++;
+            mktime(&curTm);
             tmpStr = std::to_string(curTm.tm_year - 100) + "-" + std::to_string(curTm.tm_mon + 1) + ": ";
             tmpStr += std::to_string(x);
             if (x)
             {
                 tmpStr.insert(tmpStr.end() - 2, '.');
             }
-            list_.push_back(tmpStr);
+            tmpList.insert(tmpList.begin(), tmpStr);
+        });
+        time(&curTime);
+        curTm = *localtime(&curTime);
+        std::for_each(cur->_billList.cbegin(), cur->_billList.cend(), [&tmpList, &tmpStr, &curTm, &tmpInt](const int &x){
+            tmpStr = std::to_string(curTm.tm_year - 100) + "-" + std::to_string(curTm.tm_mon + 1) + ": ";
+            tmpStr += std::to_string(x);
+            if (x)
+            {
+                tmpInt = 0;
+                tmpStr.insert(tmpStr.end() - 2, '.');
+            }
+            else
+            {
+                tmpInt++;
+            }
+            tmpList.push_back(tmpStr);
             curTm.tm_mon--;
             mktime(&curTm);
         });
+        if (tmpInt)
+        {
+            tmpList.erase(tmpList.end() - tmpInt, tmpList.end());
+        }
+        list_.insert(list_.end(), tmpList.begin(), tmpList.end());
     }
 }
 
@@ -719,9 +745,19 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
 
                         // generate others bill list
                         int i = 1;
+                        // before bill
                         for (; tmpIndex >= 0 && i < cur->_bill; --tmpIndex, ++i)
                         {
                             gnome->_billList[tmpIndex] += cur->_countSecond;
+                        }
+                        // future bill
+                        for (int j = 0; i < cur->_bill; ++i, ++j)
+                        {
+                            while (gnome->_futureBillList.size() <= j)
+                            {
+                                gnome->_futureBillList.push_back(0);
+                            }
+                            gnome->_futureBillList[j] += cur->_countSecond;
                         }
                     }
                 }
@@ -732,7 +768,11 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                     _gnomeMap[cur->_classify]->_balance += cur->_count;
                 }
 
-                if (cur->_state != ODMGoblinCoin::GoblinState::InstallBillSplit)
+                if (cur->_state == ODMGoblinCoin::GoblinState::InstallBillSplit)
+                {
+                    gnome->_balance -= tmpInt - cur->_count;
+                }
+                else
                 {
                     gnome->_balance -= tmpInt;
                 }
