@@ -105,6 +105,6 @@ void ODMGnome::GetSqlInsert(std::string &sql_)
             std::to_string(_creditLimits) + "','" +
             std::to_string(_billDates) + "','" +
             std::to_string(_dueDay) + "','" +
-            std::to_string(_gnomeType) + "','" +
-            std::to_string(_gnomeState) + "');";
+            std::to_string(static_cast<int>(_gnomeType)) + "','" +
+            std::to_string(static_cast<int>(_gnomeState)) + "');";
 }

@@ -91,7 +91,7 @@ void ODMGoblinCoin::GetSqlUpdate(std::string &sql_)
     GetSqlCreateTable(sql_);
     sql_ += "UPDATE GoblinCoinTable SET "
             "Id='" + std::to_string(_id) +
-            "',State='" + std::to_string(_state) +
+            "',State='" + std::to_string(static_cast<int>(_state)) +
             "',GoldFrom='" + _goldFrom +
             "',Bill='" + std::to_string(_bill) +
             "',Classify='" + _classify +
@@ -109,7 +109,7 @@ void ODMGoblinCoin::GetSqlInsert(std::string &sql_)
     GetSqlCreateTable(sql_);
     sql_ += "INSERT INTO GoblinCoinTable VALUES('" +
             std::to_string(_id) + "','" +
-            std::to_string(_state) + "','" +
+            std::to_string(static_cast<int>(_state)) + "','" +
             _goldFrom + "','" +
             std::to_string(_bill) + "','" +
             _classify + "','" +

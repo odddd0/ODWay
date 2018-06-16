@@ -7,6 +7,7 @@
 //====================================================================
 
 import QtQuick 2.0
+import QtQuick.Controls 1.4
 import ODVGoblin 1.0
 
 Rectangle {
@@ -23,7 +24,13 @@ Rectangle {
             if (bar.barHandle == "handleTableGoblinAddGnome" && bar.rightStr == "Add")
             {
                 // add Gnome
-                if (vvGoblinList.addGnome(gnomeName.text, gnomeCreditLimits.value, gnomeBillDates.value, gnomeDueDay.value))
+                if (vvGoblinList.addGnome(
+                            gnomeName.text,
+                            gnomeCreditLimits.value,
+                            gnomeBillDates.value,
+                            gnomeDueDay.value,
+                            gnomeTypeComboBox.currentIndex,
+                            gnomeStateComboBox.currentIndex))
                 {
                     bar.back()
                 }
@@ -81,6 +88,25 @@ Rectangle {
             max: 31
 
             preText: "DueDay: "
+        }
+        Row {
+            width: parent.width
+            height: 60
+            spacing: 10
+            ComboBox {
+                id: gnomeTypeComboBox
+                width: parent.width / 2 - 10
+                height: parent.height
+
+                model: ["USD", "RMB", "JPY", "EUR", "GBP", "RUPEE", "REAL", "HWAN", "RUBLE", "AUD", "TWD", "HKD"]
+            }
+            ComboBox {
+                id: gnomeStateComboBox
+                width: parent.width / 2 - 10
+                height: parent.height
+
+                model: ["Normal", "Hidden"]
+            }
         }
     }
 }

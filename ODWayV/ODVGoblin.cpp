@@ -359,7 +359,13 @@ QStringList ODVGoblin::getGnomeList()
     return Result;
 }
 
-bool ODVGoblin::addGnome(const QString &name_, const int &CreditLimits_, const int &BillDates_, const int &DueDay_)
+bool ODVGoblin::addGnome(
+        const QString &name_,
+        const int &CreditLimits_,
+        const int &BillDates_,
+        const int &DueDay_,
+        const int &GnomeType_,
+        const int &GnomeState_)
 {
     bool Result = false;
     if (!name_.isEmpty())
@@ -369,6 +375,8 @@ bool ODVGoblin::addGnome(const QString &name_, const int &CreditLimits_, const i
         tmpPtr->_creditLimits = CreditLimits_ * 100;
         tmpPtr->_billDates = BillDates_;
         tmpPtr->_dueDay = DueDay_;
+        tmpPtr->_gnomeType = static_cast<ODMGnome::GnomeType>(GnomeType_);
+        tmpPtr->_gnomeState = static_cast<ODMGnome::GnomeState>(GnomeState_);
 
         Result = ODPGoblin::Instance()->AddGoblin(tmpPtr);
         if (Result)

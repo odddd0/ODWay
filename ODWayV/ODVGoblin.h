@@ -114,7 +114,13 @@ public slots:
 public slots:
     // gnome
     QStringList getGnomeList();
-    bool addGnome(const QString &name_, const int &CreditLimits_, const int &BillDates_, const int &DueDay_);
+    bool addGnome(
+            const QString &name_,
+            const int &CreditLimits_,
+            const int &BillDates_,
+            const int &DueDay_,
+            const int &GnomeType_,
+            const int &GnomeState_);
     bool upGnome(const int &index_);
     void setGnomeIndex(const int &index_);
 
