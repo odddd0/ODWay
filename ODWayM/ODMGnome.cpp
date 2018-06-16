@@ -19,6 +19,7 @@ ODMGnome::ODMGnome()
     , _billDates(0)
     , _dueDay(0)
     , _gnomeType(ODMGnome::GnomeType::USD)
+    , _gnomeState(ODMGnome::GnomeState::Normal)
 {
 }
 
@@ -31,8 +32,9 @@ ODMGnome::ODMGnome(const StringList &stringList)
     , _billDates(0)
     , _dueDay(0)
     , _gnomeType(ODMGnome::GnomeType::USD)
+    , _gnomeState(ODMGnome::GnomeState::Normal)
 {
-    if (stringList.size() == 8)
+    if (stringList.size() == 9)
     {
         _preId = _id = std::stoi(stringList[0]);
         _name = stringList[1];
@@ -42,6 +44,7 @@ ODMGnome::ODMGnome(const StringList &stringList)
         _billDates = std::stoi(stringList[5]);
         _dueDay = std::stoi(stringList[6]);
         _gnomeType = static_cast<ODMGnome::GnomeType>(std::stoi(stringList[7]));
+        _gnomeState = static_cast<ODMGnome::GnomeState>(std::stoi(stringList[8]));
     }
 }
 
@@ -57,7 +60,8 @@ void ODMGnome::GetSqlCreateTable(std::string &sql_)
                "'CreditLimits' integer DEFAULT(0),"
                "'BillDates' integer DEFAULT(0),"
                "'DueDay' integer DEFAULT(0),"
-               "'GnomeType' integer DEFAULT(0));";
+               "'GnomeType' integer DEFAULT(0),"
+               "'State' integer DEFAULT(0));";
         _init = false;
     }
 }
@@ -85,7 +89,8 @@ void ODMGnome::GetSqlUpdate(std::string &sql_)
             "',CreditLimits='" + std::to_string(_creditLimits) +
             "',BillDates='" + std::to_string(_billDates) +
             "',DueDay='" + std::to_string(_dueDay) +
-            "',GnomeType='" + std::to_string(_gnomeType) +
+            "',GnomeType='" + std::to_string(static_cast<int>(_gnomeType)) +
+            "',State='" + std::to_string(static_cast<int>(_gnomeState)) +
             "' where Id='" + std::to_string(_preId) + "';";
 }
 
@@ -100,5 +105,6 @@ void ODMGnome::GetSqlInsert(std::string &sql_)
             std::to_string(_creditLimits) + "','" +
             std::to_string(_billDates) + "','" +
             std::to_string(_dueDay) + "','" +
-            std::to_string(_gnomeType) + "');";
+            std::to_string(_gnomeType) + "','" +
+            std::to_string(_gnomeState) + "');";
 }

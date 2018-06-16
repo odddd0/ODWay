@@ -32,6 +32,12 @@ struct ODMGnome : public ODMBase
         HKD = 11
     };
 
+    enum GnomeState
+    {
+        Normal = 0,
+        HidenInTotal = 1
+    };
+
 public:
     ODMGnome();
     ODMGnome(const StringList &stringList);
@@ -51,6 +57,7 @@ public:
     int _billDates;
     int _dueDay;
     GnomeType _gnomeType;
+    GnomeState _gnomeState;
 
 private:
     static bool _init;

@@ -487,22 +487,26 @@ void ODPGoblin::GetGnomeList(StringList &list_)
         cur = _Impl->_expandData._gnomeMap[x];
         tmpStr.clear();
 
-        tmpStr = x + "\n";
+        tmpStr = x;
         // credit
         if (cur->_creditLimits)
         {
-            if (x != "History")
+            if (cur->_gnomeState != ODMGnome::GnomeState::HidenInTotal)
             {
                 totalLastBill += cur->_billList[1];
             }
-            tmpStr += "LastBill:  " + std::to_string(cur->_billList[1]);
+            else
+            {
+                tmpStr += " (-)";
+            }
+            tmpStr += "\nLastBill:  " + std::to_string(cur->_billList[1]);
             if (cur->_billList[1])
             {
                 tmpStr.insert(tmpStr.end() - 2, '.');
             }
             tmpStr += "(" + std::to_string(cur->_billDates) + ")\n";
 
-            if (x != "History")
+            if (cur->_gnomeState != ODMGnome::GnomeState::HidenInTotal)
             {
                 totalCurrentBill += cur->_billList[0];
             }
@@ -519,11 +523,15 @@ void ODPGoblin::GetGnomeList(StringList &list_)
         }
         else
         {
-            if (x != "History")
+            if (cur->_gnomeState != ODMGnome::GnomeState::HidenInTotal)
             {
                 totalBalance += cur->_balance;
             }
-            tmpStr += "Balance:  " + std::to_string(cur->_balance);
+            else
+            {
+                tmpStr += " (-)";
+            }
+            tmpStr += "\nBalance:  " + std::to_string(cur->_balance);
             if (cur->_balance)
             {
                 tmpStr.insert(tmpStr.end() - 2, '.');
@@ -712,6 +720,7 @@ bool ODPGoblin::ExpandData::appendGnome(const ODMBasePtr &ptr_)
             _gnomeMap[cur->_name]->_dueDay = cur->_dueDay;
             _gnomeMap[cur->_name]->_id = cur->_id;
             _gnomeMap[cur->_name]->_gnomeType = static_cast<int>(cur->_gnomeType);
+            _gnomeMap[cur->_name]->_gnomeState = static_cast<int>(cur->_gnomeState);
         }
     }
     return Result;
@@ -737,6 +746,7 @@ bool ODPGoblin::ExpandData::chgGnome(const std::string &name1_, const std::strin
         gnomePtr1->_billDates = tmpPtr1->_billDates;
         gnomePtr1->_dueDay = tmpPtr1->_dueDay;
         gnomePtr1->_gnomeType = static_cast<ODMGnome::GnomeType>(tmpPtr1->_gnomeType);
+        gnomePtr1->_gnomeState = static_cast<ODMGnome::GnomeState>(tmpPtr1->_gnomeState);
 
         gnomePtr2->_preId = tmpPtr2->_id;
         gnomePtr2->_id = (tmpPtr2->_id + 122) * 12200;
@@ -745,6 +755,7 @@ bool ODPGoblin::ExpandData::chgGnome(const std::string &name1_, const std::strin
         gnomePtr2->_billDates = tmpPtr2->_billDates;
         gnomePtr2->_dueDay = tmpPtr2->_dueDay;
         gnomePtr2->_gnomeType = static_cast<ODMGnome::GnomeType>(tmpPtr2->_gnomeType);
+        gnomePtr2->_gnomeState = static_cast<ODMGnome::GnomeState>(tmpPtr2->_gnomeState);
 
         if (ODWayM::Instance()->UpdateModel(tmpList))
         {
@@ -1031,6 +1042,7 @@ ODPGoblin::OneGnome::OneGnome()
     _billDates = 1;
     _dueDay = 1;
     _gnomeType = 0;
+    _gnomeState = 0;
     _billList.push_back(0);
     _billList.push_back(0);
 }
