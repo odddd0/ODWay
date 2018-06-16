@@ -596,6 +596,10 @@ void ODPGoblin::GetGnomeBillList(StringList &list_, const std::string &gnome_)
 
     if (cur && cur->_creditLimits)
     {
+        if (curTm.tm_mday >= cur->_billDates);
+        {
+            curTm.tm_mon++;
+        }
         std::for_each(cur->_futureBillList.cbegin(), cur->_futureBillList.cend(), [&tmpList, &tmpStr, &curTm, &tmpInt](const int &x){
             curTm.tm_mon++;
             mktime(&curTm);
@@ -618,6 +622,11 @@ void ODPGoblin::GetGnomeBillList(StringList &list_, const std::string &gnome_)
         }
         time(&curTime);
         curTm = *localtime(&curTime);
+        if (curTm.tm_mday >= cur->_billDates);
+        {
+            curTm.tm_mon++;
+            mktime(&curTm);
+        }
         tmpInt = 0;
         std::for_each(cur->_billList.cbegin(), cur->_billList.cend(), [&tmpList, &tmpStr, &curTm, &tmpInt](const int &x){
             tmpStr = std::to_string(curTm.tm_year - 100) + "-" + std::to_string(curTm.tm_mon + 1) + ": ";
