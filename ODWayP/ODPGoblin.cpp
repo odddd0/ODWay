@@ -494,29 +494,29 @@ void ODPGoblin::GetGnomeList(StringList &list_)
             if (cur->_gnomeState != ODMGnome::GnomeState::HidenInTotal)
             {
                 totalLastBill += cur->_billList[1];
+                totalCurrentBill += cur->_billList[0];
             }
             else
             {
-                tmpStr += " (-)";
+                tmpStr = "--- " + tmpStr;
             }
-            tmpStr += "\nLastBill:  " + std::to_string(cur->_billList[1]);
+
+            tmpStr += "\n(" + std::to_string(cur->_billDates) + ")  ";
+
+            tmpStr += std::to_string(cur->_creditLimits + cur->_balance);
+            if (cur->_creditLimits + cur->_balance)
+            {
+                tmpStr.insert(tmpStr.end() - 2, '.');
+            }
+
+            tmpStr += " / " + std::to_string(cur->_billList[1]);
             if (cur->_billList[1])
             {
                 tmpStr.insert(tmpStr.end() - 2, '.');
             }
-            tmpStr += "(" + std::to_string(cur->_billDates) + ")\n";
 
-            if (cur->_gnomeState != ODMGnome::GnomeState::HidenInTotal)
-            {
-                totalCurrentBill += cur->_billList[0];
-            }
-            tmpStr += "CurrentBill:  " + std::to_string(cur->_billList[0]);
+            tmpStr += " / " + std::to_string(cur->_billList[0]);
             if (cur->_billList[0])
-            {
-                tmpStr.insert(tmpStr.end() - 2, '.');
-            }
-            tmpStr += "\nAvailableCredit:  " + std::to_string(cur->_creditLimits + cur->_balance);
-            if (cur->_creditLimits + cur->_balance)
             {
                 tmpStr.insert(tmpStr.end() - 2, '.');
             }
@@ -529,7 +529,7 @@ void ODPGoblin::GetGnomeList(StringList &list_)
             }
             else
             {
-                tmpStr += " (-)";
+                tmpStr = "--- " + tmpStr;
             }
             tmpStr += "\nBalance:  " + std::to_string(cur->_balance);
             if (cur->_balance)
@@ -538,7 +538,6 @@ void ODPGoblin::GetGnomeList(StringList &list_)
             }
         }
 
-        tmpStr += "\n";
         list_.push_back(tmpStr);
         _Impl->_expandData._lastGnomeNum.push_back(cur->_id);
     });
@@ -574,6 +573,12 @@ void ODPGoblin::GetGnomeList(StringList &list_)
 
     tmpStr += "\n";
     list_.insert(list_.begin(), tmpStr);
+
+    _Impl->_expandData._totalDescription = std::to_string(totalBalance - totalLastBill - totalCurrentBill);
+    if (totalBalance - totalLastBill - totalCurrentBill)
+    {
+        _Impl->_expandData._totalDescription.insert(_Impl->_expandData._totalDescription.end() - 2, '.');
+    }
 }
 
 void ODPGoblin::GetGnomeNameByIndex(const int &index_, std::string &name_)

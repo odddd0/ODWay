@@ -62,8 +62,15 @@ Rectangle {
         Rectangle {
             id: wrapper
             width: parent.width
-            height: 122
+            height: 55
             color: "transparent"
+
+            Component.onCompleted: {
+                if (index == 0)
+                {
+                    wrapper.height = 122
+                }
+            }
 
             Text {
                 id: wrapperText
