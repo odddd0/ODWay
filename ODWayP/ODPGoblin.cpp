@@ -736,6 +736,7 @@ bool ODPGoblin::ExpandData::chgGnome(const std::string &name1_, const std::strin
         gnomePtr1->_creditLimits = tmpPtr1->_creditLimits;
         gnomePtr1->_billDates = tmpPtr1->_billDates;
         gnomePtr1->_dueDay = tmpPtr1->_dueDay;
+        gnomePtr1->_gnomeType = static_cast<ODMGnome::GnomeType>(tmpPtr1->_gnomeType);
 
         gnomePtr2->_preId = tmpPtr2->_id;
         gnomePtr2->_id = (tmpPtr2->_id + 122) * 12200;
@@ -743,6 +744,7 @@ bool ODPGoblin::ExpandData::chgGnome(const std::string &name1_, const std::strin
         gnomePtr2->_creditLimits = tmpPtr2->_creditLimits;
         gnomePtr2->_billDates = tmpPtr2->_billDates;
         gnomePtr2->_dueDay = tmpPtr2->_dueDay;
+        gnomePtr2->_gnomeType = static_cast<ODMGnome::GnomeType>(tmpPtr2->_gnomeType);
 
         if (ODWayM::Instance()->UpdateModel(tmpList))
         {
@@ -818,7 +820,8 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
             if (cur->_state == ODMGoblinCoin::GoblinState::InstallPay ||
                     cur->_state == ODMGoblinCoin::GoblinState::InstallWithdraw ||
                     cur->_state == ODMGoblinCoin::GoblinState::InstallBillSplit ||
-                    cur->_state == ODMGoblinCoin::GoblinState::InstallPayReverse)
+                    cur->_state == ODMGoblinCoin::GoblinState::InstallPayReverse ||
+                    cur->_state == ODMGoblinCoin::GoblinState::InstallWithdrawReverse)
             {
                 gnome = _gnomeMap[cur->_goldFrom];
             }
@@ -906,7 +909,7 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                 if (cur->_state == ODMGoblinCoin::GoblinState::PrePaybackInstall ||
                         cur->_state == ODMGoblinCoin::GoblinState::PrePaybackInstallReverse)
                 {
-                    _gnomeMap[cur->_goldFrom]->_balance -= cur->_count;
+                    _gnomeMap[cur->_goldFrom]->_balance += cur->_count;
                 }
 
                 if (cur->_state == ODMGoblinCoin::GoblinState::InstallBillSplit)
