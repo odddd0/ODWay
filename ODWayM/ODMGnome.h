@@ -16,6 +16,22 @@
  */
 struct ODMGnome : public ODMBase
 {
+    enum GnomeType
+    {
+        USD = 0,
+        RMB = 1,
+        JPY = 2,
+        EUR = 3,
+        GBP = 4,
+        RUPEE = 5,
+        REAL = 6,
+        HWAN = 7,
+        RUBLE = 8,
+        AUD = 9,
+        TWD = 10,
+        HKD = 11
+    };
+
 public:
     ODMGnome();
     ODMGnome(const StringList &stringList);
@@ -34,6 +50,7 @@ public:
     int _creditLimits;
     int _billDates;
     int _dueDay;
+    GnomeType _gnomeType;
 
 private:
     static bool _init;

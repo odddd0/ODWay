@@ -27,6 +27,7 @@ class ODPGoblin
         int _creditLimits;
         int _billDates;
         int _dueDay;
+        int _gnomeType;
         std::vector<int> _billList;
         std::vector<int> _futureBillList;
     };

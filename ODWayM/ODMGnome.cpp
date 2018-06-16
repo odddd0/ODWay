@@ -18,6 +18,7 @@ ODMGnome::ODMGnome()
     , _creditLimits(0)
     , _billDates(0)
     , _dueDay(0)
+    , _gnomeType(ODMGnome::GnomeType::USD)
 {
 }
 
@@ -29,8 +30,9 @@ ODMGnome::ODMGnome(const StringList &stringList)
     , _creditLimits(0)
     , _billDates(0)
     , _dueDay(0)
+    , _gnomeType(ODMGnome::GnomeType::USD)
 {
-    if (stringList.size() == 7)
+    if (stringList.size() == 8)
     {
         _preId = _id = std::stoi(stringList[0]);
         _name = stringList[1];
@@ -39,6 +41,7 @@ ODMGnome::ODMGnome(const StringList &stringList)
         _creditLimits = std::stoi(stringList[4]);
         _billDates = std::stoi(stringList[5]);
         _dueDay = std::stoi(stringList[6]);
+        _gnomeType = static_cast<ODMGnome::GnomeType>(std::stoi(stringList[7]));
     }
 }
 
@@ -53,7 +56,8 @@ void ODMGnome::GetSqlCreateTable(std::string &sql_)
                "'AvailableCreditLimits' integer DEFAULT(0),"
                "'CreditLimits' integer DEFAULT(0),"
                "'BillDates' integer DEFAULT(0),"
-               "'DueDay' integer DEFAULT(0));";
+               "'DueDay' integer DEFAULT(0),"
+               "'GnomeType' integer DEFAULT(0));";
         _init = false;
     }
 }
@@ -81,6 +85,7 @@ void ODMGnome::GetSqlUpdate(std::string &sql_)
             "',CreditLimits='" + std::to_string(_creditLimits) +
             "',BillDates='" + std::to_string(_billDates) +
             "',DueDay='" + std::to_string(_dueDay) +
+            "',GnomeType='" + std::to_string(_gnomeType) +
             "' where Id='" + std::to_string(_preId) + "';";
 }
 
@@ -94,5 +99,6 @@ void ODMGnome::GetSqlInsert(std::string &sql_)
             std::to_string(_availableCreditLimits) + "','" +
             std::to_string(_creditLimits) + "','" +
             std::to_string(_billDates) + "','" +
-            std::to_string(_dueDay) + "');";
+            std::to_string(_dueDay) + "','" +
+            std::to_string(_gnomeType) + "');";
 }

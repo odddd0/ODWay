@@ -182,10 +182,10 @@ void ODPGoblin::GetCoinList(StringList &list_, const std::string &goldType_)
         }
     });
     // todo
-//    StringList tmpList;
+    //    StringList tmpList;
     GetGnomeBillList(list_, goldType_);
-//    tmpList.push_back("");
-//    list_.insert(list_.begin(), tmpList.begin(), tmpList.end());
+    //    tmpList.push_back("");
+    //    list_.insert(list_.begin(), tmpList.begin(), tmpList.end());
 }
 
 bool ODPGoblin::DelCoin(const int &index_)
@@ -711,6 +711,7 @@ bool ODPGoblin::ExpandData::appendGnome(const ODMBasePtr &ptr_)
             _gnomeMap[cur->_name]->_billDates = cur->_billDates;
             _gnomeMap[cur->_name]->_dueDay = cur->_dueDay;
             _gnomeMap[cur->_name]->_id = cur->_id;
+            _gnomeMap[cur->_name]->_gnomeType = static_cast<int>(cur->_gnomeType);
         }
     }
     return Result;
@@ -922,14 +923,19 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
         // NormalTransit
         else if (cur->_state == ODMGoblinCoin::GoblinState::NormalTransit)
         {
-            // gold to
-            if (gnome = _gnomeMap[cur->_classify])
+            if (_gnomeMap[cur->_classify] && _gnomeMap[cur->_goldFrom])
             {
+                // exchange rate
+                bool isExchangeRate = _gnomeMap[cur->_classify]->_gnomeType != _gnomeMap[cur->_goldFrom]->_gnomeType;
+
+                // gold to
+                gnome = _gnomeMap[cur->_classify];
                 if (gnome->_creditLimits)
                 {
                     // repay credit
                     if (ODTimeUtil::CalcuteBillList(cur->_id, gnome->_billDates, tmpIndex))
                     {
+                        // ready
                         while (gnome->_billList.size() <= tmpIndex + 1)
                         {
                             gnome->_billList.push_back(0);
@@ -941,17 +947,25 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                                 gnome->_billList.push_back(0);
                             }
                         }
+                        // payback installment month
+                        // countSecond is less
                         if (tmpIndex + 1 + cur->_bill >= 0)
                         {
                             gnome->_billList[tmpIndex + 1 + cur->_bill] -= cur->_count + cur->_countSecond;
                         }
                     }
                 }
-                gnome->_balance += cur->_count + cur->_countSecond;
-            }
-            // gold from
-            if (gnome = _gnomeMap[cur->_goldFrom])
-            {
+                if (isExchangeRate)
+                {
+                    gnome->_balance += cur->_countSecond;
+                }
+                else
+                {
+                    gnome->_balance += cur->_count + cur->_countSecond;
+                }
+
+                // gold from
+                gnome = _gnomeMap[cur->_goldFrom];
                 if (!cur->_kindSecond.empty())
                 {
                     tmpInt = std::stoi(cur->_kindSecond);
@@ -961,13 +975,15 @@ bool ODPGoblin::ExpandData::appendCoin(const ODMBasePtr &ptr_)
                     // credit withdraw
                     if (ODTimeUtil::CalcuteBillList(cur->_id, gnome->_billDates, tmpIndex))
                     {
+                        // ready
                         while (gnome->_billList.size() <= tmpIndex)
                         {
                             gnome->_billList.push_back(0);
                         }
-                        gnome->_billList[tmpIndex] = gnome->_billList[tmpIndex] + cur->_count + tmpInt;
+                        gnome->_billList[tmpIndex] += cur->_count + tmpInt;
                     }
                 }
+                // tmpInt is tips
                 gnome->_balance -= cur->_count + tmpInt;
             }
         }
@@ -1011,6 +1027,7 @@ ODPGoblin::OneGnome::OneGnome()
     _creditLimits = 0;
     _billDates = 1;
     _dueDay = 1;
+    _gnomeType = 0;
     _billList.push_back(0);
     _billList.push_back(0);
 }
