@@ -9,6 +9,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.4
 import ODVGoblin 1.0
+import "./ODBox" as ODBox
 
 Rectangle {
     gradient: Gradient {
@@ -97,14 +98,14 @@ Rectangle {
             }
         }
 
-        DateTimePicker{
+        ODBox.DateTimePicker{
             id: dateTime
             width: parent.width
 
             boxVisiable: false
         }
 
-        RowSpinBox {
+        ODBox.RowSpinBox {
             id: revokeSpinBox
             width: parent.width
             height: 60

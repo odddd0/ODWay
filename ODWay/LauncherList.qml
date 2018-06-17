@@ -12,18 +12,12 @@ Rectangle {
     property int activePageCount: 0
     color: "transparent"
 
-    //model is a list of {"name":"somename", "url":"file:///some/url/mainfile.qml"}
-    //function used to add to model A) to enforce scheme B) to allow Qt.resolveUrl in url assignments
-
     function addExample(name, desc, url) {
         myModel.append({"name":name, "description":desc, "url":url})
     }
     function showExample(url) {
         pageComponent.createObject(pageContainer, { exampleUrl: url }).show()
     }
-
-    // The container rectangle here is used to give a nice "feel" when
-    // transitioning into an example.
 
     // main window
     Rectangle {

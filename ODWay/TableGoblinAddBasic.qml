@@ -8,6 +8,7 @@
 
 import QtQuick 2.9
 import QtQuick.Controls 1.4
+import "./ODBox" as ODBox
 
 Rectangle {
     property alias varDateTime: dateTime
@@ -48,11 +49,11 @@ Rectangle {
         anchors.rightMargin: 5
         spacing: 10
 
-        DateTimePicker{
+        ODBox.DateTimePicker{
             id: dateTime
             width: parent.width
         }
-        CKKPicker {
+        ODBox.CKKPicker {
             id: ckk
             width: parent.width
             height: 180

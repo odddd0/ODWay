@@ -7,7 +7,7 @@
 //====================================================================
 
 import QtQuick 2.0
-//import QtGraphicalEffects 1.0
+import "./ODBox" as ODBox
 
 Rectangle {
     property string barHandle
@@ -77,42 +77,17 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
         color: "transparent"
-        Rectangle {
+
+        ODBox.TextButton {
             id: leftRect
             height: parent.height
             width: 80
             anchors.left: parent.left
-            color: "transparent"
 
-            Text {
-                anchors.centerIn: parent
-                text: leftStr
-                font.bold: true
-                font.pixelSize: 22
-            }
+            textStr: leftStr
 
-            MouseArea {
-                hoverEnabled: true
-                anchors.fill: parent
-                width: 38
-                height: 31
-                anchors.verticalCenterOffset: -1
-                enabled: leftStr != ""
-                onClicked: {
-                    back()
-                }
-                Rectangle {
-                    anchors.fill: parent
-                    opacity: parent.pressed ? 1 : 0
-                    Behavior on opacity { NumberAnimation{ duration: 100 }}
-                    gradient: Gradient {
-                        GradientStop { position: 0 ; color: "#22000000" }
-                        GradientStop { position: 0.2 ; color: "#11000000" }
-                    }
-                    border.color: "darkgray"
-                    antialiasing: true
-                    radius: 4
-                }
+            onTextClicked: {
+                back()
             }
         }
         Rectangle {
@@ -129,47 +104,20 @@ Rectangle {
                 font.pixelSize: 30
             }
         }
-        Rectangle {
+        ODBox.TextButton {
             id: rightRect
             height: parent.height
             width: 80
             anchors.right: parent.right
-            color: "transparent"
 
-            Text {
-                anchors.centerIn: parent
-                text: rightStr
-                font.pixelSize: 22
-                font.bold: true
-                color: rightColor
+            textStr: rightStr
+            textColor: rightColor
+
+            onTextClicked: {
+                rightBtnClicked()
             }
-
-            MouseArea {
-                hoverEnabled: true
-                anchors.fill: parent
-                width: 38
-                height: 31
-                anchors.verticalCenterOffset: -1
-                enabled: rightStr != ""
-                onClicked: {
-                    rightBtnClicked()
-                }
-                onDoubleClicked: {
-                    rightBtnDoubleClicked()
-                }
-
-                Rectangle {
-                    anchors.fill: parent
-                    opacity: parent.pressed ? 1 : 0
-                    Behavior on opacity { NumberAnimation{ duration: 100 }}
-                    gradient: Gradient {
-                        GradientStop { position: 0 ; color: "#22000000" }
-                        GradientStop { position: 0.2 ; color: "#11000000" }
-                    }
-                    border.color: "darkgray"
-                    antialiasing: true
-                    radius: 4
-                }
+            onTextDoubleClicked: {
+                rightBtnDoubleClicked()
             }
         }
     }

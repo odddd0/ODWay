@@ -8,6 +8,7 @@
 
 import QtQuick 2.9
 import QtQuick.Controls 1.4
+import "./ODBox" as ODBox
 
 Rectangle {
     property var dateTime
@@ -64,44 +65,19 @@ Rectangle {
                 model: odvGoblinList.getGoldFromList()
             }
 
-            Rectangle {
+            ODBox.TextButton {
                 height: parent.height
                 width: 50
-                color: "transparent"
 
-                Text {
-                    anchors.centerIn: parent
-                    text: "<->"
-//                    font.pixelSize: 22
-                    font.bold: true
-                }
+                textStr: "<->"
+                textSize: 14
 
-                MouseArea {
-                    hoverEnabled: true
-                    anchors.fill: parent
-                    width: 38
-                    height: 31
-                    anchors.verticalCenterOffset: -1
-                    onClicked: {
-                        var tmpIndex = goldFrom.currentIndex
-                        goldFrom.currentIndex = goldTo.currentIndex
-                        goldTo.currentIndex = tmpIndex
-                    }
-                    Rectangle {
-                        anchors.fill: parent
-                        opacity: parent.pressed ? 1 : 0
-                        Behavior on opacity { NumberAnimation{ duration: 100 }}
-                        gradient: Gradient {
-                            GradientStop { position: 0 ; color: "#22000000" }
-                            GradientStop { position: 0.2 ; color: "#11000000" }
-                        }
-                        border.color: "darkgray"
-                        antialiasing: true
-                        radius: 4
-                    }
+                onTextClicked: {
+                    var tmpIndex = goldFrom.currentIndex
+                    goldFrom.currentIndex = goldTo.currentIndex
+                    goldTo.currentIndex = tmpIndex
                 }
             }
-
             ComboBox {
                 id: goldTo
                 width: parent.width / 2 - 40

@@ -9,6 +9,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.4
 import ODVGoblin 1.0
+import "./ODBox" as ODBox
 
 Rectangle {
     gradient: Gradient {
@@ -62,14 +63,14 @@ Rectangle {
                 anchors.fill: parent
             }
         }
-        RowSpinBox {
+        ODBox.RowSpinBox {
             id: gnomeCreditLimits
             width: parent.width
             height: 60
 
             preText: "CreditLimits: "
         }
-        RowSpinBox {
+        ODBox.RowSpinBox {
             id: gnomeBillDates
             width: parent.width
             height: 60
@@ -79,7 +80,7 @@ Rectangle {
 
             preText: "BillDates: "
         }
-        RowSpinBox {
+        ODBox.RowSpinBox {
             id: gnomeDueDay
             width: parent.width
             height: 60

@@ -7,6 +7,7 @@
 //====================================================================
 
 import QtQuick 2.9
+import "./ODBox" as ODBox
 
 Rectangle {
     property bool init_
@@ -26,7 +27,7 @@ Rectangle {
                                             dateTime.customTime, classify.classText, kindFirst.classText, kindSecond.classText, content.text))
                 {
                     content.text = ""
-                    dateTime.dateEnable = false
+                    dateTime.clearCheck()
                     rootTableTime.currentIndex = 2
                 }
                 else if (bar.rightStr == "Idle" && odvTimeList.fastIdle())
@@ -48,14 +49,14 @@ Rectangle {
             init_ = true
         }
 
-        DateTimePicker{
+        ODBox.DateTimePicker{
             width: parent.width
             id: dateTime
             Component.onCompleted: {
                 init_ = false
             }
         }
-        ClassifyPicker {
+        ODBox.ClassifyPicker {
             width: parent.width
             height: 80
             id: classify
@@ -72,7 +73,7 @@ Rectangle {
                 }
             }
         }
-        ClassifyPicker {
+        ODBox.ClassifyPicker {
             width: parent.width
             height: 80
             id: kindFirst
@@ -86,7 +87,7 @@ Rectangle {
                 }
             }
         }
-        ClassifyPicker {
+        ODBox.ClassifyPicker {
             width: parent.width
             height: 80
             id: kindSecond
@@ -102,37 +103,16 @@ Rectangle {
             }
         }
 
-        Rectangle {
-            width: parent.width
+        ODBox.TextButton {
+            width: 100
             height: 80
-            color: "transparent"
-            Rectangle {
-                width: 100
-                height: parent.height
-                anchors.right: parent.right
-                MouseArea {
-                    hoverEnabled: true
-                    anchors.fill: parent
-                    width: 38
-                    height: 31
-                    anchors.verticalCenterOffset: -1
-                    enabled: bar.rightStr != ""
-                    onDoubleClicked: {
-                        bar.rightStr = "Idle"
-                    }
-                    Rectangle {
-                        anchors.fill: parent
-                        opacity: parent.pressed ? 1 : 0
-                        Behavior on opacity { NumberAnimation{ duration: 100 }}
-                        gradient: Gradient {
-                            GradientStop { position: 0 ; color: "#22000000" }
-                            GradientStop { position: 0.2 ; color: "#11000000" }
-                        }
-                        border.color: "darkgray"
-                        antialiasing: true
-                        radius: 4
-                    }
-                }
+            anchors.right: parent.right
+
+            textAlwayEnabled: true
+            textBKColor: "white"
+
+            onTextDoubleClicked: {
+                bar.rightStr = "Idle"
             }
         }
     }

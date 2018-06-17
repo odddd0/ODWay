@@ -7,6 +7,7 @@
 //====================================================================
 
 import QtQuick 2.9
+import "./ODBox" as ODBox
 
 Rectangle {
     // 0: default; 1: durMode; 2: deleteMode
@@ -196,77 +197,52 @@ Rectangle {
         model: odvTimeList.curList
         delegate: tableTimeListViewDelegate
     }
-
     // turn day Button
     Row {
         width: parent.width
         height: 50
         anchors.bottom: parent.bottom
         // Prev day Button
-        Rectangle {
+        ODBox.TextButtonNoDouble {
             width: parent.width / 2
             height: parent.height
             anchors.left: parent.left
-            color: "lightgreen"
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    if (odvTimeList.prevDay())
-                    {
-                        updateCurList()
-                    }
+
+            textBKColor: "lightgreen"
+            textAlwayEnabled: true
+
+            onTextClicked: {
+                if (odvTimeList.prevDay())
+                {
+                    updateCurList()
                 }
-                onPressAndHold: {
-                    if (odvTimeList.firstDay())
-                    {
-                        updateCurList()
-                    }
-                }
-                Rectangle {
-                    anchors.fill: parent
-                    opacity: parent.pressed ? 1 : 0
-                    Behavior on opacity { NumberAnimation{ duration: 100 }}
-                    gradient: Gradient {
-                        GradientStop { position: 0 ; color: "#22000000" }
-                        GradientStop { position: 0.2 ; color: "#11000000" }
-                    }
-                    border.color: "darkgray"
-                    antialiasing: true
-                    radius: 4
+            }
+            onTextLongPress: {
+                if (odvTimeList.firstDay())
+                {
+                    updateCurList()
                 }
             }
         }
         // Next day Button
-        Rectangle {
+        ODBox.TextButtonNoDouble {
             width: parent.width / 2
             height: parent.height
             anchors.right: parent.right
-            color: "lightblue"
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    if (odvTimeList.nextDay())
-                    {
-                        updateCurList()
-                    }
+
+            textBKColor: "lightblue"
+            textAlwayEnabled: true
+
+            onTextClicked: {
+                if (odvTimeList.nextDay())
+                {
+                    updateCurList()
                 }
-                onPressAndHold: {
-                    if (odvTimeList.lastDay())
-                    {
-                        updateCurList()
-                    }
-                }
-                Rectangle {
-                    anchors.fill: parent
-                    opacity: parent.pressed ? 1 : 0
-                    Behavior on opacity { NumberAnimation{ duration: 100 }}
-                    gradient: Gradient {
-                        GradientStop { position: 0 ; color: "#22000000" }
-                        GradientStop { position: 0.2 ; color: "#11000000" }
-                    }
-                    border.color: "darkgray"
-                    antialiasing: true
-                    radius: 4
+            }
+            onTextLongPress: {
+                if (odvTimeList.lastDay())
+                {
+                    updateCurList()
                 }
             }
         }

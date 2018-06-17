@@ -7,6 +7,7 @@
 //====================================================================
 
 import QtQuick 2.9
+import "./ODBox" as ODBox
 
 Rectangle {
     height: 680
@@ -26,7 +27,7 @@ Rectangle {
         }
     }
 
-    DigitalPicker {
+    ODBox.DigitalPicker {
         id: dp
         theKey: ""
 //        noEcho: true

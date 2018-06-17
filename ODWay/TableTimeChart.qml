@@ -8,6 +8,7 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
+import "./ODBox" as ODBox
 
 Rectangle {
     id: chart
@@ -71,7 +72,7 @@ Rectangle {
         rows: 3
         columnSpacing: 4
         anchors.topMargin: 70
-        Button {
+        ODBox.Button {
             id: lessButton
             text: "-"
             buttonEnabled: chart.activeChart === "less"
@@ -81,7 +82,7 @@ Rectangle {
             }
         }
 
-        Button {
+        ODBox.Button {
             id: weekButton
             text: "Week"
             buttonEnabled: chart.activeChart === "week"
@@ -92,7 +93,7 @@ Rectangle {
             }
         }
 
-        Button {
+        ODBox.Button {
             id: monthButton
             text: "Month"
             buttonEnabled: chart.activeChart === "month"
@@ -103,7 +104,7 @@ Rectangle {
             }
         }
 
-        Button {
+        ODBox.Button {
             id: moreButton
             text: "+"
             buttonEnabled: chart.activeChart === "more"

@@ -11,7 +11,6 @@ import QtQuick.Controls 1.4
 
 Column {
     property bool boxVisiable: true
-    property bool dateEnable
     property alias year: spinBoxYear.value
     property alias month: spinBoxMonth.value
     property alias day: spinBoxDay.value
@@ -27,6 +26,7 @@ Column {
     property int setHour
     property int setMinute
     property int setSecond
+
     Component.onCompleted: {
         var d = new Date()
         spinBoxYear.value = d.getFullYear()
@@ -45,6 +45,10 @@ Column {
             spinBoxMinute.value = setMinute
             spinBoxSecond.value = setSecond
         }
+    }
+
+    function clearCheck() {
+        checkBox.checked = false
     }
 
     visible: boxVisiable
@@ -105,7 +109,7 @@ Column {
             id: checkBox
             width: parent.width / 5
             height: parent.height
-            checked: dateEnable
+            checked: false
         }
     }
 }

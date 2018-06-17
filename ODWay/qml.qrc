@@ -7,12 +7,8 @@
         <file>Bar.qml</file>
         <file>TableTimeAdd.qml</file>
         <file>TableTimeList.qml</file>
-        <file>DateTimePicker.qml</file>
-        <file>ClassifyPicker.qml</file>
-        <file>DigitalPicker.qml</file>
         <file>TableTimeSum.qml</file>
         <file>TableTimeChart.qml</file>
-        <file>Button.qml</file>
         <file>TableTimeChartList.qml</file>
         <file>TableTimeChartSum.qml</file>
         <file>TableGoblin.qml</file>
@@ -21,11 +17,17 @@
         <file>TableGoblinAddBasic.qml</file>
         <file>TableGoblinAddBill.qml</file>
         <file>TableGoblinAddTransit.qml</file>
-        <file>CKKPicker.qml</file>
         <file>TableGoblinAddGnome.qml</file>
-        <file>RowSpinBox.qml</file>
         <file>TableGoblinListCoin.qml</file>
         <file>TableGoblinListGnome.qml</file>
         <file>TableGoblinCoinEdit.qml</file>
+        <file>ODBox/Button.qml</file>
+        <file>ODBox/CKKPicker.qml</file>
+        <file>ODBox/ClassifyPicker.qml</file>
+        <file>ODBox/DateTimePicker.qml</file>
+        <file>ODBox/DigitalPicker.qml</file>
+        <file>ODBox/RowSpinBox.qml</file>
+        <file>ODBox/TextButton.qml</file>
+        <file>ODBox/TextButtonNoDouble.qml</file>
     </qresource>
 </RCC>

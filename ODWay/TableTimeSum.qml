@@ -8,6 +8,7 @@
 
 import QtQuick 2.9
 import QtQuick.Controls 1.4
+import "./ODBox" as ODBox
 import ODVTime 1.0
 
 Rectangle {
@@ -155,73 +156,48 @@ Rectangle {
         height: 50
         anchors.bottom: parent.bottom
         // Prev day Button
-        Rectangle {
+        ODBox.TextButtonNoDouble {
             width: parent.width / 2
             height: parent.height
             anchors.left: parent.left
-            color: "lightgreen"
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    if (odvTimeList.prevDay())
-                    {
-                        updateSum()
-                    }
+
+            textBKColor: "lightgreen"
+            textAlwayEnabled: true
+
+            onTextClicked: {
+                if (odvTimeList.prevDay())
+                {
+                    updateSum()
                 }
-                onPressAndHold: {
-                    if (odvTimeList.firstDay())
-                    {
-                        updateSum()
-                    }
-                }
-                Rectangle {
-                    anchors.fill: parent
-                    opacity: parent.pressed ? 1 : 0
-                    Behavior on opacity { NumberAnimation{ duration: 100 }}
-                    gradient: Gradient {
-                        GradientStop { position: 0 ; color: "#22000000" }
-                        GradientStop { position: 0.2 ; color: "#11000000" }
-                    }
-                    border.color: "darkgray"
-                    antialiasing: true
-                    radius: 4
+            }
+            onTextLongPress: {
+                if (odvTimeList.firstDay())
+                {
+                    updateSum()
                 }
             }
         }
         // Next day Button
-        Rectangle {
+        ODBox.TextButtonNoDouble {
             width: parent.width / 2
             height: parent.height
             anchors.right: parent.right
-            color: "lightblue"
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    if (odvTimeList.nextDay())
-                    {
-                        updateSum()
-                    }
+
+            textBKColor: "lightblue"
+            textAlwayEnabled: true
+
+            onTextClicked: {
+                if (odvTimeList.nextDay())
+                {
+                    updateSum()
                 }
-                onPressAndHold: {
-                    if (odvTimeList.lastDay())
-                    {
-                        updateSum()
-                    }
-                }
-                Rectangle {
-                    anchors.fill: parent
-                    opacity: parent.pressed ? 1 : 0
-                    Behavior on opacity { NumberAnimation{ duration: 100 }}
-                    gradient: Gradient {
-                        GradientStop { position: 0 ; color: "#22000000" }
-                        GradientStop { position: 0.2 ; color: "#11000000" }
-                    }
-                    border.color: "darkgray"
-                    antialiasing: true
-                    radius: 4
+            }
+            onTextLongPress: {
+                if (odvTimeList.lastDay())
+                {
+                    updateSum()
                 }
             }
         }
     }
-
 }

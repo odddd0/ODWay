@@ -8,6 +8,7 @@
 
 import QtQuick 2.9
 import QtQuick.Controls 1.4
+import "./ODBox" as ODBox
 
 Rectangle {
     property var dateTime
@@ -55,7 +56,7 @@ Rectangle {
         anchors.rightMargin: 5
         spacing: 10
 
-        RowSpinBox {
+        ODBox.RowSpinBox {
             id: monthSpinBox
             width: parent.width
             height: 60
@@ -103,7 +104,7 @@ Rectangle {
             }
         }
 
-        RowSpinBox {
+        ODBox.RowSpinBox {
             id: othersMonthSpinBox
             width: parent.width
             height: 60
