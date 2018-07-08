@@ -37,7 +37,7 @@ Rectangle {
             width: parent.width
             height: parent.height / 3
 
-            TextButton {
+            TextButtonNoDouble {
                 width: parent.width / 3
                 height: parent.height
 
@@ -51,7 +51,7 @@ Rectangle {
                 }
             }
 
-            TextButton {
+            TextButtonNoDouble {
                 width: parent.width / 3
                 height: parent.height
 
@@ -65,7 +65,7 @@ Rectangle {
                 }
             }
 
-            TextButton {
+            TextButtonNoDouble {
                 width: parent.width / 3
                 height: parent.height
 
@@ -83,7 +83,7 @@ Rectangle {
             width: parent.width
             height: parent.height / 3
 
-            TextButton {
+            TextButtonNoDouble {
                 width: parent.width / 3
                 height: parent.height
 
@@ -97,7 +97,7 @@ Rectangle {
                 }
             }
 
-            TextButton {
+            TextButtonNoDouble {
                 width: parent.width / 3
                 height: parent.height
 
@@ -111,7 +111,7 @@ Rectangle {
                 }
             }
 
-            TextButton {
+            TextButtonNoDouble {
                 width: parent.width / 3
                 height: parent.height
 
@@ -129,7 +129,7 @@ Rectangle {
             width: parent.width
             height: parent.height / 3
 
-            TextButton {
+            TextButtonNoDouble {
                 width: parent.width / 3
                 height: parent.height
 
@@ -143,7 +143,7 @@ Rectangle {
                 }
             }
 
-            TextButton {
+            TextButtonNoDouble {
                 width: parent.width / 3
                 height: parent.height
 
@@ -157,7 +157,7 @@ Rectangle {
                 }
             }
 
-            TextButton {
+            TextButtonNoDouble {
                 width: parent.width / 3
                 height: parent.height
 
