@@ -175,7 +175,7 @@ bool ODVTime::addTime(
     {
 #ifdef Q_OS_IOS
         ODNotification_iOS::cancelAllNotifictions();
-        ODNotification_iOS::pushNotifiction("STOP!!!", QDateTime::currentDateTime().addSecs(10));
+        ODNotification_iOS::pushNotifiction("STOP!!!", QDateTime::currentDateTime().addSecs(3600));
 #endif
         updateClass();
     }
@@ -204,7 +204,7 @@ bool ODVTime::fastIdle()
     {
 #ifdef Q_OS_IOS
         ODNotification_iOS::cancelAllNotifictions();
-        ODNotification_iOS::pushNotifiction("STOP!!!", QDateTime::currentDateTime().addSecs(10));
+        ODNotification_iOS::pushNotifiction("STOP!!!", QDateTime::currentDateTime().addSecs(3600));
 #endif
         updateClass();
         return true;
