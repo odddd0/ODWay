@@ -8,6 +8,8 @@
 
 #include <ODWayP/ODPTime.h>
 
+#include "ODNotification.h"
+
 #include "ODVTime.h"
 
 ODVTime::ODVTime(QObject *parent) : QObject(parent)
@@ -171,6 +173,10 @@ bool ODVTime::addTime(
     Result = ODPTime::Instance()->AddTime(tmpPtr);
     if (Result)
     {
+#ifdef Q_OS_IOS
+        ODNotification_iOS::cancelAllNotifictions();
+        ODNotification_iOS::pushNotifiction("STOP!!!", QDateTime::currentDateTime().addSecs(10));
+#endif
         updateClass();
     }
     return Result;
@@ -193,8 +199,13 @@ QString ODVTime::calDurTime(const int &index1_, const int &index2_)
 
 bool ODVTime::fastIdle()
 {
+
     if (ODPTime::Instance()->FastIdle())
     {
+#ifdef Q_OS_IOS
+        ODNotification_iOS::cancelAllNotifictions();
+        ODNotification_iOS::pushNotifiction("STOP!!!", QDateTime::currentDateTime().addSecs(10));
+#endif
         updateClass();
         return true;
     }

@@ -27,7 +27,8 @@ SOURCES += \
     TreeModel.cpp \
     TreeItem.cpp \
     ODVGoblin.cpp \
-    ODVCKK.cpp
+    ODVCKK.cpp \
+    ODNotification.mm
 
 HEADERS += \
         ODWayV.h \
@@ -35,7 +36,11 @@ HEADERS += \
     TreeModel.h \
     TreeItem.h \
     ODVGoblin.h \
-    ODVCKK.h
+    ODVCKK.h \
+    ODNotification.h
+
+OBJECTIVE_SOURCES += ODNotification.mm
+
 unix {
     target.path = /usr/lib
     INSTALLS += target
