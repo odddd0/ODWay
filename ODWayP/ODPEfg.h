@@ -1,0 +1,58 @@
+//====================================================================
+//  ODPEfg.h
+//  created 7.17.18
+//  written by odddd0
+//
+//  https://github.com/odddd0/ODWay
+//====================================================================
+
+#ifndef _ODPEFG_H_DF512EA1A7A8DA7E8B7F0078DBC10725_
+#define _ODPEFG_H_DF512EA1A7A8DA7E8B7F0078DBC10725_
+
+#include <ODMBase/ODBaseTypes.h>
+#include <ODWayM/ODMEfg.h>
+
+class ODPEfg
+{
+    struct OneTip
+    {
+        int _id;
+        int _state;
+        std::string _name;
+        std::string _classify;
+        int _markTime;
+    };
+    typedef std::shared_ptr<OneTip> OneTipPtr;
+
+    struct ExpandData
+    {
+        void clear()
+        {
+            _tipList.clear();
+            _classifyList.clear();
+            _lastEfgIdList.clear();
+        }
+
+        std::vector<OneTipPtr> _tipList;
+        std::vector<std::string> _classifyList;
+        std::vector<int> _lastEfgIdList;
+    };
+public:
+    static ODPEfg * Instance();
+
+public:
+    void GetEfgStrList(StringList &strList_);
+
+public:
+    bool MarkIndex(const int &index_);
+
+private:
+    struct Impl;
+    Impl *_Impl;
+
+private:
+    ODPEfg();
+    ~ODPEfg();
+};
+
+#endif // _ODPEFG_H_DF512EA1A7A8DA7E8B7F0078DBC10725_

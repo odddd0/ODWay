@@ -28,7 +28,8 @@ SOURCES += \
     TreeItem.cpp \
     ODVGoblin.cpp \
     ODVCKK.cpp \
-    ODNotification.mm
+    ODNotification.mm \
+    ODVEfg.cpp
 
 HEADERS += \
         ODWayV.h \
@@ -37,7 +38,8 @@ HEADERS += \
     TreeItem.h \
     ODVGoblin.h \
     ODVCKK.h \
-    ODNotification.h
+    ODNotification.h \
+    ODVEfg.h
 
 OBJECTIVE_SOURCES += ODNotification.mm
 

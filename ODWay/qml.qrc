@@ -29,5 +29,6 @@
         <file>ODBox/RowSpinBox.qml</file>
         <file>ODBox/TextButton.qml</file>
         <file>ODBox/TextButtonNoDouble.qml</file>
+        <file>TableEfg.qml</file>
     </qresource>
 </RCC>

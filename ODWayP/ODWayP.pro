@@ -25,13 +25,15 @@ SOURCES += \
         ODWayP.cpp \
     ODPTime.cpp \
     ODPGnome.cpp \
-    ODPGoblin.cpp
+    ODPGoblin.cpp \
+    ODPEfg.cpp
 
 HEADERS += \
         ODWayP.h \
     ODPTime.h \
     ODPGnome.h \
-    ODPGoblin.h
+    ODPGoblin.h \
+    ODPEfg.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

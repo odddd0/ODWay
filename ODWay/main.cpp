@@ -17,6 +17,7 @@
 #include <ODWayV/ODVTime.h>
 #include <ODWayV/TreeModel.h>
 #include <ODWayV/ODVGoblin.h>
+#include <ODWayV/ODVEfg.h>
 
 int main(int argc, char* argv[])
 {
@@ -40,6 +41,7 @@ int main(int argc, char* argv[])
     qmlRegisterType<TreeModel>("ODVTime", 1, 0, "ODTreeModel");
     qmlRegisterType<ODVCKK>("ODVCKK", 1, 0, "VCKK");
     qmlRegisterType<ODVGoblin>("ODVGoblin", 1, 0, "ODVGoblinList");
+    qmlRegisterType<ODVEfg>("ODVEfg", 1, 0, "ODVEfgList");
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc,argv);

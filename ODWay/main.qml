@@ -24,6 +24,7 @@ Rectangle {
         Component.onCompleted: {
             addExample("Time table", "",  Qt.resolvedUrl("TableTime.qml"));
             addExample("Goblin table", "",  Qt.resolvedUrl("TableGoblin.qml"));
+            addExample("Efg table", "---",  Qt.resolvedUrl("TableEfg.qml"));
         }
     }
 
