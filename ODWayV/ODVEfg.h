@@ -22,6 +22,7 @@ public:
 public slots:
     QStringList getEfgStrList();
     bool markIndex(const int &index_);
+    QString getProgressStr();
 };
 
 #endif // _ODVEFG_H_CCE32E355FBE6F23184040FB8936F230_

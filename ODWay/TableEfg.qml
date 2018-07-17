@@ -18,7 +18,7 @@ Rectangle {
 
     Component.onCompleted: {
         bar.leftStr = "<"
-        bar.middleStr = ""
+        bar.middleStr = odvEfgList.getProgressStr()
         bar.rightStr = ""
         bar.barHandle = "handleTableEfg"
     }
@@ -34,6 +34,7 @@ Rectangle {
                     tableEfgListView.model = odvEfgList.getEfgStrList()
                 }
             }
+            bar.middleStr = odvEfgList.getProgressStr()
         }
     }
 

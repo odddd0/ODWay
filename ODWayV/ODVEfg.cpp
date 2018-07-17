@@ -32,3 +32,10 @@ bool ODVEfg::markIndex(const int &index_)
     return ODPEfg::Instance()->MarkIndex(index_);
 }
 
+QString ODVEfg::getProgressStr()
+{
+    std::string tmpStr = "";
+    ODPEfg::Instance()->GetProgressStr(tmpStr);
+    return QString::fromStdString(tmpStr);
+}
+

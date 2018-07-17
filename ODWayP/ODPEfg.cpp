@@ -28,6 +28,7 @@ struct ODPEfg::Impl
 
         std::for_each(tmpList.cbegin(), tmpList.cend(), [&](const ODMBasePtr &x){
             cur = std::static_pointer_cast<ODMEfg>(x);
+            _expandData._totalNum++;
 
             ODVectorUtil::RefreshInsert<std::string>(_expandData._classifyList, cur->_classify);
             tmpTip = std::make_shared<OneTip>();
@@ -38,6 +39,14 @@ struct ODPEfg::Impl
             tmpTip->_name = cur->_name;
             tmpTip->_classify = cur->_classify;
             tmpTip->_markTime = cur->_markTime;
+
+            time_t curTime = 0;
+            time(&curTime);
+
+            if (ODTimeUtil::IsSameDay(cur->_markTime, curTime))
+            {
+                _expandData._markNum++;
+            }
         });
 
         std::sort(_expandData._tipList.begin(), _expandData._tipList.end(), [](OneTipPtr &x, OneTipPtr &y){
@@ -83,6 +92,18 @@ void ODPEfg::GetEfgStrList(StringList &strList_)
             _Impl->_expandData._lastEfgIdList.push_back(x->_id);
         }
     });
+}
+
+void ODPEfg::GetProgressStr(std::string &str_)
+{
+    if (_Impl->_expandData._markNum == _Impl->_expandData._totalNum)
+    {
+        str_ = "done";
+    }
+    else
+    {
+        str_ = std::to_string(_Impl->_expandData._markNum) + "/" + std::to_string(_Impl->_expandData._totalNum);
+    }
 }
 
 bool ODPEfg::MarkIndex(const int &index_)

@@ -31,17 +31,22 @@ class ODPEfg
             _tipList.clear();
             _classifyList.clear();
             _lastEfgIdList.clear();
+            _markNum = 0;
+            _totalNum = 0;
         }
 
         std::vector<OneTipPtr> _tipList;
         std::vector<std::string> _classifyList;
         std::vector<int> _lastEfgIdList;
+        int _markNum;
+        int _totalNum;
     };
 public:
     static ODPEfg * Instance();
 
 public:
     void GetEfgStrList(StringList &strList_);
+    void GetProgressStr(std::string &str_);
 
 public:
     bool MarkIndex(const int &index_);

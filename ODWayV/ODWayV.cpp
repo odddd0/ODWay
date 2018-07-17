@@ -8,6 +8,7 @@
 
 #include <ODWayP/ODPTime.h>
 #include <ODWayP/ODPGoblin.h>
+#include <ODWayP/ODPEfg.h>
 
 #include "ODWayV.h"
 
@@ -27,6 +28,10 @@ QString ODWayV::getDescription(const QString &name_)
     else if (name_ == "Goblin table")
     {
         ODPGoblin::Instance()->GetTotalDescription(tmpStr);
+    }
+    else if (name_ == "Efg table")
+    {
+        ODPEfg::Instance()->GetProgressStr(tmpStr);
     }
     Result = QString::fromStdString(tmpStr);
     return Result;
