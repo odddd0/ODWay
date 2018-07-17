@@ -21,7 +21,7 @@ public:
 
 public slots:
     QStringList getEfgStrList();
-    void markIndex(const int &index_);
+    bool markIndex(const int &index_);
 };
 
 #endif // _ODVEFG_H_CCE32E355FBE6F23184040FB8936F230_

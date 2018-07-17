@@ -27,8 +27,8 @@ QStringList ODVEfg::getEfgStrList()
     return Result;
 }
 
-void ODVEfg::markIndex(const int &index_)
+bool ODVEfg::markIndex(const int &index_)
 {
-    ODPEfg::Instance()->MarkIndex(index_);
+    return ODPEfg::Instance()->MarkIndex(index_);
 }
 

@@ -26,22 +26,14 @@ Rectangle {
     Connections{
         target: bar
         onRightBtnClicked:{
-//            if (bar.barHandle == "handleTableTimeList" && bar.rightStr == "x")
-//            {
-//                selectMode = false
-//                bar.rightColor = "red"
-//                bar.rightStr = ""
-//                tableTimeListView.currentIndex = 0
-//                lastWrapper.color = "transparent"
-//            }
-//            else if (bar.barHandle == "handleTableTimeList" && bar.rightStr == "Del")
-//            {
-//                if (odvTimeList.delTime(tableTimeListView.currentIndex))
-//                {
-//                    updateCurList()
-//                    bar.rightStr = ""
-//                }
-//            }
+            if (bar.barHandle == "handleTableEfg" && bar.rightStr == "MARK")
+            {
+                if (odvEfgList.markIndex(tableEfgListView.currentIndex))
+                {
+                    bar.rightStr = ""
+                    tableEfgListView.model = odvEfgList.getEfgStrList()
+                }
+            }
         }
     }
 
@@ -62,6 +54,14 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
+                    tableEfgListView.currentIndex = index
+                    bar.rightStr = ""
+                    wrapperText.color = "black"
+                }
+                onPressAndHold: {
+                    tableEfgListView.currentIndex = index
+                    wrapperText.color = "red"
+                    bar.rightStr = "MARK"
                 }
             }
             // indent the item if it is the current item
@@ -77,26 +77,7 @@ Rectangle {
                     }
                 },
                 State {
-                    name: "Pop"
-                    when: odvTimeList.isPop(index)
-                    PropertyChanges {
-                        target: wrapperText
-                        font.bold: false
-                        font.underline: false
-                        color: "red"
-                    }
-                },
-                State {
                     name: "BaseDur"
-                    PropertyChanges {
-                        target: wrapperText
-                        font.bold: false
-                        font.underline: false
-                        color: "black"
-                    }
-                },
-                State {
-                    name: "DelReady"
                     PropertyChanges {
                         target: wrapperText
                         font.bold: false
