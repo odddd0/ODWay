@@ -43,6 +43,11 @@ bool ODVEfg::markIndex(const int &index_)
     return ODPEfg::Instance()->MarkIndex(index_);
 }
 
+bool ODVEfg::unMarkIndex(const int &index_)
+{
+        return ODPEfg::Instance()->UnMarkIndex(index_);
+}
+
 QString ODVEfg::getEfgColor(const int &index_, const QString &defaultColor_)
 {
     std::string tmpStr;

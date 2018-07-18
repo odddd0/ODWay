@@ -56,6 +56,7 @@ public:
 
 public:
     bool MarkIndex(const int &index_);
+    bool UnMarkIndex(const int &index_);
 
 private:
     struct Impl;

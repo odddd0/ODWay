@@ -23,6 +23,7 @@ public slots:
     QStringList getEfgStrList();
     QStringList getEfgAllList();
     bool markIndex(const int &index_);
+    bool unMarkIndex(const int &index_);
     QString getEfgColor(const int &index_, const QString &defaultColor_ = "black");
     QString getProgressStr();
 };

@@ -31,15 +31,31 @@ Rectangle {
             {
                 if (odvEfgList.markIndex(tableEfgListView.currentIndex))
                 {
-                    bar.rightStr = ""
+                    bar.rightStr = "ALL"
+                    bar.rightColor = "black"
                     tableEfgListView.model = odvEfgList.getEfgStrList()
+                }
+            }
+            else if (bar.barHandle == "handleTableEfg" && bar.rightStr == "UNDO")
+            {
+                if (odvEfgList.unMarkIndex(tableEfgListView.currentIndex))
+                {
+                    bar.rightStr = "Normal"
+                    bar.rightColor = "black"
+                    tableEfgListView.model = odvEfgList.getEfgAllList()
                 }
             }
             else if (bar.barHandle == "handleTableEfg" && bar.rightStr == "ALL")
             {
-                bar.rightStr = ""
+                bar.rightStr = "Normal"
                 bar.rightColor = "black"
                 tableEfgListView.model = odvEfgList.getEfgAllList()
+            }
+            else if (bar.barHandle == "handleTableEfg" && bar.rightStr == "Normal")
+            {
+                bar.rightStr = "ALL"
+                bar.rightColor = "black"
+                tableEfgListView.model = odvEfgList.getEfgStrList()
             }
             bar.middleStr = odvEfgList.getProgressStr()
         }
@@ -66,15 +82,27 @@ Rectangle {
                 anchors.fill: parent
                 onClicked: {
                     tableEfgListView.currentIndex = index
-                    bar.rightStr = ""
-                    wrapperText.color = "black"
                     bar.rightColor = "black"
+                    if (bar.rightStr == "MARK")
+                    {
+                        bar.rightStr = "ALL"
+                    }
+                    else if (bar.rightStr == "UNDO")
+                    {
+                        bar.rightStr = "Normal"
+                    }
                 }
                 onPressAndHold: {
                     tableEfgListView.currentIndex = index
-                    wrapperText.color = "red"
-                    bar.rightStr = "MARK"
                     bar.rightColor = "red"
+                    if (bar.rightStr == "ALL")
+                    {
+                        bar.rightStr = "MARK"
+                    }
+                    else if (bar.rightStr == "Normal")
+                    {
+                        bar.rightStr = "UNDO"
+                    }
                 }
             }
             // indent the item if it is the current item
@@ -86,7 +114,6 @@ Rectangle {
                         target: wrapperText
                         font.bold: true
                         font.underline: true
-                        color: "black"
                     }
                 },
                 State {

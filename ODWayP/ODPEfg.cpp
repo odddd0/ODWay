@@ -85,10 +85,12 @@ void ODPEfg::GetEfgStrList(StringList &strList_)
             {
                 strList_.push_back("");
                 _Impl->_expandData._lastEfgIdList.push_back(-1);
+                _Impl->_expandData._lastEfgAllColorList.push_back("black");
             }
             lastClassify = x->_classify;
             strList_.push_back(" -" + lastClassify + "-");
             _Impl->_expandData._lastEfgIdList.push_back(-1);
+            _Impl->_expandData._lastEfgAllColorList.push_back("black");
         }
 
         time_t curTime = 0;
@@ -98,6 +100,7 @@ void ODPEfg::GetEfgStrList(StringList &strList_)
         {
             strList_.push_back(x->_name);
             _Impl->_expandData._lastEfgIdList.push_back(x->_id);
+            _Impl->_expandData._lastEfgAllColorList.push_back("red");
         }
     });
 }
@@ -116,10 +119,12 @@ void ODPEfg::GetEfgAllList(StringList &strList_)
             if (!lastClassify.empty())
             {
                 strList_.push_back("");
+                _Impl->_expandData._lastEfgIdList.push_back(-1);
                 _Impl->_expandData._lastEfgAllColorList.push_back("black");
             }
             lastClassify = x->_classify;
             strList_.push_back(" -" + lastClassify + "-");
+            _Impl->_expandData._lastEfgIdList.push_back(-1);
             _Impl->_expandData._lastEfgAllColorList.push_back("black");
         }
 
@@ -136,6 +141,7 @@ void ODPEfg::GetEfgAllList(StringList &strList_)
             strList_.push_back("(done)" + x->_name);
             _Impl->_expandData._lastEfgAllColorList.push_back("green");
         }
+        _Impl->_expandData._lastEfgIdList.push_back(x->_id);
     });
 }
 
@@ -178,6 +184,29 @@ bool ODPEfg::MarkIndex(const int &index_)
             if (tmpPtr)
             {
                 std::static_pointer_cast<ODMEfg>(tmpPtr)->_markTime = curTime;
+                Result = ODWayM::Instance()->UpdateModel(tmpPtr);
+                if (Result)
+                {
+                    _Impl->ExpandData();
+                }
+            }
+        }
+    }
+    return Result;
+}
+
+bool ODPEfg::UnMarkIndex(const int &index_)
+{
+    bool Result = false;
+    if (index_ >= 0 && index_ < _Impl->_expandData._lastEfgIdList.size())
+    {
+        if (_Impl->_expandData._lastEfgIdList[index_] >= 0)
+        {
+            ODMBasePtr tmpPtr;
+            ODWayM::Instance()->GetPtr("ODMEfg", _Impl->_expandData._lastEfgIdList[index_], tmpPtr);
+            if (tmpPtr)
+            {
+                std::static_pointer_cast<ODMEfg>(tmpPtr)->_markTime = -1;
                 Result = ODWayM::Instance()->UpdateModel(tmpPtr);
                 if (Result)
                 {
