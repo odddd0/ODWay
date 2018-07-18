@@ -30,6 +30,7 @@ class ODPEfg
         {
             _tipList.clear();
             _classifyList.clear();
+            _classifyIsMap.clear();
             _lastEfgIdList.clear();
             _markNum = 0;
             _totalNum = 0;
@@ -37,6 +38,7 @@ class ODPEfg
 
         std::vector<OneTipPtr> _tipList;
         std::vector<std::string> _classifyList;
+        std::map<std::string, int> _classifyIsMap;
         std::vector<int> _lastEfgIdList;
         int _markNum;
         int _totalNum;

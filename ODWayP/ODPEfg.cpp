@@ -30,7 +30,10 @@ struct ODPEfg::Impl
             cur = std::static_pointer_cast<ODMEfg>(x);
             _expandData._totalNum++;
 
-            ODVectorUtil::RefreshInsert<std::string>(_expandData._classifyList, cur->_classify);
+            if (ODVectorUtil::RefreshInsert<std::string>(_expandData._classifyList, cur->_classify))
+            {
+                _expandData._classifyIsMap[cur->_classify] = 0;
+            }
             tmpTip = std::make_shared<OneTip>();
             _expandData._tipList.push_back(tmpTip);
 
@@ -46,6 +49,10 @@ struct ODPEfg::Impl
             if (ODTimeUtil::IsSameDay(cur->_markTime, curTime))
             {
                 _expandData._markNum++;
+            }
+            else
+            {
+                _expandData._classifyIsMap[cur->_classify] = 1;
             }
         });
 
@@ -71,7 +78,7 @@ void ODPEfg::GetEfgStrList(StringList &strList_)
     _Impl->_expandData._lastEfgIdList.clear();
 
     std::for_each(_Impl->_expandData._tipList.begin(), _Impl->_expandData._tipList.end(), [&](OneTipPtr &x){
-        if (lastClassify != x->_classify)
+        if (lastClassify != x->_classify && _Impl->_expandData._classifyIsMap[x->_classify] == 1)
         {
             if (!lastClassify.empty())
             {
