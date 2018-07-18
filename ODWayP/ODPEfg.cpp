@@ -76,6 +76,7 @@ void ODPEfg::GetEfgStrList(StringList &strList_)
 
     strList_.clear();
     _Impl->_expandData._lastEfgIdList.clear();
+    _Impl->_expandData._lastEfgAllColorList.clear();
 
     std::for_each(_Impl->_expandData._tipList.begin(), _Impl->_expandData._tipList.end(), [&](OneTipPtr &x){
         if (lastClassify != x->_classify && _Impl->_expandData._classifyIsMap[x->_classify] == 1)
@@ -101,6 +102,43 @@ void ODPEfg::GetEfgStrList(StringList &strList_)
     });
 }
 
+void ODPEfg::GetEfgAllList(StringList &strList_)
+{
+    std::string lastClassify = "";
+
+    strList_.clear();
+    _Impl->_expandData._lastEfgIdList.clear();
+    _Impl->_expandData._lastEfgAllColorList.clear();
+
+    std::for_each(_Impl->_expandData._tipList.begin(), _Impl->_expandData._tipList.end(), [&](OneTipPtr &x){
+        if (lastClassify != x->_classify)
+        {
+            if (!lastClassify.empty())
+            {
+                strList_.push_back("");
+                _Impl->_expandData._lastEfgAllColorList.push_back("black");
+            }
+            lastClassify = x->_classify;
+            strList_.push_back(" -" + lastClassify + "-");
+            _Impl->_expandData._lastEfgAllColorList.push_back("black");
+        }
+
+        time_t curTime = 0;
+        time(&curTime);
+
+        if (!ODTimeUtil::IsSameDay(x->_markTime, curTime))
+        {
+            strList_.push_back(x->_name);
+            _Impl->_expandData._lastEfgAllColorList.push_back("red");
+        }
+        else
+        {
+            strList_.push_back("(done)" + x->_name);
+            _Impl->_expandData._lastEfgAllColorList.push_back("green");
+        }
+    });
+}
+
 void ODPEfg::GetProgressStr(std::string &str_)
 {
     if (_Impl->_expandData._markNum == _Impl->_expandData._totalNum)
@@ -111,6 +149,18 @@ void ODPEfg::GetProgressStr(std::string &str_)
     {
         str_ = std::to_string(_Impl->_expandData._markNum) + "/" + std::to_string(_Impl->_expandData._totalNum);
     }
+}
+
+bool ODPEfg::GetEfgAllColor(const int &index_, std::string &color_)
+{
+    bool Result = false;
+    color_ = "black";
+    if (index_ >= 0 && index_ < _Impl->_expandData._lastEfgAllColorList.size())
+    {
+        color_ = _Impl->_expandData._lastEfgAllColorList[index_];
+        Result = true;
+    }
+    return Result;
 }
 
 bool ODPEfg::MarkIndex(const int &index_)

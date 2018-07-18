@@ -32,6 +32,7 @@ class ODPEfg
             _classifyList.clear();
             _classifyIsMap.clear();
             _lastEfgIdList.clear();
+            _lastEfgAllColorList.clear();
             _markNum = 0;
             _totalNum = 0;
         }
@@ -40,6 +41,7 @@ class ODPEfg
         std::vector<std::string> _classifyList;
         std::map<std::string, int> _classifyIsMap;
         std::vector<int> _lastEfgIdList;
+        std::vector<std::string> _lastEfgAllColorList;
         int _markNum;
         int _totalNum;
     };
@@ -48,7 +50,9 @@ public:
 
 public:
     void GetEfgStrList(StringList &strList_);
+    void GetEfgAllList(StringList &strList_);
     void GetProgressStr(std::string &str_);
+    bool GetEfgAllColor(const int &index_, std::string &color_);
 
 public:
     bool MarkIndex(const int &index_);

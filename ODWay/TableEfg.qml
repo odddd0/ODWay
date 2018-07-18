@@ -19,7 +19,8 @@ Rectangle {
     Component.onCompleted: {
         bar.leftStr = "<"
         bar.middleStr = odvEfgList.getProgressStr()
-        bar.rightStr = ""
+        bar.rightStr = "ALL"
+        bar.rightColor = "black"
         bar.barHandle = "handleTableEfg"
     }
 
@@ -33,6 +34,12 @@ Rectangle {
                     bar.rightStr = ""
                     tableEfgListView.model = odvEfgList.getEfgStrList()
                 }
+            }
+            else if (bar.barHandle == "handleTableEfg" && bar.rightStr == "ALL")
+            {
+                bar.rightStr = ""
+                bar.rightColor = "black"
+                tableEfgListView.model = odvEfgList.getEfgAllList()
             }
             bar.middleStr = odvEfgList.getProgressStr()
         }
@@ -52,17 +59,22 @@ Rectangle {
                 width: parent.width
                 text: modelData
             }
+            Component.onCompleted: {
+                wrapperText.color = odvEfgList.getEfgColor(index, "black")
+            }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
                     tableEfgListView.currentIndex = index
                     bar.rightStr = ""
                     wrapperText.color = "black"
+                    bar.rightColor = "black"
                 }
                 onPressAndHold: {
                     tableEfgListView.currentIndex = index
                     wrapperText.color = "red"
                     bar.rightStr = "MARK"
+                    bar.rightColor = "red"
                 }
             }
             // indent the item if it is the current item
