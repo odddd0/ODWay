@@ -20,7 +20,8 @@ SOURCES += \
     ODWayMTest.cpp \
     ODMGnomeTest.cpp \
     ODMGoblinCoinTest.cpp \
-    ODMGoblinTest.cpp
+    ODMGoblinTest.cpp \
+    ODMQuestTest.cpp
 
 INCLUDEPATH += $$PWD/../3rd/gtest
 DEPENDPATH += $$PWD/../3rd/gtest

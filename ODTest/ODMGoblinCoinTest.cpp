@@ -22,31 +22,31 @@ StringTable tempGoblinCoin_update = {
     {"103", "31203", "N333", "313404", "305", "306123", "307"}
 };
 
-TEST(ODMGoblinCoin, insert)
-{
-    ODDBHandle::Instance()->Setup("test.db");
-    std::string errMsg;
-    ODMBaseList tmpList;
-    tmpList.push_back(std::make_shared<ODMGoblinCoin>(tempGoblinCoin_insert[0]));
-    tmpList.push_back(std::make_shared<ODMGoblinCoin>(tempGoblinCoin_insert[1]));
-    tmpList.push_back(std::make_shared<ODMGoblinCoin>(tempGoblinCoin_insert[2]));
-    EXPECT_TRUE(ODDBHandle::Instance()->Insert(tmpList, errMsg));
-    if (!errMsg.empty())
-    {
-        std::cout << errMsg << std::endl;
-    }
-}
+//TEST(ODMGoblinCoin, insert)
+//{
+//    ODDBHandle::Instance()->Setup("test.db");
+//    std::string errMsg;
+//    ODMBaseList tmpList;
+//    tmpList.push_back(std::make_shared<ODMGoblinCoin>(tempGoblinCoin_insert[0]));
+//    tmpList.push_back(std::make_shared<ODMGoblinCoin>(tempGoblinCoin_insert[1]));
+//    tmpList.push_back(std::make_shared<ODMGoblinCoin>(tempGoblinCoin_insert[2]));
+//    EXPECT_TRUE(ODDBHandle::Instance()->Insert(tmpList, errMsg));
+//    if (!errMsg.empty())
+//    {
+//        std::cout << errMsg << std::endl;
+//    }
+//}
 
-TEST(ODMGoblinCoin, Update)
-{
-    ODMBaseList tmpList;
-    tmpList.push_back(std::make_shared<ODMGoblinCoin>(tempGoblinCoin_update[0]));
-    tmpList.push_back(std::make_shared<ODMGoblinCoin>(tempGoblinCoin_update[1]));
-    tmpList.push_back(std::make_shared<ODMGoblinCoin>(tempGoblinCoin_update[2]));
-    ODMGoblinCoinPtr tmpPtr = std::static_pointer_cast<ODMGoblinCoin>(tmpList[0]);
-    tmpPtr->_id = 122;
-    ODDBHandle::Instance()->Update(tmpList);
-}
+//TEST(ODMGoblinCoin, Update)
+//{
+//    ODMBaseList tmpList;
+//    tmpList.push_back(std::make_shared<ODMGoblinCoin>(tempGoblinCoin_update[0]));
+//    tmpList.push_back(std::make_shared<ODMGoblinCoin>(tempGoblinCoin_update[1]));
+//    tmpList.push_back(std::make_shared<ODMGoblinCoin>(tempGoblinCoin_update[2]));
+//    ODMGoblinCoinPtr tmpPtr = std::static_pointer_cast<ODMGoblinCoin>(tmpList[0]);
+//    tmpPtr->_id = 122;
+//    ODDBHandle::Instance()->Update(tmpList);
+//}
 
 //TEST(ODMGoblinCoin, Select)
 //{

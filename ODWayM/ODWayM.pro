@@ -27,7 +27,8 @@ SOURCES += \
     ODMGnome.cpp \
     ODMGoblin.cpp \
     ODMGoblinCoin.cpp \
-    ODMEfg.cpp
+    ODMEfg.cpp \
+    ODMQuest.cpp
 
 HEADERS += \
         ODWayM.h \
@@ -35,7 +36,8 @@ HEADERS += \
     ODMGnome.h \
     ODMGoblin.h \
     ODMGoblinCoin.h \
-    ODMEfg.h
+    ODMEfg.h \
+    ODMQuest.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

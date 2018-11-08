@@ -11,6 +11,7 @@
 #include <ODWayM/ODMGnome.h>
 #include <ODWayM/ODMGoblin.h>
 #include <ODWayM/ODMGoblinCoin.h>
+#include <ODWayM/ODMQuest.h>
 #include <ODWayM/ODMEfg.h>
 
 #include "ODWayM.h"
@@ -73,6 +74,7 @@ void ODWayM::ReadDB()
     ODDBHandle::Instance()->Select<ODMGnome>(_Impl->_DBList);
     ODDBHandle::Instance()->Select<ODMGoblin>(_Impl->_DBList);
     ODDBHandle::Instance()->Select<ODMGoblinCoin>(_Impl->_DBList);
+    ODDBHandle::Instance()->Select<ODMQuest>(_Impl->_DBList);
     ODDBHandle::Instance()->Select<ODMEfg>(_Impl->_DBList);
 }
 
@@ -141,6 +143,10 @@ bool ODWayM::DeleteModel(const std::string &type_, const int &id_)
     else if (type_ == "ODMEfg")
     {
         Result = ODDBHandle::Instance()->Delete<ODMEfg>(tmpList);
+    }
+    else if (type_ == "ODMQuest")
+    {
+        Result = ODDBHandle::Instance()->Delete<ODMQuest>(tmpList);
     }
     if (Result)
     {
